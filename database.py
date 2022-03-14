@@ -19,17 +19,37 @@ DATABASE_URL = 'file:database.sqlite?mode=rw'
 
 
 # add event to database
-def add_event(event_data):
+def add_event(event):
 
     with connect(DATABASE_URL, uri=True) as connection:
 
         with closing(connection.cursor()) as cursor:
-            print("connected")
-    return none
+
+            
+            
+
+
 
 def delete_event(query_data):
 
 def search_event(query_data):
+
+    with connect(DATABASE_URL, uri=True) as connection:
+
+        with closing(connection.cursor()) as cursor:
+
+            stmt_str = "SELECT * FROM events"
+
+            prep_stmts = []
+
+            sport = query_data[0]
+            location = query_data[1]
+            datetime = query_data[2]
+
+            # Modify query according to command-line args
+            if (sport is not None) and (sport.strip() != ''):
+                stmt_str += "WHERE LOWER(events.sport) LIKE ? ESCAPE "
+
 
 def add_profile(profile_data):
 
