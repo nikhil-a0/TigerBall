@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 #-----------------------------------------------------------------------
-# penny.py
-# Author: Bob Dondero
+# app.py
 #-----------------------------------------------------------------------
 
 from time import localtime, asctime, strftime
@@ -19,12 +18,13 @@ app = Flask(__name__, template_folder='templates')
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    
+    if 
+
     query_data = [request.args.get('Sport'), 
                         request.args.get('Location'), 
                         request.args.get('Datetime')]
 
-    events = search_event(query_data)
+    events = search_event(query_data)[1]
     print(events)
     
     html = render_template('index.html', 

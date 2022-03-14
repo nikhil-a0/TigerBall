@@ -29,10 +29,10 @@ def prep_stmt_format(arg):
 # add event to database
 # def add_event(event):
 
-#     with connect(DATABASE_URL, uri=True) as connection:
+#      with connect(DATABASE_URL, uri=True) as connection:
 
 #         with closing(connection.cursor()) as cursor:
-
+#             print("CONNECTED")
             
             
 
@@ -43,8 +43,9 @@ def search_event(query_data):
     with connect(DATABASE_URL, uri=True) as connection:
 
         with closing(connection.cursor()) as cursor:
+            print("CONNECTED")
 
-            stmt_str = "SELECT * FROM events"
+            stmt_str = "SELECT * FROM events "
 
             prep_stmts = []
 
@@ -65,12 +66,16 @@ def search_event(query_data):
 
             stmt_str += "ORDER BY events.datetime ASC"
 
+            print(stmt_str, '\n')
+            print(prep_stmts)
+
+
             cursor.execute(stmt_str, prep_stmts)
             row = cursor.fetchone()
 
             while row is not None:
-                events.append(str(row[0]).rjust(5, ' ') + "  " +
-                            str(row[1]) + str(row[2]).rjust(7,
+                events.append(str(row[0]).rjust(10, ' ') + "  " +
+                            str(row[1]) + str(row[2]).rjust(15,
                             ' '))
                 row = cursor.fetchone()
 
