@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title> TigerBall </title>
+   </head>
+   <body>
+      <h1> Search for Pick-up Games </h1>
+      <form action="index" method="get">
+         Sport: <input type="text" name="Sport" > <br>
+         Location: <input type="text" name="Location" > <br>
+         Date: <input type="date" name="Date" > <br>
+         <input type="submit" value="Submit"> <br>
+      </form>
+
+      {% if events|length == 0: %}
+            (No events)
+      {% else %}
+         {% for event in events: %}
+            {{'%s' % (event)}} <br>
+         {% endfor %}
+      {% endif %}
+
+
+   </body>
+</html>
