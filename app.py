@@ -12,7 +12,7 @@ from flask import render_template
 
 #-----------------------------------------------------------------------
 
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__, template_folder='templates')
 
 #-----------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ def index():
 
 @app.route('/profile', methods=['GET'])
 def reg_details():
-    html = render_template('regdetails.html')
+    html = render_template('profile.html')
     response = make_response(html)
     return response
 
