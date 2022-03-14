@@ -18,22 +18,28 @@ from sqlite3 import connect
 DATABASE_URL = 'file:database.sqlite?mode=rw'
 
 
+#-----------------------------------------------------------------------
+# Formats prepared statements w.r.t wildcard characters
+
+def prep_stmt_format(arg):
+    return "%" + str(arg).lower().replace(
+        "%", "!%").replace("_","!_") + "%"
+
+#-----------------------------------------------------------------------
 # add event to database
-def add_event(event):
+# def add_event(event):
 
-    with connect(DATABASE_URL, uri=True) as connection:
+#     with connect(DATABASE_URL, uri=True) as connection:
 
-        with closing(connection.cursor()) as cursor:
+#         with closing(connection.cursor()) as cursor:
 
             
             
 
-
-
-def delete_event(query_data):
+# def delete_event(query_data):
 
 def search_event(query_data):
-
+    events = []
     with connect(DATABASE_URL, uri=True) as connection:
 
         with closing(connection.cursor()) as cursor:
@@ -48,8 +54,29 @@ def search_event(query_data):
 
             # Modify query according to command-line args
             if (sport is not None) and (sport.strip() != ''):
-                stmt_str += "WHERE LOWER(events.sport) LIKE ? ESCAPE "
+                stmt_str += "WHERE LOWER(events.sport) LIKE ? ESCAPE '!' "
+                prep_stmts.append(prep_stmt_format(sport))
+            if (location is not None) and (location.strip() != ''):
+                stmt_str += "AND LOWER(events.location) LIKE ? ESCAPE '!' "
+                prep_stmts.append(prep_stmt_format(location))
+            if (datetime is not None) and (datetime.strip() != ''):
+                stmt_str += "AND LOWER(events.datetime) LIKE ? ESCAPE '!' "
+                prep_stmts.append(prep_stmt_format(datetime))
+
+            stmt_str += "ORDER BY events.datetime ASC"
+
+            cursor.execute(stmt_str, prep_stmts)
+            row = cursor.fetchone()
+
+            while row is not None:
+                events.append(str(row[0]).rjust(5, ' ') + "  " +
+                            str(row[1]) + str(row[2]).rjust(7,
+                            ' ') + str(row[3]).rjust(5, ' ') +
+                            " " + str(row[4]))
+                row = cursor.fetchone()
+
+            return ['not error', events]
 
 
-def add_profile(profile_data):
+# def add_profile(profile_data):
 
