@@ -24,11 +24,12 @@ def add_event(event_data):
     with connect(DATABASE_URL, uri=True) as connection:
 
         with closing(connection.cursor()) as cursor:
-            
-
-def search_event(query_data):
+            print("connected")
+    return none
 
 def delete_event(query_data):
+
+def search_event(query_data):
 
 def add_profile(profile_data):
 
