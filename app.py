@@ -8,7 +8,7 @@
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-# from database import overview_query
+from database import search_event
 
 #-----------------------------------------------------------------------
 
@@ -20,13 +20,11 @@ app = Flask(__name__, template_folder='templates')
 @app.route('/index', methods=['GET'])
 def index():
     
-    # class_query_data = [request.args.get('Dept'), 
-    #                     request.args.get('Num'), 
-    #                     request.args.get('Area'), 
-    #                     request.args.get('Title')]
+    query_data = [request.args.get('Sport'), 
+                        request.args.get('Location'), 
+                        request.args.get('Datetime')]
 
-    # courses = []
-    events = ['basketball', 'tennis', 'soccer']
+    events = search_event(query_data)
     print(events)
     
     html = render_template('index.html', 

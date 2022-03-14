@@ -15,7 +15,7 @@ from sqlite3 import connect
 
 
 #-----------------------------------------------------------------------
-DATABASE_URL = 'file:database.sqlite?mode=rw'
+DATABASE_URL = 'file:database?mode=rw'
 
 
 #-----------------------------------------------------------------------
@@ -71,8 +71,7 @@ def search_event(query_data):
             while row is not None:
                 events.append(str(row[0]).rjust(5, ' ') + "  " +
                             str(row[1]) + str(row[2]).rjust(7,
-                            ' ') + str(row[3]).rjust(5, ' ') +
-                            " " + str(row[4]))
+                            ' '))
                 row = cursor.fetchone()
 
             return ['not error', events]
