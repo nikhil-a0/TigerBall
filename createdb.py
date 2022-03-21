@@ -18,7 +18,7 @@ def main():
         exit(1)
 
     try:
-        conn = psycopg2.connect(database='postgres', user='postgres',
+        conn = psycopg2.connect(database='postgres',
             port=5432)
         conn.autocommit = True
         cursor = conn.cursor()
