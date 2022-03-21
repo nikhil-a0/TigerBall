@@ -4,7 +4,7 @@
 #-----------------------------------------------------------------------
 
 from sys import argv, stderr, exit
-from psycopg import connect
+from psycopg2 import connect
 from event import Event
 
 def create_event(initializer_array):
