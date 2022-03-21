@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>TigerBall</title>
+   </head>
+   {% if error_msg|length > 0 %}
+      <body>
+         <h1>TigerBall</h1>
+         <p>
+            {{error_msg}}
+         </p>
+         <hr>
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         <hr>
+      </body>
+   {% else %}
+      <body>
+         <h1>TigerBall</h1>
+         <h2>Create Event</h2>
+         <form action="index" method="post">
+            <table>
+               <tr>
+                  <td style = "text-align: right">
+                     Sport:
+                  </td>
+                  <td>
+                     <select id="sport" name="sport">
+                        <option value="basketball">Basketball</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="spikeball">Spikeball</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Location:
+                  </td>
+                  <td>
+                     <input type="text" name="location" value="{{location}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Date:
+                  </td>
+                  <td>
+                     <input type="date" name="event_date" value="{{event_date}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Start Time:
+                  </td>
+                  <td>
+                     <input type="time" name="start_time" value="{{start_time}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     End Time:
+                  </td>
+                  <td>
+                     <input type="time" name="end_time" value="{{end_time}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Visibility:
+                  </td>
+                  <td>
+                     <select id="visibility" name="visibility">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Organizer:
+                  </td>
+                  <td>
+                     <input type="text" name="organizer_id" value="{{organizer_id}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                  </td>
+                  <td>
+                     <input type="submit" value="Submit">
+                  </td>
+               </tr>
+            </table>
+         </form>
+
+         <hr>
+         <hr>
+
+         <h2>Filter Events</h2>
+         <form action="index" method="post">
+            <table>
+               <tr>
+                  <td style = "text-align: right">
+                     Sport:
+                  </td>
+                  <td>
+                     <select id="sport" name="sport">
+                        <option value="basketball">Basketball</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="spikeball">Spikeball</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Location:
+                  </td>
+                  <td>
+                     <input type="text" name="location" value="{{location}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Date:
+                  </td>
+                  <td>
+                     <input type="date" name="event_date" value="{{event_date}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Start Time:
+                  </td>
+                  <td>
+                     <input type="time" name="start_time" value="{{start_time}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     End Time:
+                  </td>
+                  <td>
+                     <input type="time" name="end_time" value="{{end_time}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Visibility:
+                  </td>
+                  <td>
+                     <select id="visibility" name="visibility">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Organizer:
+                  </td>
+                  <td>
+                     <input type="text" name="organizer_id" value="{{organizer_id}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                  </td>
+                  <td>
+                     <input type="submit" value="Submit">
+                  </td>
+               </tr>
+            </table>
+         </form>
+
+         <hr>
+
+         <table>
+            <tr>
+               <td>
+                  <strong>Event ID</strong>
+               </td>
+               <td>
+                  <strong>Sport</strong>
+               </td>
+               <td>
+                  <strong>Location</strong>
+               </td>
+               <td>
+                  <strong>Date</strong>
+               </td>
+               <td>
+                  <strong>Start Time</strong>
+               </td>
+               <td>
+                  <strong>End Time</strong>
+               </td>
+               <td>
+                  <strong>Visibility</strong>
+               </td>
+               <td>
+                  <strong>Organizer</strong>
+               </td>
+            </tr>
+
+            {% for row in overviews: %}
+               <tr>
+                  <td>
+                     <a href="regdetails?classid={{row[0]}}">{{row[0]}}</a>
+                  </td>
+                  {% for cell in row[1:]: %}
+                     <td>
+                        {{cell}}
+                     </td>
+                  {% endfor %}
+               </tr>
+            {% endfor %}
+         </table>
+         <hr>
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         <hr>
+      </body>
+   {% endif %}
+</html>
