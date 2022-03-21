@@ -137,6 +137,9 @@ def search_event(args_arr):
                         str(row[7])]
                     eventList.append(Event(row_arr))
                     row = cursor.fetchone()
+                    
+                print("EVENT LIST SIZE")
+                print(len(eventList))
                 
                 return eventList
 
