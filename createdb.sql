@@ -6,6 +6,8 @@ end_time TIME, visibility BOOLEAN, organizer_id TEXT);
 
 -----
 
+DROP TABLE IF EXISTS eventsparticipants;
+
 CREATE TABLE eventsparticipants
 (event_id INTEGER, participant_id TEXT);
 
