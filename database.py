@@ -121,11 +121,14 @@ def search_event(args_arr):
                             events.event_id ASC'
 
                 cursor.execute(stmt_str, args_list)
-
+                print("CURSOR EXECUTED SEARCH")
+                
                 eventList = []
 
                 row = cursor.fetchone()
                 print("Fetched after searching")
+                print("ROW")
+                print(row)
                 while row is not None:
                     row_arr = [str(row[0]),
                         str(row[1]), str(row[2]),
