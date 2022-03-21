@@ -69,21 +69,21 @@ def search_event(args_arr):
                     stmt_str += " AND sport LIKE %s ESCAPE '\\'"
                     modified_args_d = args_arr[0].replace("_","\\_")
                     modified_args_d = modified_args_d.replace("%","\\%")
-                    args_list.append("%" + modified_args_d + "%")
+                    args_list.append(modified_args_d)
 
                 # conditional location
                 if args_arr[1]:
                     stmt_str += " AND location LIKE %s ESCAPE '\\'"
                     modified_args_n = args_arr[1].replace("_","\\_")
                     modified_args_n = modified_args_n.replace("%","\\%")
-                    args_list.append("%" + modified_args_n + "%")
+                    args_list.append(modified_args_n)
 
                 # conditional event_date
                 if args_arr[2]:
                     stmt_str += " AND event_date LIKE %s ESCAPE '\\'"
                     modified_args_a = args_arr[2].replace("_","\\_")
                     modified_args_a = modified_args_a.replace("%","\\%")
-                    args_list.append("%" + modified_args_a + "%")
+                    args_list.append(modified_args_a)
 
                 print("Arrived before args_arr[3]")
                 # conditional start_time
@@ -91,28 +91,28 @@ def search_event(args_arr):
                     stmt_str += " AND start_time LIKE %s ESCAPE '\\'"
                     modified_args_t = args_arr[3].replace("_","\\_")
                     modified_args_t = modified_args_t.replace("%","\\%")
-                    args_list.append("%" + modified_args_t + "%")
+                    args_list.append(modified_args_t)
 
                 # conditional end_time
                 if args_arr[4]:
                     stmt_str += " AND end_time LIKE %s ESCAPE '\\'"
                     modified_args_t = args_arr[4].replace("_","\\_")
                     modified_args_t = modified_args_t.replace("%","\\%")
-                    args_list.append("%" + modified_args_t + "%")
+                    args_list.append(modified_args_t)
 
                  # conditional visibility
                 if args_arr[5]:
                     stmt_str += " AND visibility LIKE %s ESCAPE '\\'"
                     modified_args_t = args_arr[5].replace("_","\\_")
                     modified_args_t = modified_args_t.replace("%","\\%")
-                    args_list.append("%" + modified_args_t + "%")
+                    args_list.append(modified_args_t)
 
                  # conditional organizer_id
                 if args_arr[6]:
                     stmt_str += " AND organizer_id LIKE %s ESCAPE '\\'"
                     modified_args_t = args_arr[6].replace("_","\\_")
                     modified_args_t = modified_args_t.replace("%","\\%")
-                    args_list.append("%" + modified_args_t + "%")
+                    args_list.append(modified_args_t)
                 print("Arrived after args_arr[6]")
 
                 stmt_str += ' ORDER BY events.event_date ASC, \
