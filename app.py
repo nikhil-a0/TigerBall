@@ -19,13 +19,13 @@ app = Flask(__name__, template_folder='.')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        initializer_array = [request.args.get('sport_c'), 
-                            request.args.get('location_c'), 
-                            request.args.get('date_c'),
-                            request.args.get('start_time_c'),
-                            request.args.get('end_time_c'),
-                            request.args.get('visibility_c'),
-                            request.args.get('organizer_id_c')]
+        initializer_array = [request.form.get('sport_c'), 
+                            request.form.get('location_c'), 
+                            request.form.get('date_c'),
+                            request.form.get('start_time_c'),
+                            request.form.get('end_time_c'),
+                            request.form.get('visibility_c'),
+                            request.form.get('organizer_id_c')]
 
         print("INITARRAY")
         print(initializer_array)
