@@ -13,7 +13,7 @@ from psycopg2 import connect
 def main():
 
     if len(argv) != 1:
-        print('Usage: python create.py', file=stderr)
+        print('Usage: python createdb.py', file=stderr)
         exit(1)
 
     try:
