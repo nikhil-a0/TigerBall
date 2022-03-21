@@ -201,16 +201,32 @@
                </td>
             </tr>
 
-            {% for row in overviews: %}
+            {% for event in events: %}
                <tr>
                   <td>
-                     <a href="regdetails?classid={{row[0]}}">{{row[0]}}</a>
+                     <a href="eventdetails?eventid={{event.get_event_id()}}">{{event.get_event_id()}}</a>
                   </td>
-                  {% for cell in row[1:]: %}
-                     <td>
-                        {{cell}}
-                     </td>
-                  {% endfor %}
+                  <td>
+                     {{event.get_sport()}}
+                  </td>
+                  <td>
+                     {{event.get_location()}}
+                  </td>
+                  <td>
+                     {{event.get_date()}}
+                  </td>
+                  <td>
+                     {{event.get_starttime()}}
+                  </td>
+                  <td>
+                     {{event.get_endtime()}}
+                  </td>
+                  <td>
+                     {{event.get_visibility()}}
+                  </td>
+                  <td>
+                     {{event.get_organizer()}}
+                  </td>
                </tr>
             {% endfor %}
          </table>
