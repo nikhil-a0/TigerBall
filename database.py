@@ -20,6 +20,7 @@ def create_event(initializer_array):
                 end_time, visibility, organizer_id) \
                 VALUES (%s, %s, %s, %s, %s, %s, %s)'
                 cursor.execute(stmt_str, initializer_array)
+                print("INSERTED")
 
 #                 stmt_str = 'SELECT event_id FROM events WHERE \
 #                 events.sport = %s AND events.location = %s AND \
@@ -34,6 +35,8 @@ def create_event(initializer_array):
                 stmt_str = 'SELECT event_id, sport FROM events'
                 cursor.execute(stmt_str)
                 row = cursor.fetchone()
+                print("FETCHED")
+                print(row)
                 event_id = str(row[0])
                 print(str(row[0]) + " " + str(row[1]))
 
