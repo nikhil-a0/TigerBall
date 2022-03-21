@@ -31,10 +31,11 @@ def create_event(initializer_array):
 #                 # only taking one (later make statement that deletes duplicates)
 #                 event_id = str(row[0])
 
-                stmt_str = 'SELECT event_id FROM events'
+                stmt_str = 'SELECT event_id, sport FROM events'
                 cursor.execute(stmt_str)
                 row = cursor.fetchone()
                 event_id = str(row[0])
+                print(str(row[0]) + " " + str(row[1]))
 
                 stmt_str = 'INSERT INTO eventsparticipants (event_id, participant_id) \
                 VALUES (' + str(event_id) + ', %s)'
