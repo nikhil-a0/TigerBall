@@ -30,7 +30,7 @@ def index():
         print("INITARRAY")
         print(initializer_array)
         event = create_event(initializer_array)
-        query_data = [None, None, None, None, None, None, None]
+        query_data = ['','','','','','','']
 
 
     if request.method == 'GET':
