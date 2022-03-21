@@ -124,7 +124,7 @@ def search_event(args_arr):
                         str(row[1]), str(row[2]),
                         str(row[3]), str(row[4]),
                         str(row[5]), str(row[6])]
-                    answer.append(Event(row_arr))
+                    eventList.append(Event(row_arr))
                     row = cursor.fetchone()
                 
                 return eventList
