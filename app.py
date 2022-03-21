@@ -27,7 +27,8 @@ def index():
                             request.args.get('visibility_c'),
                             request.args.get('organizer_id_c')]
 
-        print("INITARRAY: " + initializer_array)
+        print("INITARRAY")
+        print(initializer_array)
         event = create_event(initializer_array)
         query_data = [None, None, None, None, None, None, None]
 
@@ -40,7 +41,8 @@ def index():
                     request.args.get('end_time_f'),
                     request.args.get('visibility_f'),
                     request.args.get('organizer_id_f')]
-        print("QUERYDATA: " + query_data)
+        print("QUERYDATA")
+        print(query_data)
 
 
     print("Arrived before search")
