@@ -30,7 +30,7 @@ def create_event(initializer_array):
                 VALUES (' + str(event_id) + ', %s)'
                 cursor.execute(stmt_str, [initializer_array[6]])
 
-    except Exception as ex:
+    except Exception:
         print(ex, file=stderr)
         exit(1)
 
