@@ -105,7 +105,7 @@ def search_event(args_arr):
 
                 stmt_str += ' ORDER BY events.event_date ASC, \
                             events.start_time ASC, \
-                            events.end_time ASC \
+                            events.end_time ASC, \
                             events.event_id ASC'
 
                 cursor.execute(stmt_str, args_list)
