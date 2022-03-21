@@ -56,6 +56,8 @@ def search_event(args_arr):
 
             with connection.cursor() as cursor:
 
+                print(args_arr)
+                
                 # Create a prepared statement and substitute values.
                 stmt_str = 'SELECT events.event_id, events.sport, events.location, events.event_date, \
                 events.start_time, events.end_time, events.visibility, events.organizer_id \
@@ -83,6 +85,7 @@ def search_event(args_arr):
                     modified_args_a = modified_args_a.replace("%","\\%")
                     args_list.append("%" + modified_args_a + "%")
 
+                print("Arrived before args_arr[3]")
                 # conditional start_time
                 if args_arr[3]:
                     stmt_str += " AND start_time LIKE ? ESCAPE '\\'"
@@ -110,7 +113,7 @@ def search_event(args_arr):
                     modified_args_t = args_arr[6].replace("_","\\_")
                     modified_args_t = modified_args_t.replace("%","\\%")
                     args_list.append("%" + modified_args_t + "%")
-
+                print("Arrived after args_arr[6]")
 
                 stmt_str += ' ORDER BY events.event_date ASC, \
                             events.start_time ASC, \
@@ -122,11 +125,13 @@ def search_event(args_arr):
                 eventList = []
 
                 row = cursor.fetchone()
+                print("Fetched after searching")
                 while row is not None:
                     row_arr = [str(row[0]),
                         str(row[1]), str(row[2]),
                         str(row[3]), str(row[4]),
-                        str(row[5]), str(row[6])]
+                        str(row[5]), str(row[6]),
+                        str(row[7])]
                     eventList.append(Event(row_arr))
                     row = cursor.fetchone()
                 
