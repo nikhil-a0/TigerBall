@@ -11,7 +11,7 @@ from database import search_event, create_event
 
 #-----------------------------------------------------------------------
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='.')
 
 #-----------------------------------------------------------------------
 
