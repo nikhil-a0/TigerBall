@@ -41,6 +41,9 @@ def index():
                     request.args.get('end_time_f'),
                     request.args.get('visibility_f'),
                     request.args.get('organizer_id_f')]
+        for i in range(7):
+            if query_data[i] is None:
+                query_data[i] = ''
         print("QUERYDATA")
         print(query_data)
 
