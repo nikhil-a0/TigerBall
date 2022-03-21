@@ -18,7 +18,7 @@ app = Flask(__name__, template_folder='templates')
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    if request.method.get == 'POST':
+    if request.method == 'POST':
         initializer_array = [request.args.get('sport_c'), 
                             request.args.get('location_c'), 
                             request.args.get('date_c'),
@@ -30,7 +30,7 @@ def index():
         event = create_event(initializer_array)
 
 
-    if request.method.get == 'GET':
+    if request.method == 'GET':
         query_data = [request.args.get('sport_f'), 
                     request.args.get('location_f'), 
                     request.args.get('date_f'),
