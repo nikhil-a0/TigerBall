@@ -41,7 +41,9 @@ def index():
                     request.args.get('organizer_id_f')]
 
 
+    print("Arrived before search")
     events = search_event(query_data)
+    print("Completed search")
     html = render_template('index.html', 
     events = events)
     response = make_response(html)
