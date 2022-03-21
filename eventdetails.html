@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>TigerBall Event Details</title>
+   </head>
+   {% if error_msg|length > 0 %}
+      <body>
+         <h1>Event Details</h1>
+         <p>
+            {{error_msg}}
+         </p>
+         <hr>
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         <hr>
+      </body>
+   {% else %}
+      <body>
+         <h1>Event Details</h1>
+         <hr>
+
+         <h2>Event ID {{eventid}}</h2>
+         <strong>Sport:</strong> {{details[0][0]}}
+         <br>
+         <strong>Location:</strong> {{details[0][1]}}
+         <br>
+         <strong>Date:</strong> {{details[0][2]}}
+         <br>
+         <strong>Start Time:</strong> {{details[0][3]}}
+         <br>
+         <strong>End Time:</strong> {{details[0][4]}}
+         <br>
+         <strong>Visibility:</strong> {{details[0][5]}}
+         <br>
+         <strong>Organizer:</strong> {{details[0][5]}}
+         
+         <hr>
+
+         <h2>Participants</h2>
+         {% for deptnum in details[1][0]: %}
+            {{deptnum}}
+            <br>
+         {% endfor %}
+         
+         <hr>
+
+         <p>
+            Click here to do <a href="/?dept={{dept}}&coursenum={{coursenum}}&area={{area}}&title={{title}}">another class search</a>.<br>
+         </p>
+
+         <hr>
+         
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         
+         <hr>
+      </body>
+   {% endif %}
+</html>
