@@ -8,7 +8,12 @@ from psycopg import connect
 from event import Event
 
 def create_event(initializer_array):
-    
+    try:
+        with connect(
+            host='localhost', port=5432,
+            database='tigerballdb') as connection:
+
+            with connection.cursor() as cursor:
 
                 # Create a prepared statement and substitute values.
                 stmt_str = 'INSERT INTO events (sport, location, event_date, start_time, \
