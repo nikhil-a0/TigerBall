@@ -17,6 +17,12 @@ def main():
         exit(1)
 
     try:
+        conn = psycopg2.connect(database='postgres', user='postgres',
+            port=5432)
+        conn.autocommit = True
+        cursor = conn.cursor()
+        cursor.execute("CREATE database tigerballdb")
+
         with connect(
             host='localhost', port=5432,
             database='tigerballdb') as connection:
