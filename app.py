@@ -7,7 +7,7 @@
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from database import search_event
+from database import search_event, create_event
 
 #-----------------------------------------------------------------------
 
@@ -15,20 +15,33 @@ app = Flask(__name__, template_folder='templates')
 
 #-----------------------------------------------------------------------
 
-@app.route('/', methods=['GET'])
-@app.route('/index', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
+    if request.method.get == 'POST':
+        initializer_array = [request.args.get('sport_c'), 
+                            request.args.get('location_c'), 
+                            request.args.get('date_c'),
+                            request.args.get('start_time_c'),
+                            request.args.get('end_time_c'),
+                            request.args.get('visibility_c'),
+                            request.args.get('organizer_id_c')]
 
-    query_data = [request.args.get('Sport'), 
-                        request.args.get('Location'), 
-                        request.args.get('Datetime')]
+        create_event(initializer_array)
 
-    events = search_event(query_data)[1]
-    print(events)
-    
-    html = render_template('index.html', 
-    events = events)
-    response = make_response(html)
+
+
+
+    if request.method.get == 'GET':
+        query_data = [request.args.get('Sport'), 
+                            request.args.get('Location'), 
+                            request.args.get('Datetime')]
+
+        events = search_event(query_data)[1]
+        print(events) 
+        html = render_template('index.html', 
+        events = events)
+        response = make_response(html)
     
     return response
 
