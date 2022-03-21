@@ -22,7 +22,8 @@ def main():
             port=5432)
         conn.autocommit = True
         cursor = conn.cursor()
-        cursor.execute("CREATE database tigerballdb")
+        cursor.execute("DROP DATABASE IF EXISTS tigerballdb")
+        cursor.execute("CREATE DATABASE tigerballdb")
 
         with connect(
             host='localhost', port=5432,
@@ -36,7 +37,7 @@ def main():
                 cursor.execute("CREATE TABLE events "
                     + "(event_id SERIAL NOT NULL, sport TEXT, location TEXT,"
                     + " event_date DATE, start_time TIME, end_time TIME, "
-                    "visibility BOOLEAN, organizer_id TEXT)")
+                    "visibility TEXT, organizer_id TEXT)")
 
                 #-------------------------------------------------------
 
