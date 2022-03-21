@@ -39,7 +39,7 @@ def create_event(initializer_array):
         print(ex, file=stderr)
         exit(1)
 
-def search_event(query_data):
+def search_event(args_arr):
     try:
         with connect(
             host='localhost', port=5432,
