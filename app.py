@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 
 #-----------------------------------------------------------------------
 # app.py
@@ -18,7 +18,6 @@ app = Flask(__name__, template_folder='templates')
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    if 
 
     query_data = [request.args.get('Sport'), 
                         request.args.get('Location'), 

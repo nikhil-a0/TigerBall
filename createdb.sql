@@ -1,10 +1,14 @@
 DROP TABLE IF EXISTS events;
 
-CREATE TABLE events (sport TEXT, location TEXT, date TEXT);
+CREATE TABLE events
+(event_id SERIAL NOT NULL, sport TEXT, location TEXT, event_date DATE, start_time TIME,
+end_time TIME, visibility BOOLEAN, organizer_id TEXT);
 
-INSERT INTO events (sport, location, date)
-   VALUES ('Basketball','Dillon Gym', '2022-03-14');
-INSERT INTO events (sport, location, date)
-   VALUES ('Soccer','Poe Field', '2022-03-15');
-INSERT INTO events (sport, location, date)
-   VALUES ('Basketball','Dillon Gym', '2022-03-14');
+-----
+
+DROP TABLE IF EXISTS eventsparticipants;
+
+CREATE TABLE eventsparticipants
+(event_id INTEGER, participant_id TEXT);
+
+-- ---------------------------------------------------------------------
