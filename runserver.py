@@ -7,12 +7,12 @@
 
 from sys import argv, exit, stderr
 import argparse
-from reg import app
+from app import app
 
 def main():
 
     parser = argparse.ArgumentParser(allow_abbrev = False,
-        description = "The registrar application")
+        description = "The TigerBall application")
     parser.add_argument('port', type=int,
         help='the port at which the server should listen')
     parser.parse_args()
