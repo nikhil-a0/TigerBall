@@ -19,7 +19,7 @@ app = Flask(__name__, template_folder='.')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        sport_c = request.args.get('sport_c')
+        sport_c = request.args.get("sport_c")
         initializer_array = [sport_c, 
                             request.args.get('location_c'), 
                             request.args.get('date_c'),
