@@ -61,7 +61,7 @@ def search_event(args_arr):
                 # Create a prepared statement and substitute values.
                 stmt_str = 'SELECT events.event_id, events.sport, events.location, events.event_date, \
                 events.start_time, events.end_time, events.visibility, events.organizer_id \
-                FROM events, eventsparticipants WHERE events.event_id = events.event_id'
+                FROM events, eventsparticipants WHERE TRUE'
                 args_list = []
 
                 # conditional sport
