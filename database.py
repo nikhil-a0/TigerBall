@@ -22,23 +22,23 @@ def create_event(initializer_array):
                 cursor.execute(stmt_str, initializer_array)
                 print("INSERTED")
 
-#                 stmt_str = 'SELECT event_id FROM events WHERE \
-#                 events.sport = %s AND events.location = %s AND \
-#                 events.event_date = %s AND events.start_time = %s AND \
-#                 events.end_time = %s AND events.visibility = %s AND \
-#                 events.organizer_id = %s'
-#                 cursor.execute(stmt_str, initializer_array)
-#                 row = cursor.fetchone()
-#                 # only taking one (later make statement that deletes duplicates)
-#                 event_id = str(row[0])
-
-                stmt_str = 'SELECT event_id, sport FROM events'
-                cursor.execute(stmt_str)
+                stmt_str = 'SELECT event_id FROM events WHERE \
+                events.sport = %s AND events.location = %s AND \
+                events.event_date = %s AND events.start_time = %s AND \
+                events.end_time = %s AND events.visibility = %s AND \
+                events.organizer_id = %s'
+                cursor.execute(stmt_str, initializer_array)
                 row = cursor.fetchone()
-                print("FETCHED")
-                print(row)
+                # only taking one (later make statement that deletes duplicates)
                 event_id = str(row[0])
-                print(str(row[0]) + " " + str(row[1]))
+
+#                 stmt_str = 'SELECT event_id, sport FROM events'
+#                 cursor.execute(stmt_str)
+#                 row = cursor.fetchone()
+#                 print("FETCHED")
+#                 print(row)
+#                 event_id = str(row[0])
+#                 print(str(row[0]) + " " + str(row[1]))
 
                 stmt_str = 'INSERT INTO eventsparticipants (event_id, participant_id) \
                 VALUES (' + str(event_id) + ', %s)'
