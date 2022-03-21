@@ -28,6 +28,7 @@ def index():
                             request.args.get('organizer_id_c')]
 
         event = create_event(initializer_array)
+        query_data = [None, None, None, None, None, None, None]
 
 
     if request.method == 'GET':
