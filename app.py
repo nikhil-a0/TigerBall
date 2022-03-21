@@ -27,21 +27,23 @@ def index():
                             request.args.get('visibility_c'),
                             request.args.get('organizer_id_c')]
 
-        create_event(initializer_array)
-
-
+        event = create_event(initializer_array)
 
 
     if request.method.get == 'GET':
-        query_data = [request.args.get('Sport'), 
-                            request.args.get('Location'), 
-                            request.args.get('Datetime')]
+        query_data = [request.args.get('sport_f'), 
+                    request.args.get('location_f'), 
+                    request.args.get('date_f'),
+                    request.args.get('start_time_f'),
+                    request.args.get('end_time_f'),
+                    request.args.get('visibility_f'),
+                    request.args.get('organizer_id_f')]
 
-        events = search_event(query_data)[1]
-        print(events) 
-        html = render_template('index.html', 
-        events = events)
-        response = make_response(html)
+
+    events = search_event(query_data)
+    html = render_template('index.html', 
+    events = events)
+    response = make_response(html)
     
     return response
 
