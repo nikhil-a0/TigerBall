@@ -52,7 +52,6 @@ def index():
     events = search_event(query_data)
     print("EVENTS SIZE")
     print(len(events))
-    print(events[0].get_event_id())
     print("Completed search")
     html = render_template('index.html', 
     events = events)
