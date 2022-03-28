@@ -206,7 +206,7 @@
             {% for event in events: %}
                <tr>
                   <td>
-                     <a href="eventdetails?eventid={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                     <a href="eventdetails?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
                   </td>
                   <td>
                      {{event.get_sport()}}

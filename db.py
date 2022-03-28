@@ -135,11 +135,10 @@ def search_event(args_arr):
         exit(1)
 
 def add_participant(args_arr):
- 	try:
+    try:
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
                 port=5432))
-        print('ENGINE CREATED')
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -169,6 +168,8 @@ def get_details(event_id):
 
         details = []
 
+        print(event_id)
+
         # search for event in events and get the details, add them to array
         ev = (session.query(Events).
         	filter(Events.event_id == event_id).one())
@@ -186,7 +187,9 @@ def get_details(event_id):
         session.commit()
 
         session.close()
-        engine.dispose()    
+        engine.dispose()   
+
+        return details
 
     except Exception as ex:
         print(ex, file=stderr)

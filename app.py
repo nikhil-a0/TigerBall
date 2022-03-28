@@ -7,7 +7,7 @@
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from db import search_event, create_event
+from db import search_event, create_event, get_details, add_participant
 
 #-----------------------------------------------------------------------
 
@@ -60,9 +60,27 @@ def index():
 
 #-----------------------------------------------------------------------
 
-@app.route('/profile', methods=['GET'])
-def reg_details():
-    html = render_template('profile.html')
+@app.route('/eventdetails/', methods=['GET', 'POST'])
+def event_details():
+    event_id = request.args.get('event_id')
+    print("EVENT ID PRINTEED")
+    print(event_id)
+    
+    if request.method == 'POST':
+        participant_id = request.form.get('participant_id')
+        print(participant_id)
+        add_participant([event_id, participant_id])
+        print("PARTICIPANT ADDED")
+        details = get_details(event_id)
+        print(details)
+        print("POSTED UP")
+    
+    if request.method == 'GET':    
+        details = get_details(event_id)
+
+
+
+    html = render_template('eventdetails.html', details = details, event_id = event_id)
     response = make_response(html)
     return response
 
