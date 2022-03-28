@@ -25,5 +25,6 @@ class Events (Base):
 
 class EventsParticipants (Base):
 	__tablename__ = 'eventsparticipants'
-	event_id = Column(Integer, primary_key=True)
+	ep_id = Column(Integer, primary_key=True, autoincrement=True)
+	event_id = Column(Integer)
 	participant_id = Column(String)
