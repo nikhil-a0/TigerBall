@@ -60,7 +60,8 @@ def index():
 
 #-----------------------------------------------------------------------
 
-@app.route('/eventdetails/', methods=['GET', 'POST'])
+@app.route('/eventdetails', methods=['GET', 'POST'])
+
 def event_details():
     event_id = request.args.get('event_id')
     print("EVENT ID PRINTEED")
