@@ -7,7 +7,7 @@
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from database import search_event, create_event
+from db import search_event, create_event
 
 #-----------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ def index():
 
         print("INITARRAY")
         print(initializer_array)
-        event = create_event(initializer_array)
+        create_event(initializer_array)
         query_data = ['','','','','','','']
 
 
@@ -53,8 +53,7 @@ def index():
     print("EVENTS SIZE")
     print(len(events))
     print("Completed search")
-    html = render_template('index.html', 
-    events = events)
+    html = render_template('index.html', events = events)
     response = make_response(html)
     
     return response
