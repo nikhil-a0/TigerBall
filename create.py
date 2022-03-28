@@ -32,7 +32,7 @@ def main():
 
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
-                port=5432)
+                port=5432))
         print('ENGINE CREATED')
 
         Session = sessionmaker(bind=engine)
