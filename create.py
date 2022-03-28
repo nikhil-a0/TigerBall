@@ -43,11 +43,12 @@ def main():
 
         #---------------------------------------------------------------
 
-        event = Events(sport='soccer', location='poe', date='2022-03-21',
+        event = Events(sport='soccer', location='poe', event_date='2022-03-21',
             start_time='14:30:00', end_time='15:30:00', visibility='public',
             organizer='rdange')
         session.add(event)
         session.commit()
+        print('FAKE EVENT ADDED')
 
         #---------------------------------------------------------------
 
