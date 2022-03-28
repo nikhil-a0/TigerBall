@@ -28,10 +28,12 @@ def main():
         cursor = conn.cursor()
         cursor.execute("DROP DATABASE IF EXISTS tigerballdb")
         cursor.execute("CREATE DATABASE tigerballdb")
+        print('DATABASE CREATED')
 
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
                 port=5432)
+        print('ENGINE CREATED')
 
         Session = sessionmaker(bind=engine)
         session = Session()
