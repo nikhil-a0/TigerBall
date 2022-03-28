@@ -31,16 +31,39 @@
          <br>
          <strong>Visibility:</strong> {{details[0][5]}}
          <br>
-         <strong>Organizer:</strong> {{details[0][5]}}
+         <strong>Organizer:</strong> {{details[0][6]}}
          
          <hr>
 
          <h2>Participants</h2>
-         {% for deptnum in details[1][0]: %}
-            {{deptnum}}
+         {% for part in details[1]: %}
+            {{part}}
             <br>
          {% endfor %}
          
+         <hr>
+
+         <h2>Add Participant</h2>
+         <form action="eventdetails" method="post">
+            <table>
+               <tr>
+                  <td style = "text-align: right">
+                     NetID:
+                  </td>
+                  <td>
+                     <input type="text" name="participant_id" value="{{participant_id}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                  </td>
+                  <td>
+                     <input type="submit" value="Submit">
+                  </td>
+               </tr>
+            </table>
+         </form>
+
          <hr>
 
          <p>
