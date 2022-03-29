@@ -69,6 +69,9 @@ def index():
 @app.route('/eventdetails', methods=['GET', 'POST'])
 
 def event_details():
+
+    username = auth.authenticate()
+
     event_id = request.args.get('event_id')
     print("EVENT ID PRINTEED")
     print(event_id)
@@ -87,6 +90,6 @@ def event_details():
 
 
 
-    html = render_template('eventdetails.html', details = details, event_id = event_id)
+    html = render_template('eventdetails.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
