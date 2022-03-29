@@ -5,7 +5,7 @@
 
 from sys import argv, stderr, exit
 from psycopg2 import connect
-from event import Event
+#from event import Event
 
 def create_event(initializer_array):
     try:
@@ -135,7 +135,7 @@ def search_event(args_arr):
                         str(row[3]), str(row[4]),
                         str(row[5]), str(row[6]),
                         str(row[7])]
-                    eventList.append(Event(row_arr))
+                    # eventList.append(Event(row_arr))
                     row = cursor.fetchone()
                     
                 print("EVENT LIST SIZE")
