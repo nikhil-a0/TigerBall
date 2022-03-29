@@ -1,5 +1,3 @@
-
-
 #-----------------------------------------------------------------------
 # app.py
 #-----------------------------------------------------------------------
@@ -7,17 +5,25 @@
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
+from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, add_participant
 
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='.')
 
+app.secret_key = APP_SECRET_KEY
+
+import auth
+
 #-----------------------------------------------------------------------
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
+
+    username = auth.authenticate()
+
     if request.method == 'POST':
         initializer_array = [request.form.get('sport_c'), 
                             request.form.get('location_c'), 
@@ -53,7 +59,7 @@ def index():
     print("EVENTS SIZE")
     print(len(events))
     print("Completed search")
-    html = render_template('index.html', events = events)
+    html = render_template('index.html', events = events, username = username)
     response = make_response(html)
     
     return response
@@ -84,45 +90,3 @@ def event_details():
     html = render_template('eventdetails.html', details = details, event_id = event_id)
     response = make_response(html)
     return response
-
-
-
-# @app.route('/searchform', methods=['GET'])
-# def search_form():
-
-#     error_msg = request.args.get('error_msg')
-#     if error_msg is None:
-#         error_msg = ''
-
-#     prev_author = request.cookies.get('prev_author')
-#     if prev_author is None:
-#         prev_author = '(None)'
-
-#     html = render_template('searchform.html',
-#         ampm=get_ampm(),
-#         current_time=get_current_time(),
-#         error_msg=error_msg,
-#         prev_author=prev_author)
-#     response = make_response(html)
-#     return response
-
-# #-----------------------------------------------------------------------
-
-# @app.route('/searchresults', methods=['GET'])
-# def search_results():
-
-#     author = request.args.get('author')
-#     if (author is None) or (author.strip() == ''):
-#         error_msg = 'Please type an author name.'
-#         return redirect(url_for('search_form', error_msg=error_msg))
-
-#     books = search(author)  # Exception handling omitted
-
-#     html = render_template('searchresults.html',
-#         ampm=get_ampm(),
-#         current_time=get_current_time(),
-#         author=author,
-#         books=books)
-#     response = make_response(html)
-#     response.set_cookie('prev_author', author)
-#     return response
