@@ -25,6 +25,69 @@
       <body>
          <h1>TigerBall</h1>
          <p>{{username}}</p>
+
+         <h2>Pending Events</h2>
+         <table>
+            <tr>
+               <td>
+                  <strong>Event ID</strong>
+               </td>
+               <td>
+                  <strong>Sport</strong>
+               </td>
+               <td>
+                  <strong>Location</strong>
+               </td>
+               <td>
+                  <strong>Date</strong>
+               </td>
+               <td>
+                  <strong>Start Time</strong>
+               </td>
+               <td>
+                  <strong>End Time</strong>
+               </td>
+               <td>
+                  <strong>Visibility</strong>
+               </td>
+               <td>
+                  <strong>Organizer</strong>
+               </td>
+            </tr>
+
+            {% for pending_event in pending_events: %}
+               <tr>
+                  <td>
+                     <a href="register?event_id={{pending_event.get_event_id()}}">{{pending_event.get_event_id()}}</a>
+                  </td>
+                  <td>
+                     {{pending_event.get_sport()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_location()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_date()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_starttime()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_endtime()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_visibility()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_organizer()}}
+                  </td>
+               </tr>
+            {% endfor %}
+         </table>
+
+
+
+
          <h2>Create Event</h2>
          <form action="index" method="post">
             <table>

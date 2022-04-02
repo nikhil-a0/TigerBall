@@ -15,6 +15,7 @@ from event import Event
 
 #-----------------------------------------------------------------------
 
+# Create event and add organizer as accepted 
 def create_event(initializer_array):
 
     try:
@@ -54,7 +55,7 @@ def create_event(initializer_array):
             .one())
 
         addedParticipant = EventsParticipants(event_id =
-            ev.event_id, participant_id = ev.organizer)
+            ev.event_id, participant_id = ev.organizer, participant_status = "accepted")
         
         session.add(addedParticipant)
         session.commit()
@@ -99,6 +100,16 @@ def update_event(args_arr):
     except Exception as ex:
         print(ex, file=stderr)
         exit(1)
+
+# def delete_event(event_id):
+#     try:
+#         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+#             creator=lambda: psycopg2.connect(database='tigerballdb',
+#                 port=5432))  
+
+#     except Exception as ex:
+#         print(ex, file=stderr)
+#         exit(1)
 
 def search_event(args_arr):
     try:
@@ -151,6 +162,8 @@ def search_event(args_arr):
                 event.visibility, event.organizer])
             returned_events.append(return_event)
 
+        session.close()
+        engine.dispose()
 
         return returned_events
 
@@ -158,9 +171,39 @@ def search_event(args_arr):
         print(ex, file=stderr)
         exit(1)
 
+def search_pending_event(username):
+    try:
+        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        pendingEvents = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
+            filter(EventsParticipants.participant_status == "no response").\
+            filter(Events.organizer != username).all()
+
+        returnedPendingEvents = []
+        for event in pendingEvents:
+            return_event = Event([event.event_id, 
+                event.sport, event.location, event.event_date,
+                event.start_time, event.end_time,
+                event.visibility, event.organizer])
+            returnedPendingEvents.append(return_event)
+        
+        session.close()
+        engine.dispose()
+        
+        return returnedPendingEvents
+          
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
 def add_participant(args_arr):
     try:
-        print("WHY ARE WE HERE??")
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
                 port=5432))
@@ -169,7 +212,7 @@ def add_participant(args_arr):
         session = Session()
 
         newRow = EventsParticipants(event_id = args_arr[0], participant_id = 
-        	args_arr[1])
+        	args_arr[1], participant_status = "no response")
         session.add(newRow)
 
         session.commit()
@@ -180,6 +223,33 @@ def add_participant(args_arr):
     except Exception as ex:
         print(ex, file=stderr)
         exit(1)
+
+def update_participant(eventid, username, status):
+    try:
+        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+        print("username: " + str(username))
+        print("status: " + str(status))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+# ERROR HERE, "'list' object has no attribute 'participant_status'"
+        participant = (session.query(EventsParticipants).
+        	filter(EventsParticipants.event_id == eventid).\
+            filter(EventsParticipants.participant_id == username).all())
+
+        participant.participant_status = status
+        
+        session.commit()
+        session.close()
+        engine.dispose()
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
 
 # Returns [ [details] , [participants] ]
 def get_details(event_id):

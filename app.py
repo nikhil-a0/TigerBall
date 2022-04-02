@@ -6,7 +6,8 @@ from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 from keys import APP_SECRET_KEY
-from db import search_event, create_event, get_details, add_participant, update_event
+from db import search_event, create_event, get_details, add_participant,\
+    update_event, search_pending_event, update_participant
 
 #-----------------------------------------------------------------------
 
@@ -23,6 +24,10 @@ import auth
 def index():
 
     username = auth.authenticate()
+
+    # Pending Events
+
+    pending_events = search_pending_event(username)
 
     if request.method == 'POST':
         initializer_array = [request.form.get('sport_c'), 
@@ -45,16 +50,43 @@ def index():
                     request.args.get('end_time_f'),
                     request.args.get('visibility_f'),
                     request.args.get('organizer_id_f')]
-        for i in range(7):
+        for i in range(0, len(query_data)):
             if query_data[i] is None:
                 query_data[i] = ''
 
 
     events = search_event(query_data)
-    html = render_template('index.html', events = events, username = username)
+    html = render_template('index.html', username = username, pending_events = pending_events, events = events)
     response = make_response(html)
     
     return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/register', methods=['GET','POST'])
+def register():
+    username = auth.authenticate()
+
+    event_id = request.args.get('event_id')
+    details = get_details(event_id)
+
+    if request.method == 'POST':
+        if request.form.get('Accept') != None:
+            status = "accepted"
+        elif request.form.get('Decline') != None:
+            status = "declined"
+        elif request.form.get('Undecided') != None:
+            status = 'undecided'
+        
+        print("status: " + str(status))
+        update_participant(event_id, username, status)
+        # return redirect(url_for('index'))
+    print("before html stuff")
+    html = render_template('register.html', event_id = event_id, username = username, details = details)
+    response = make_response(html)
+
+    return response
+
 
 #-----------------------------------------------------------------------
 
@@ -88,7 +120,6 @@ def event_details():
 
         if changed == True:
             update_event(initializer_array)
-            print("Ran!")
     
     details = get_details(event_id)
     html = render_template('eventdetails.html', details = details, event_id = event_id, username = username)

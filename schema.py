@@ -28,3 +28,10 @@ class EventsParticipants (Base):
 	ep_id = Column(Integer, primary_key=True, autoincrement=True)
 	event_id = Column(Integer)
 	participant_id = Column(String)
+	participant_status = Column(String)
+
+# a participant can be one of
+# 1) invited (no response)
+# 2) accepted (yes)
+# 3) undecided (maybe)
+# 4) declined (no)
