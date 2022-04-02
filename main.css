@@ -1,0 +1,127 @@
+*, html {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: rgb(230, 176, 76);
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+header aside {
+    display: flex;
+    align-items: center;
+}
+
+header aside p:nth-of-type(1) {
+    padding-left: 5px;
+}
+
+header aside:nth-of-type(2) {
+    width: 15%;
+    padding: 10px;
+    background-color: gainsboro;
+    justify-content: space-between;
+    border-radius: 10px;
+}
+
+header aside:nth-of-type(2) i, .main-head aside i {
+    font-size: 25px;
+}
+
+main {
+    margin: 30px 20px;
+}
+
+.main-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 30px;
+}
+
+.main-head aside {
+    width: 15%;
+    padding: 10px;
+    background-color: gainsboro;
+    justify-content: space-between;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.main-content {
+    max-width: 900px;
+    width: 100%;
+    margin: 20px auto;
+    background-color: gainsboro;
+    border: 2px solid gray;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 10px 10px;
+}
+
+.main-content i {
+    font-size: 30px;
+}
+
+.main-content div {
+    padding-left: 10px;
+}
+
+.line {
+    border-bottom: 3px solid gray;
+    max-width: 30px;
+}
+
+.main-content div p {
+    padding: 4px 0;
+}
+
+.main-container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 30px auto 50px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 3px solid black;
+    border-radius: 10px;
+    background-color: rgb(230, 176, 76);
+    padding:3px 10px 10px 10px;
+    text-align: center;
+}
+
+.main-container span {
+    color: gray;
+}
+
+.main-container i {
+    font-size: 30px;
+}
+
+.main-container div {
+    display: flex;
+    align-items: center;
+}
+
+.line2 {
+    border-right: 3px solid black;
+    height: 40px;
+    padding: 0 20px;
+}
