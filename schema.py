@@ -22,6 +22,9 @@ class Events (Base):
 	end_time = Column(Time)
 	visibility = Column(String)
 	organizer = Column(String)
+	capacity = Column(Integer)
+	participant_count = Column(Integer)
+	skill_level = Column(Integer)
 
 class EventsParticipants (Base):
 	__tablename__ = 'eventsparticipants'
@@ -29,9 +32,3 @@ class EventsParticipants (Base):
 	event_id = Column(Integer)
 	participant_id = Column(String)
 	participant_status = Column(String)
-
-# a participant can be one of
-# 1) invited (no response)
-# 2) accepted (yes)
-# 3) undecided (maybe)
-# 4) declined (no)
