@@ -65,7 +65,7 @@ def index():
 
 @app.route('/register', methods=['GET','POST'])
 def register():
-    username = auth.authenticate()
+    username = auth.authenticate().strip()
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -80,8 +80,8 @@ def register():
         
         print("status: " + str(status))
         update_participant(event_id, username, status)
-        # return redirect(url_for('index'))
-    print("before html stuff")
+        return redirect(url_for('index'))
+
     html = render_template('register.html', event_id = event_id, username = username, details = details)
     response = make_response(html)
 

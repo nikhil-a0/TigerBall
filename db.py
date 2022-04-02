@@ -229,7 +229,8 @@ def update_participant(eventid, username, status):
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
                 port=5432))
-        print("username: " + str(username))
+        print("eventid: " + str(eventid))
+        print("username:---" + str(username) + "---")
         print("status: " + str(status))
 
         Session = sessionmaker(bind=engine)
@@ -237,8 +238,8 @@ def update_participant(eventid, username, status):
 
 # ERROR HERE, "'list' object has no attribute 'participant_status'"
         participant = (session.query(EventsParticipants).
-        	filter(EventsParticipants.event_id == eventid).\
-            filter(EventsParticipants.participant_id == username).all())
+        	filter(EventsParticipants.event_id == eventid).
+            filter(EventsParticipants.participant_id == username).one())
 
         participant.participant_status = status
         
