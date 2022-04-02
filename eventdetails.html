@@ -6,6 +6,9 @@
    {% if error_msg|length > 0 %}
       <body>
          <h1>Event Details</h1>
+         <h1>
+            id: {str(event_id)}
+         </h1>
          <p>
             {{error_msg}}
          </p>
@@ -17,6 +20,82 @@
       <body>
          <h1>Event Details</h1>
          <hr>
+
+         <form action="?event_id={{event_id}}" method="post">
+            <table>
+               <tr>
+                  <td style = "text-align: right">
+                     Sport:
+                  </td>
+                  <td>  
+                     <select id="sport_c" name="sport_c">
+                        <option value="basketball">Basketball</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="spikeball">Spikeball</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Location:
+                  </td>
+                  <td>
+                     <input type="text" name="location_c" value="{{details[0][1]}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Date:
+                  </td>
+                  <td>
+                     <input type="date" name="date_c" value="{{details[0][2]}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Start Time:
+                  </td>
+                  <td>
+                     <input type="time" name="start_time_c" value="{{details[0][3]}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     End Time:
+                  </td>
+                  <td>
+                     <input type="time" name="end_time_c" value="{{details[0][4]}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Visibility:
+                  </td>
+                  <td>
+                     <select id="visibility_c" name="visibility_c">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Organizer:
+                  </td>
+                  <td>
+                     <input type="text" name="organizer_id_c" value="{{details[0][6]}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                  </td>
+                  <td>
+                     <input type="submit" value="Submit">
+                  </td>
+               </tr>
+            </table>
+         </form>
+
 
          <h2>Event ID {{eventid}}</h2>
          <strong>Sport:</strong> {{details[0][0]}}
@@ -44,7 +123,7 @@
          <hr>
 
          <h2>Add Participant</h2>
-         <form action="?event_id={{event_id}}" method="post">
+         <form action="?event_id={{event_id}}" method="post" name="updateparticipant">
             <table>
                <tr>
                   <td style = "text-align: right">

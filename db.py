@@ -33,9 +33,7 @@ def create_event(initializer_array):
                                            visibility=initializer_array[5],
                                            organizer=initializer_array[6])
 
-        print("CREATED NEW EVENT TO ADD")
         session.add(addedEvent)
-        print("ADDED EVENT TO SESSION")
 
         # statement = Events.insert().values(sport=initializer_array[0],
         #                                    location=initializer_array[1],
@@ -61,16 +59,42 @@ def create_event(initializer_array):
         session.add(addedParticipant)
         session.commit()
         
-        #engine.execute(statement)
 
         session.close()
         engine.dispose()
-        # print("DISPOSED")
 
-        # event = Event(initializer_array)
-        # print("EVENT TO RETURN")
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
 
-        # return event
+def update_event(args_arr):
+    try:
+        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        # pass in username
+
+
+        ev = (session.query(Events)
+            .filter(Events.event_id == args_arr[0])
+            .one())
+        ev.sport = args_arr[1]
+        ev.location = args_arr[2]
+        ev.event_date = args_arr[3]
+        ev.start_time = args_arr[4]
+        ev.end_time = args_arr[5]
+        ev.visibility = args_arr[6]
+        ev.organizer = args_arr[7]
+        
+        session.commit()
+        
+
+        session.close()
+        engine.dispose()
 
     except Exception as ex:
         print(ex, file=stderr)
@@ -100,11 +124,11 @@ def search_event(args_arr):
 
         # conditional start_time
         if args_arr[3]:
-            all_filters.append(Events.start_time == str(args_arr[3]))
+            all_filters.append(Events.start_time >= str(args_arr[3]))
         
         # conditional end_time
         if args_arr[4]:
-            all_filters.append(Events.end_time == str(args_arr[4]))
+            all_filters.append(Events.end_time <= str(args_arr[4]))
 
         # conditional visibility
         if args_arr[5]:
@@ -136,6 +160,7 @@ def search_event(args_arr):
 
 def add_participant(args_arr):
     try:
+        print("WHY ARE WE HERE??")
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
                 port=5432))
@@ -156,6 +181,7 @@ def add_participant(args_arr):
         print(ex, file=stderr)
         exit(1)
 
+# Returns [ [details] , [participants] ]
 def get_details(event_id):
     try:
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',

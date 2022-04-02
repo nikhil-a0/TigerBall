@@ -6,7 +6,7 @@ from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 from keys import APP_SECRET_KEY
-from db import search_event, create_event, get_details, add_participant
+from db import search_event, create_event, get_details, add_participant, update_event
 
 #-----------------------------------------------------------------------
 
@@ -33,8 +33,6 @@ def index():
                             request.form.get('visibility_c'),
                             request.form.get('organizer_id_c')]
 
-        print("INITARRAY")
-        print(initializer_array)
         create_event(initializer_array)
         query_data = ['','','','','','','']
 
@@ -50,15 +48,9 @@ def index():
         for i in range(7):
             if query_data[i] is None:
                 query_data[i] = ''
-        print("QUERYDATA")
-        print(query_data)
 
 
-    print("Arrived before search")
     events = search_event(query_data)
-    print("EVENTS SIZE")
-    print(len(events))
-    print("Completed search")
     html = render_template('index.html', events = events, username = username)
     response = make_response(html)
     
@@ -73,23 +65,32 @@ def event_details():
     username = auth.authenticate()
 
     event_id = request.args.get('event_id')
-    print("EVENT ID PRINTEED")
-    print(event_id)
-    
+    details = get_details(event_id)
+
     if request.method == 'POST':
+            # update 1 participant if added
         participant_id = request.form.get('participant_id')
-        print(participant_id)
-        add_participant([event_id, participant_id])
-        print("PARTICIPANT ADDED")
-        details = get_details(event_id)
-        print(details)
-        print("POSTED UP")
+        if participant_id != None: 
+            add_participant([event_id, participant_id])
+
+        initializer_array = [event_id,
+                            request.form.get('sport_c'), 
+                            request.form.get('location_c'), 
+                            request.form.get('date_c'),
+                            request.form.get('start_time_c'),
+                            request.form.get('end_time_c'),
+                            request.form.get('visibility_c'),
+                            request.form.get('organizer_id_c')]
+        changed = False
+        for x in range(1, len(initializer_array)):
+            if initializer_array[x] != None:
+                changed = True
+
+        if changed == True:
+            update_event(initializer_array)
+            print("Ran!")
     
-    if request.method == 'GET':    
-        details = get_details(event_id)
-
-
-
+    details = get_details(event_id)
     html = render_template('eventdetails.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
