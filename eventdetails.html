@@ -40,7 +40,7 @@
                      Location:
                   </td>
                   <td>
-                     <input type="text" name="location_c" value="{{details[0][1]}}">
+                     <input type="text" name="location_c" value="{{details[0].get_location()}}">
                   </td>
                </tr>
                <tr>
@@ -48,7 +48,7 @@
                      Date:
                   </td>
                   <td>
-                     <input type="date" name="date_c" value="{{details[0][2]}}">
+                     <input type="date" name="date_c" value="{{details[0].get_date()}}">
                   </td>
                </tr>
                <tr>
@@ -56,7 +56,7 @@
                      Start Time:
                   </td>
                   <td>
-                     <input type="time" name="start_time_c" value="{{details[0][3]}}">
+                     <input type="time" name="start_time_c" value="{{details[0].get_starttime()}}">
                   </td>
                </tr>
                <tr>
@@ -64,7 +64,7 @@
                      End Time:
                   </td>
                   <td>
-                     <input type="time" name="end_time_c" value="{{details[0][4]}}">
+                     <input type="time" name="end_time_c" value="{{details[0].get_endtime()}}">
                   </td>
                </tr>
                <tr>
@@ -83,7 +83,7 @@
                      Organizer:
                   </td>
                   <td>
-                     <input type="text" name="organizer_id_c" value="{{details[0][6]}}">
+                     <input type="text" name="organizer_id_c" value="{{details[0].get_organizer()}}">
                   </td>
                </tr>
                <tr>
@@ -98,27 +98,43 @@
 
 
          <h2>Event ID {{eventid}}</h2>
-         <strong>Sport:</strong> {{details[0][0]}}
+         <strong>Sport:</strong> {{details[0].get_sport()}}
          <br>
-         <strong>Location:</strong> {{details[0][1]}}
+         <strong>Location:</strong> {{details[0].get_location()}}
          <br>
-         <strong>Date:</strong> {{details[0][2]}}
+         <strong>Date:</strong> {{details[0].get_date()}}
          <br>
-         <strong>Start Time:</strong> {{details[0][3]}}
+         <strong>Start Time:</strong> {{details[0].get_starttime()}}
          <br>
-         <strong>End Time:</strong> {{details[0][4]}}
+         <strong>End Time:</strong> {{details[0].get_endtime()}}
          <br>
-         <strong>Visibility:</strong> {{details[0][5]}}
+         <strong>Visibility:</strong> {{details[0].get_visibility()}}
          <br>
-         <strong>Organizer:</strong> {{details[0][6]}}
+         <strong>Organizer:</strong> {{details[0].get_organizer()}}
          
          <hr>
 
          <h2>Participants</h2>
+
+         <h3>Accepted:</h3>
          {% for part in details[1]: %}
             {{part}}
             <br>
          {% endfor %}
+         
+         <h3>Declined:</h3>
+         {% for part in details[2]: %}
+            {{part}}
+            <br>
+         {% endfor %}
+
+         <h3>Undecided:</h3>
+         {% for part in details[3]: %}
+            {{part}}
+            <br>
+         {% endfor %}
+
+
          
          <hr>
 

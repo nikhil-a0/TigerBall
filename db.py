@@ -32,16 +32,12 @@ def create_event(initializer_array):
                                            start_time=initializer_array[3],
                                            end_time=initializer_array[4],
                                            visibility=initializer_array[5],
-                                           organizer=initializer_array[6])
+                                           organizer=initializer_array[6],
+                                           capacity=initializer_array[7],
+                                           participant_count=1,
+                                           skill_level=initializer_array[8])
 
         session.add(addedEvent)
-
-        # statement = Events.insert().values(sport=initializer_array[0],
-        #                                    location=initializer_array[1],
-        #                                    event_date=initializer_array[2],
-        #                                    start_time=initializer_array[3],
-        #                                    end_time=initializer_array[4],
-        #                                    visibility=initializer_array[5])
 
 
         ev = (session.query(Events)
@@ -51,7 +47,10 @@ def create_event(initializer_array):
                     Events.start_time == addedEvent.start_time,
                     Events.end_time == addedEvent.end_time,
                     Events.visibility == addedEvent.visibility,
-                    Events.organizer == Events.organizer)
+                    Events.organizer == addedEvent.organizer,
+                    Events.capacity == addedEvent.capacity,
+                    Events.participant_count == 1,
+                    Events.skill_level == addedEvent.skill_level)
             .one())
 
         addedParticipant = EventsParticipants(event_id =
@@ -127,7 +126,7 @@ def search_event(args_arr):
         
         # conditional location
         if args_arr[1]:
-            all_filters.append(Events.location == str(args_arr[1]))
+            all_filters.append(Events.skill_level == str(args_arr[1]))
         
         # conditional event_date
         if args_arr[2]:
@@ -141,15 +140,6 @@ def search_event(args_arr):
         if args_arr[4]:
             all_filters.append(Events.end_time <= str(args_arr[4]))
 
-        # conditional visibility
-        if args_arr[5]:
-            all_filters.append(Events.visibility == str(args_arr[5]))
-        
-        # conditional organizer
-        if args_arr[6]:
-            all_filters.append(Events.organizer == str(args_arr[6]))
-
-
         myevents = (session.query(Events)
             .filter(*all_filters)
             .all())
@@ -159,7 +149,8 @@ def search_event(args_arr):
             return_event = Event([event.event_id, 
                 event.sport, event.location, event.event_date,
                 event.start_time, event.end_time,
-                event.visibility, event.organizer])
+                event.visibility, event.organizer, event.capacity,
+                event.participant_count, event.skill_level])
             returned_events.append(return_event)
 
         session.close()
@@ -180,9 +171,9 @@ def search_pending_event(username):
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        pendingEvents = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
-            filter(EventsParticipants.participant_status == "no response").\
-            filter(Events.organizer != username).all()
+        pendingEvents = (session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).
+            filter(EventsParticipants.participant_status == "no response").
+            filter(Events.organizer != username).all())
 
         returnedPendingEvents = []
         for event in pendingEvents:
@@ -270,16 +261,42 @@ def get_details(event_id):
         # search for event in events and get the details, add them to array
         ev = (session.query(Events).
         	filter(Events.event_id == event_id).one())
-        details.append([ev.sport, ev.location, ev.event_date,
-        	ev.start_time, ev.end_time, ev.visibility, ev.organizer])
 
-        # find all participants in eventsparticipants
-        evps = (session.query(EventsParticipants).
-        	filter(EventsParticipants.event_id == event_id).all())
-        parts = []
-        for evp in evps:
-        	parts.append(evp.participant_id)
-        details.append(parts)
+        details.append(Event([ev.event_id, ev.sport, ev.location, ev.event_date,
+        	ev.start_time, ev.end_time, ev.visibility, ev.organizer,
+            ev.capacity, ev.participant_count, ev.skill_level]))
+  
+
+        # find accepted participants in eventsparticipants
+        accepted=[]
+        acceptedEventsQuery = (session.query(EventsParticipants).
+        	filter(EventsParticipants.event_id == event_id)
+            .filter(EventsParticipants.participant_status == 'accepted')
+            .all())
+        for event in acceptedEventsQuery:
+        	accepted.append(event.participant_id)
+
+        declined=[]
+        declinedEventsQuery = (session.query(EventsParticipants).
+        	filter(EventsParticipants.event_id == event_id)
+            .filter(EventsParticipants.participant_status == 'declined')
+            .all())  
+        for event in declinedEventsQuery:
+        	declined.append(event.participant_id)
+
+        undecided=[]
+        undecidedEventsQuery = (session.query(EventsParticipants).
+        	filter(EventsParticipants.event_id == event_id)
+            .filter(EventsParticipants.participant_status == 'undecided')
+            .all())  
+        for event in undecidedEventsQuery:
+        	undecided.append(event.participant_id)
+
+        details.append(accepted)
+        details.append(declined)
+        details.append(undecided)
+
+        print(details)
 
         session.commit()
 

@@ -23,7 +23,7 @@ import auth
 @app.route('/index', methods=['GET', 'POST'])
 def index():
 
-    username = auth.authenticate()
+    username = auth.authenticate().strip()
 
     # Pending Events
 
@@ -36,20 +36,21 @@ def index():
                             request.form.get('start_time_c'),
                             request.form.get('end_time_c'),
                             request.form.get('visibility_c'),
-                            request.form.get('organizer_id_c')]
+                            username,
+                            request.form.get('capacity_c'),
+                            request.form.get('skill_level_c')]
 
         create_event(initializer_array)
         query_data = ['','','','','','','']
 
 
     if request.method == 'GET':
-        query_data = [request.args.get('sport_f'), 
-                    request.args.get('location_f'), 
+        query_data = [request.args.get('sport_f'),
+                    request.args.get('skill_level_f'),
+                    request.args.get('capacity_f'),
                     request.args.get('date_f'),
                     request.args.get('start_time_f'),
-                    request.args.get('end_time_f'),
-                    request.args.get('visibility_f'),
-                    request.args.get('organizer_id_f')]
+                    request.args.get('end_time_f')]
         for i in range(0, len(query_data)):
             if query_data[i] is None:
                 query_data[i] = ''

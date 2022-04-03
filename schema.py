@@ -24,7 +24,7 @@ class Events (Base):
 	organizer = Column(String)
 	capacity = Column(Integer)
 	participant_count = Column(Integer)
-	skill_level = Column(Integer)
+	skill_level = Column(String)
 
 class EventsParticipants (Base):
 	__tablename__ = 'eventsparticipants'
