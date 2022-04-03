@@ -16,6 +16,8 @@ app = Flask(__name__, template_folder='.')
 
 app.secret_key = APP_SECRET_KEY
 
+USERNAME_ = True
+
 import auth
 
 #-----------------------------------------------------------------------
@@ -24,8 +26,10 @@ import auth
 @app.route('/index', methods=['GET', 'POST'])
 def index():
 
-    username = auth.authenticate().strip()
-    # username = 'bot'
+    if USERNAME_ == True:
+        username = auth.authenticate().strip()
+    else:
+        username = 'bot'
 
     # Pending Events
 
@@ -68,7 +72,11 @@ def index():
 
 @app.route('/register', methods=['GET','POST'])
 def register():
-    username = auth.authenticate().strip()
+
+    if USERNAME_ == True:
+        username = auth.authenticate().strip()
+    else:
+        username = 'bot'
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -97,7 +105,10 @@ def register():
 
 def event_details():
 
-    username = auth.authenticate()
+    if USERNAME_ == True:
+        username = auth.authenticate().strip()
+    else:
+        username = 'bot'
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -134,9 +145,11 @@ def event_details():
 @app.route('/myevents', methods=['GET', 'POST'])
 
 def my_events():
-    print("INTO MY EVENTS")
-    username = auth.authenticate().strip()
-    print("GOT USERNAME")
+    if USERNAME_ == True:
+        username = auth.authenticate().strip()
+    else:
+        username = 'bot'
+
 
     status = 'not checked'
     if request.method == 'GET':
@@ -170,7 +183,10 @@ def my_events():
 
 def event_update():
 
-    username = auth.authenticate()
+    if USERNAME_ == True:
+        username = auth.authenticate().strip()
+    else:
+        username = 'bot'
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
