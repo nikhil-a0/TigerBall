@@ -21,128 +21,48 @@
          <h1>Event Details</h1>
          <hr>
 
-         <form action="?event_id={{event_id}}" method="post">
-            <table>
-               <tr>
-                  <td style = "text-align: right">
-                     Sport:
-                  </td>
-                  <td>  
-                     <select id="sport_c" name="sport_c">
-                        <option value="basketball">Basketball</option>
-                        <option value="soccer">Soccer</option>
-                        <option value="spikeball">Spikeball</option>
-                     </select>
-                  </td>
-               </tr>
-               <tr>
-                  <td style = "text-align: right">
-                     Location:
-                  </td>
-                  <td>
-                     <input type="text" name="location_c" value="{{details[0][1]}}">
-                  </td>
-               </tr>
-               <tr>
-                  <td style = "text-align: right">
-                     Date:
-                  </td>
-                  <td>
-                     <input type="date" name="date_c" value="{{details[0][2]}}">
-                  </td>
-               </tr>
-               <tr>
-                  <td style = "text-align: right">
-                     Start Time:
-                  </td>
-                  <td>
-                     <input type="time" name="start_time_c" value="{{details[0][3]}}">
-                  </td>
-               </tr>
-               <tr>
-                  <td style = "text-align: right">
-                     End Time:
-                  </td>
-                  <td>
-                     <input type="time" name="end_time_c" value="{{details[0][4]}}">
-                  </td>
-               </tr>
-               <tr>
-                  <td style = "text-align: right">
-                     Visibility:
-                  </td>
-                  <td>
-                     <select id="visibility_c" name="visibility_c">
-                        <option value="public">Public</option>
-                        <option value="private">Private</option>
-                     </select>
-                  </td>
-               </tr>
-               <tr>
-                  <td style = "text-align: right">
-                     Organizer:
-                  </td>
-                  <td>
-                     <input type="text" name="organizer_id_c" value="{{details[0][6]}}">
-                  </td>
-               </tr>
-               <tr>
-                  <td>
-                  </td>
-                  <td>
-                     <input type="submit" value="Submit">
-                  </td>
-               </tr>
-            </table>
-         </form>
-
-
          <h2>Event ID {{eventid}}</h2>
-         <strong>Sport:</strong> {{details[0][0]}}
+         <strong>Sport:</strong> {{details[0].get_sport()}}
          <br>
-         <strong>Location:</strong> {{details[0][1]}}
+         <strong>Location:</strong> {{details[0].get_location()}}
          <br>
-         <strong>Date:</strong> {{details[0][2]}}
+         <strong>Date:</strong> {{details[0].get_date()}}
          <br>
-         <strong>Start Time:</strong> {{details[0][3]}}
+         <strong>Start Time:</strong> {{details[0].get_starttime()}}
          <br>
-         <strong>End Time:</strong> {{details[0][4]}}
+         <strong>End Time:</strong> {{details[0].get_endtime()}}
          <br>
-         <strong>Visibility:</strong> {{details[0][5]}}
+         <strong>Visibility:</strong> {{details[0].get_visibility()}}
          <br>
-         <strong>Organizer:</strong> {{details[0][6]}}
+         <strong>Organizer:</strong> {{details[0].get_organizer()}}
+         <br>
+         <strong>Capacity Filled:</strong> {{details[0].get_participant_count()}}/{{details[0].get_capacity()}}
+         <br>
+         <strong>Skill Level:</strong> {{details[0].get_skill_level()}}
          
          <hr>
 
          <h2>Participants</h2>
+
+         <h3>Accepted:</h3>
          {% for part in details[1]: %}
             {{part}}
             <br>
          {% endfor %}
          
-         <hr>
+         <h3>Declined:</h3>
+         {% for part in details[2]: %}
+            {{part}}
+            <br>
+         {% endfor %}
 
-         <h2>Add Participant</h2>
-         <form action="?event_id={{event_id}}" method="post" name="updateparticipant">
-            <table>
-               <tr>
-                  <td style = "text-align: right">
-                     NetID:
-                  </td>
-                  <td>
-                     <input type="text" name="participant_id" value="{{participant_id}}">
-                  </td>
-               </tr>
-               <tr>
-                  <td>
-                  </td>
-                  <td>
-                     <input type="submit" value="Submit">
-                  </td>
-               </tr>
-            </table>
-         </form>
+         <h3>Undecided:</h3>
+         {% for part in details[3]: %}
+            {{part}}
+            <br>
+         {% endfor %}
 
+   
          <hr>
 
          <p>

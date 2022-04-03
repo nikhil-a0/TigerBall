@@ -148,12 +148,26 @@
                </tr>
                <tr>
                   <td style = "text-align: right">
-                     Organizer:
+                     Capacity Limit:
                   </td>
                   <td>
-                     <input type="text" name="organizer_id_c" value="{{organizer_id_c}}">
+                     <input type="number" name="capacity_c" value="{{capacity_c}}">
                   </td>
                </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Skill Level
+                  </td>
+                  <td>
+                     <select id="skill_level_c" name="skill_level_c">
+                        <option value="no preference">No Preference</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                     </select>
+                  </td>
+               </tr>
+
                <tr>
                   <td>
                   </td>
@@ -185,10 +199,18 @@
                </tr>
                <tr>
                   <td style = "text-align: right">
-                     Location:
+                     Skill Level:
                   </td>
                   <td>
-                     <input type="text" name="location_f" value="{{location_f}}">
+                     <input type="text" name="skill_level_f" value="{{skill_level_f}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Capacity &#8804; 
+                  </td>
+                  <td>
+                     <input type="number" name="capacity_f" value="{{capacity_f}}">
                   </td>
                </tr>
                <tr>
@@ -216,26 +238,6 @@
                   </td>
                </tr>
                <tr>
-                  <td style = "text-align: right">
-                     Visibility:
-                  </td>
-                  <td>
-                     <select id="visibility_f" name="visibility_f">
-                        <option value=""></option>
-                        <option value="public">Public</option>
-                        <option value="private">Private</option>
-                     </select>
-                  </td>
-               </tr>
-               <tr>
-                  <td style = "text-align: right">
-                     Organizer:
-                  </td>
-                  <td>
-                     <input type="text" name="organizer_id_f" value="{{organizer_id_f}}">
-                  </td>
-               </tr>
-               <tr>
                   <td>
                   </td>
                   <td>
@@ -253,10 +255,10 @@
                   <strong>Event ID</strong>
                </td>
                <td>
-                  <strong>Sport</strong>
+                  <strong>Game Type</strong>
                </td>
                <td>
-                  <strong>Location</strong>
+                  <strong>Attendance</strong>
                </td>
                <td>
                   <strong>Date</strong>
@@ -267,24 +269,26 @@
                <td>
                   <strong>End Time</strong>
                </td>
-               <td>
-                  <strong>Visibility</strong>
-               </td>
-               <td>
-                  <strong>Organizer</strong>
-               </td>
             </tr>
 
             {% for event in events: %}
                <tr>
                   <td>
-                     <a href="eventdetails?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                     {% if event.get_organizer() == username %}
+                        <a href="eventupdate?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                     {% else %}
+                        <a href="eventdetails?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                     
+                     {% endif %}
+                     
+                     
+                     
                   </td>
                   <td>
-                     {{event.get_sport()}}
+                     {{event.get_visibility()}} {{event.get_sport()}} game
                   </td>
                   <td>
-                     {{event.get_location()}}
+                     {{event.get_participant_count()}}/{{event.get_capacity()}} People
                   </td>
                   <td>
                      {{event.get_date()}}
@@ -294,12 +298,6 @@
                   </td>
                   <td>
                      {{event.get_endtime()}}
-                  </td>
-                  <td>
-                     {{event.get_visibility()}}
-                  </td>
-                  <td>
-                     {{event.get_organizer()}}
                   </td>
                </tr>
             {% endfor %}

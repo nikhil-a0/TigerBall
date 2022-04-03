@@ -13,6 +13,9 @@ class Event:
         self._endtime = initializer_array[5]
         self._visibility = initializer_array[6]
         self._organizer = initializer_array[7]
+        self._capacity = initializer_array[8]
+        self._participant_count = initializer_array[9]
+        self._skill_level = initializer_array[10]
         
     def get_event_id(self):
         return self._event_id
@@ -37,3 +40,12 @@ class Event:
 
     def get_organizer(self):
         return self._organizer
+
+    def get_capacity(self):
+        return self._capacity
+    
+    def get_participant_count(self):
+        return self._participant_count
+    
+    def get_skill_level(self):
+        return self._skill_level
