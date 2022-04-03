@@ -227,7 +227,6 @@ def update_participant(eventid, username, status):
         Session = sessionmaker(bind=engine)
         session = Session()
 
-# ERROR HERE, "'list' object has no attribute 'participant_status'"
         participant = (session.query(EventsParticipants).
         	filter(EventsParticipants.event_id == eventid).
             filter(EventsParticipants.participant_id == username).one())
@@ -304,6 +303,99 @@ def get_details(event_id):
         engine.dispose()   
 
         return details
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
+def get_yes_events(username):
+    try:
+        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
+            filter(EventsParticipants.participant_status == "accepted").\
+            filter(EventsParticipants.participant_id == username).all()
+
+        returnEvents = []
+        for event in events:
+            return_event = Event([event.event_id, 
+                event.sport, event.location, event.event_date,
+                event.start_time, event.end_time,
+                event.visibility, event.organizer])
+            returnEvents.append(return_event)
+        
+        session.close()
+        engine.dispose()
+        
+        return returnEvents
+          
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
+def get_no_events(username):
+    try:
+        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
+            filter(EventsParticipants.participant_status == "declined").\
+            filter(EventsParticipants.participant_id == username).all()
+
+        returnEvents = []
+        for event in events:
+            return_event = Event([event.event_id, 
+                event.sport, event.location, event.event_date,
+                event.start_time, event.end_time,
+                event.visibility, event.organizer])
+            returnEvents.append(return_event)
+        
+        session.close()
+        engine.dispose()
+        
+        return returnEvents
+          
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
+def get_maybe_events(username):
+    try:
+        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
+            filter(EventsParticipants.participant_status == "undecided").\
+            filter(EventsParticipants.participant_id == username).all()
+
+        returnEvents = []
+        for event in events:
+            return_event = Event([event.event_id, 
+                event.sport, event.location, event.event_date,
+                event.start_time, event.end_time,
+                event.visibility, event.organizer])
+            returnEvents.append(return_event)
+        
+        session.close()
+        engine.dispose()
+        
+        return returnEvents
+          
 
     except Exception as ex:
         print(ex, file=stderr)
