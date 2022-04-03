@@ -87,7 +87,13 @@
             {% for event in events: %}
                <tr>
                   <td>
+                     {% if event.get_organizer() == username %}
+                     <a href="eventupdate?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                  {% else %}
                      <a href="eventdetails?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                  
+                  {% endif %}
+
                   </td>
                   <td>
                      {{event.get_sport()}}

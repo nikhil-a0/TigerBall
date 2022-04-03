@@ -18,6 +18,23 @@
       </body>
    {% else %}
       <body>
+         <h2> Wanna go to {{details[0].get_organizer()}}'s event?</h2>
+         <form action="?event_id={{event_id}}" method="post">
+            <table>
+                <tr>
+                    <td>
+                        <input type="submit" name="Accept" value="Accept">
+                    </td>
+                    <td>
+                        <input type="submit" name="Decline" value="Decline">
+                    </td>
+                    <td>
+                        <input type="submit" name="Undecided" value="Undecided">
+                    </td>
+                </tr>
+            </table>
+          </form>
+
          <h1>Event Details</h1>
          <hr>
 
@@ -61,6 +78,13 @@
             {{part}}
             <br>
          {% endfor %}
+
+         <h3>No Response:</h3>
+         {% for part in details[4]: %}
+            {{part}}
+            <br>
+         {% endfor %}
+
 
    
          <hr>

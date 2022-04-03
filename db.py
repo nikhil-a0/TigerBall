@@ -139,6 +139,8 @@ def search_event(args_arr):
         # conditional end_time
         if args_arr[4]:
             all_filters.append(Events.end_time <= str(args_arr[4]))
+        
+        all_filters.append(Events.visibility == 'public')
 
         myevents = (session.query(Events)
             .filter(*all_filters)
@@ -180,7 +182,8 @@ def search_pending_event(username):
             return_event = Event([event.event_id, 
                 event.sport, event.location, event.event_date,
                 event.start_time, event.end_time,
-                event.visibility, event.organizer])
+                event.visibility, event.organizer, event.capacity,
+                event.participant_count, event.skill_level])
             returnedPendingEvents.append(return_event)
         
         session.close()
@@ -290,10 +293,19 @@ def get_details(event_id):
             .all())  
         for event in undecidedEventsQuery:
         	undecided.append(event.participant_id)
+        
+        noresponse=[]
+        noresponseEventsQuery = (session.query(EventsParticipants).
+        	filter(EventsParticipants.event_id == event_id)
+            .filter(EventsParticipants.participant_status == 'no response')
+            .all())  
+        for event in noresponseEventsQuery:
+        	noresponse.append(event.participant_id)
 
         details.append(accepted)
         details.append(declined)
         details.append(undecided)
+        details.append(noresponse)
 
         print(details)
 

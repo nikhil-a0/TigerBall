@@ -16,8 +16,7 @@ app = Flask(__name__, template_folder='.')
 
 app.secret_key = APP_SECRET_KEY
 
-USERNAME_ = True
-
+USERNAME_ = 'bot'
 import auth
 
 #-----------------------------------------------------------------------
@@ -25,16 +24,17 @@ import auth
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
+    print("index")
 
-    if USERNAME_ == True:
+    if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = 'bot'
+        username = USERNAME_
+
 
     # Pending Events
 
     pending_events = search_pending_event(username)
-
     if request.method == 'POST':
         initializer_array = [request.form.get('sport_c'), 
                             request.form.get('location_c'), 
@@ -49,7 +49,6 @@ def index():
         create_event(initializer_array)
         query_data = ['','','','','','','']
 
-
     if request.method == 'GET':
         query_data = [request.args.get('sport_f'),
                     request.args.get('skill_level_f'),
@@ -61,7 +60,7 @@ def index():
             if query_data[i] is None:
                 query_data[i] = ''
 
-
+    print("after get")
     events = search_event(query_data)
     html = render_template('index.html', username = username, pending_events = pending_events, events = events)
     response = make_response(html)
@@ -73,10 +72,10 @@ def index():
 @app.route('/register', methods=['GET','POST'])
 def register():
 
-    if USERNAME_ == True:
+    if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = 'bot'
+        username = USERNAME_
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -105,36 +104,26 @@ def register():
 
 def event_details():
 
-    if USERNAME_ == True:
+    if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = 'bot'
+        username = USERNAME_
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
 
     if request.method == 'POST':
             # update 1 participant if added
-        participant_id = request.form.get('participant_id')
-        if participant_id != None: 
-            add_participant([event_id, participant_id])
+        if request.form.get('Accept') != None:
+            status = "accepted"
+        elif request.form.get('Decline') != None:
+            status = "declined"
+        elif request.form.get('Undecided') != None:
+            status = 'undecided'
 
-        initializer_array = [event_id,
-                            request.form.get('sport_c'), 
-                            request.form.get('location_c'), 
-                            request.form.get('date_c'),
-                            request.form.get('start_time_c'),
-                            request.form.get('end_time_c'),
-                            request.form.get('visibility_c'),
-                            request.form.get('organizer_id_c')]
-        changed = False
-        for x in range(1, len(initializer_array)):
-            if initializer_array[x] != None:
-                changed = True
-
-        if changed == True:
-            update_event(initializer_array)
-    
+        update_participant(event_id, username, status)
+        return redirect(url_for('index'))
+  
     details = get_details(event_id)
     html = render_template('eventdetails.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
@@ -145,10 +134,10 @@ def event_details():
 @app.route('/myevents', methods=['GET', 'POST'])
 
 def my_events():
-    if USERNAME_ == True:
+    if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = 'bot'
+        username = USERNAME_
 
 
     status = 'not checked'
@@ -183,10 +172,10 @@ def my_events():
 
 def event_update():
 
-    if USERNAME_ == True:
+    if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = 'bot'
+        username = USERNAME_
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
