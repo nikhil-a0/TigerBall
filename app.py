@@ -36,7 +36,7 @@ def index():
                             request.form.get('start_time_c'),
                             request.form.get('end_time_c'),
                             request.form.get('visibility_c'),
-                            username,
+                            'bot',
                             request.form.get('capacity_c'),
                             request.form.get('skill_level_c')]
 
@@ -126,3 +126,40 @@ def event_details():
     html = render_template('eventdetails.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
+
+@app.route('/eventupdate', methods=['GET', 'POST'])
+
+def event_update():
+
+    username = auth.authenticate()
+
+    event_id = request.args.get('event_id')
+    details = get_details(event_id)
+
+    if request.method == 'POST':
+            # update 1 participant if added
+        participant_id = request.form.get('participant_id')
+        if participant_id != None: 
+            add_participant([event_id, participant_id])
+
+        initializer_array = [event_id,
+                            request.form.get('sport_c'), 
+                            request.form.get('location_c'), 
+                            request.form.get('date_c'),
+                            request.form.get('start_time_c'),
+                            request.form.get('end_time_c'),
+                            request.form.get('visibility_c'),
+                            request.form.get('organizer_id_c')]
+        changed = False
+        for x in range(1, len(initializer_array)):
+            if initializer_array[x] != None:
+                changed = True
+
+        if changed == True:
+            update_event(initializer_array)
+    
+    details = get_details(event_id)
+    html = render_template('eventupdate.html', details = details, event_id = event_id, username = username)
+    response = make_response(html)
+    return response
+
