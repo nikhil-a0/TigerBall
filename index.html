@@ -59,7 +59,7 @@
             {% for pending_event in pending_events: %}
                <tr>
                   <td>
-                     <a href="register?event_id={{pending_event.get_event_id()}}">{{pending_event.get_event_id()}}</a>
+                     <a href="eventdetails?event_id={{pending_event.get_event_id()}}">{{pending_event.get_event_id()}}</a>
                   </td>
                   <td>
                      {{pending_event.get_sport()}}
@@ -273,7 +273,7 @@
             </tr>
             
             <h2>open events</h2>
-            
+
             {% for event in events: %}
                <tr>
                   <td>

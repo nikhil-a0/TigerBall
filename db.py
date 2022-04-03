@@ -196,7 +196,7 @@ def search_pending_event(username):
         print(ex, file=stderr)
         exit(1)
 
-def add_participant(args_arr):
+def invite_participant(args_arr):
     try:
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
@@ -232,9 +232,16 @@ def update_participant(eventid, username, status):
 
         participant = (session.query(EventsParticipants).
         	filter(EventsParticipants.event_id == eventid).
-            filter(EventsParticipants.participant_id == username).one())
+            filter(EventsParticipants.participant_id == username).first())
 
-        participant.participant_status = status
+        if participant == None:
+            print("participant not found")
+            newRow = EventsParticipants(event_id = eventid, participant_id = 
+        	    username, participant_status = status)
+            session.add(newRow)
+
+        else:
+            participant.participant_status = status
         
         session.commit()
         session.close()

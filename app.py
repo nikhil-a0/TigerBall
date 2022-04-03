@@ -6,7 +6,7 @@ from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 from keys import APP_SECRET_KEY
-from db import search_event, create_event, get_details, add_participant,\
+from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant,\
     get_yes_events, get_maybe_events, get_no_events
 
@@ -16,7 +16,7 @@ app = Flask(__name__, template_folder='.')
 
 app.secret_key = APP_SECRET_KEY
 
-USERNAME_ = 'bot'
+USERNAME_ = 'normal'
 import auth
 
 #-----------------------------------------------------------------------
@@ -184,7 +184,7 @@ def event_update():
             # update 1 participant if added
         participant_id = request.form.get('participant_id')
         if participant_id != None: 
-            add_participant([event_id, participant_id])
+            invite_participant([event_id, participant_id])
 
         initializer_array = [event_id,
                             request.form.get('sport_c'), 
