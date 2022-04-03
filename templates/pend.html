@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/event.css" type="text/css">
+    <link rel="stylesheet" href="../pend.css" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <title>Document</title>
@@ -29,24 +29,84 @@
     </header>
 
     <main>
-        <strong>my events</strong><span>see all events you're organizing and have responded to</span>
+        <h2>pending invites</h2>
 
-        <div class="events">
+        <div class="main-content">
+            <i class="fas fa-basketball-ball"></i>
             <div>
-                <button type="button">Attending</button>
-                <i class="fa fa-check-square" aria-hidden="true"></i>
-            </div>
-
-            <div>
-                <button type="button">Unsure</button>
-                <i class="fa fa-question" aria-hidden="true"></i>
-            </div>
-
-            <div>
-                <button type="button">Not Attending</button>
-                <i class="fa fa-times" aria-hidden="true"></i>
+                <p>Private Basketball Game</p>
+                <div class="line"></div>
+                <p>3/6 People &#8901; 3/29 &#8901; 7:00 pm - 8:30 pm</p>
             </div>
         </div>
+
+        <div class="main-content">
+            <i class="fa fa-futbol-o" aria-hidden="true"></i>
+            <div>
+                <p>Public Soccer Game</p>
+                <div class="line"></div>
+                <p>5/10 People &#8901; 3/29 &#8901; 9:00 pm - 10:30 pm</p>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="main-inner">
+                <div>
+                    <label for="sports">Sport</label><br>
+                    <select name="sports" id="sports">
+                        <option value="soccer">Soccer</option>
+                        <option value="baseball">Baseball</option>
+                        <option value="basketball">Basketball</option>
+                        <option value="football">Football</option>
+                    </select>
+                </div>
+                <div class="line2"></div>
+            </div>
+
+                <div class="main-inner">
+                    <div>
+                        <label for="skill">Skill Level</label><br>
+                        <select name="skill" id="skill">
+                            <option value="begin">Beginner</option>
+                            <option value="advance">Advanced</option>
+                            <option value="intermediate">Intermediate</option>
+                        </select>
+                    </div>
+                <div class="line2"></div>
+            </div>
+
+            <div class="main-inner">
+                <div>
+                    <label for="date">Date:</label><br>
+                    <input type="date" id="date" name="date">
+                </div>
+                <div class="line2"></div>
+            </div>
+
+            <div class="main-inner">
+                <div>
+                    <label for="start">Availability (start)</label><br>
+                    <input type="time" id="start" name="start">
+                </div>
+                <div class="line2"></div>
+            </div>
+
+            <div class="main-inner">
+                <div>
+                    <label for="end">Availability (end)</label><br>
+                    <input type="time" id="end" name="end">
+                </div>
+                <div class="line2"></div>
+            </div>
+
+            <div class="main-inner">
+                <button type="submit" class="searchButton">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+               </button>
+            </div>
+        </div>
+
+        <h2>open events</h2>
 
         <div class="main-content">
             <i class="fas fa-basketball-ball"></i>
@@ -57,37 +117,31 @@
             </div>
         </div>
 
-        <div class="main-content" id="mainOrg">
-            <i class="fas fa-basketball-ball"></i>
-            <div>
-                <p>Public Basketball Game</p>
-                <div class="line"></div>
-                <p>5/10 People &#8901; 4/1 &#8901; 9:15 pm - 10:00 pm</p>
-            </div>
-            <p class="org">organizer</p>
-        </div>
-
         <div class="main-content">
             <i class="fas fa-basketball-ball"></i>
             <div>
-                <p>Private Football Game</p>
+                <p>Private Basketball Game</p>
                 <div class="line"></div>
-                <p>2/4 People &#8901; 4/6 &#8901; 7:15 pm - 08:30 pm</p>
+                <p>5/10 People &#8901; 4/1 &#8901; 9:15 pm - 10:00 pm</p>
             </div>
         </div>
     </main>
 
     <div class="box-container">
         <div class="box-header">
-            <h3>update event</h3>
+            <h3>register for event</h3>
             <i class="fa fa-times" aria-hidden="true"></i>
         </div>
 
         <form class="box-inner">
-            <section>
-                <p>reassign organizer</p>
-                <input type="text" name="org">
-            </section>
+            <div class="event-container">
+                <p>response:</p>
+                <div class="events">
+                    <button type="button">yes</button>   
+                    <button type="button">unsure</button>
+                    <button type="button">no</button>
+                </div>
+            </div>
             <section>
                 <div class="box-left">
                     <aside>
@@ -119,19 +173,12 @@
                     </aside>
 
                     <aside>
-                        <label>change capacity</label>
+                        <label>sign ups</label>
                         <input type="text" name="cap">
                     </aside>
                 </div>
             </section>
-            <section>
-                <label>add invities</label>
-                <input type="text" name="add">
-            </section>
-            <section>
                 <p>attendees</p>
-                <span>add netid seperated by one space</span>
-            </section>
             <section>
                 <label>yes</label>
                 <input type="text" name="yes">
@@ -160,10 +207,6 @@
                     <label for="pri">Private</label><br>
                 </p>
             </section>
-
-            <div class="box-button">
-                <button type="submit">Create</button>
-            </div>
         </form>
     </div>
 </body>

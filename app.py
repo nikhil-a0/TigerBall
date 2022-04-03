@@ -12,7 +12,7 @@ from db import search_event, create_event, get_details, invite_participant,\
 
 #-----------------------------------------------------------------------
 
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__, template_folder='templates')
 
 app.secret_key = APP_SECRET_KEY
 
