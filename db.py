@@ -326,7 +326,8 @@ def get_yes_events(username):
             return_event = Event([event.event_id, 
                 event.sport, event.location, event.event_date,
                 event.start_time, event.end_time,
-                event.visibility, event.organizer])
+                event.visibility, event.organizer, event.capacity,
+                event.participant_count, event.skill_level])
             returnEvents.append(return_event)
         
         session.close()
@@ -357,7 +358,8 @@ def get_no_events(username):
             return_event = Event([event.event_id, 
                 event.sport, event.location, event.event_date,
                 event.start_time, event.end_time,
-                event.visibility, event.organizer])
+                event.visibility, event.organizer, event.capacity,
+                event.participant_count, event.skill_level])
             returnEvents.append(return_event)
         
         session.close()
@@ -388,7 +390,8 @@ def get_maybe_events(username):
             return_event = Event([event.event_id, 
                 event.sport, event.location, event.event_date,
                 event.start_time, event.end_time,
-                event.visibility, event.organizer])
+                event.visibility, event.organizer, event.capacity,
+                event.participant_count, event.skill_level])
             returnEvents.append(return_event)
         
         session.close()

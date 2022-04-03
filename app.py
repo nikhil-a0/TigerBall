@@ -25,6 +25,7 @@ import auth
 def index():
 
     username = auth.authenticate().strip()
+    # username = 'bot'
 
     # Pending Events
 
@@ -37,7 +38,7 @@ def index():
                             request.form.get('start_time_c'),
                             request.form.get('end_time_c'),
                             request.form.get('visibility_c'),
-                            'bot',
+                            username,
                             request.form.get('capacity_c'),
                             request.form.get('skill_level_c')]
 
@@ -133,16 +134,21 @@ def event_details():
 @app.route('/myevents', methods=['GET', 'POST'])
 
 def my_events():
+    print("INTO MY EVENTS")
     username = auth.authenticate().strip()
+    print("GOT USERNAME")
 
     status = 'not checked'
     if request.method == 'GET':
+        print("ITO IF")
         status = request.args.get('status')
+        print("GOT GET STATUS")
     if status == None:
         status = 'attending'
 
     events = None
     if status == 'attending':
+        print("GETTING")
         events = get_yes_events(username)
     elif status == 'uncertain':
         events = get_maybe_events(username)
@@ -150,9 +156,12 @@ def my_events():
         events = get_no_events(username)
     else:
         print('NONE OF THE OPTIONS')
+    
+    print("PAST IF")
 
 
     html = render_template('myevents.html', status=status, username=username, events=events)
+    print("BEFORE MAKING RESPONSE")
     response = make_response(html)
     return response
 
