@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>My TigerBall Events</title>
+   </head>
+   {% if error_msg|length > 0 %}
+      <body>
+         <h1>My Events</h1>
+         <h1>
+            id: {str(event_id)}
+         </h1>
+         <p>
+            {{error_msg}}
+         </p>
+         <hr>
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         <hr>
+      </body>
+   {% else %}
+      <body>
+        <h1>My Events</h1>
+        <form action="myevents" method="get">
+            <table>
+               <tr>
+                  <td style = "text-align: right">
+                     Events that I am:
+                  </td>
+                  <td>  
+                     <select id="status" name="status">
+                        <option value=""></option>
+                        <option value="attending">attending</option>
+                        <option value="uncertain">uncertain about</option>
+                        <option value="not_attending">not attending</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                  </td>
+                  <td>
+                     <input type="submit" value="View">
+                  </td>
+               </tr>
+            </table>
+         </form>
+        <hr>
+
+        {% if status == 'attending' %}
+            <h2>Events that I ({{username}}) am attending:</h2>
+
+        {% elif status == 'uncertain' %}
+            <h2>Events that I ({{username}}) am uncertain about:</h2>
+
+        {% elif status == 'not_attending' %}
+            <h2>Events that I ({{username}}) am not attending:</h2>
+
+        {% endif %}
+
+        <table>
+            <tr>
+               <td>
+                  <strong>Event ID</strong>
+               </td>
+               <td>
+                  <strong>Sport</strong>
+               </td>
+               <td>
+                  <strong>Location</strong>
+               </td>
+               <td>
+                  <strong>Date</strong>
+               </td>
+               <td>
+                  <strong>Start Time</strong>
+               </td>
+               <td>
+                  <strong>End Time</strong>
+               </td>
+               <td>
+                  <strong>Visibility</strong>
+               </td>
+               <td>
+                  <strong>Organizer</strong>
+               </td>
+            </tr>
+
+            {% for event in events: %}
+               <tr>
+                  <td>
+                     <a href="eventdetails?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                  </td>
+                  <td>
+                     {{event.get_sport()}}
+                  </td>
+                  <td>
+                     {{event.get_location()}}
+                  </td>
+                  <td>
+                     {{event.get_date()}}
+                  </td>
+                  <td>
+                     {{event.get_starttime()}}
+                  </td>
+                  <td>
+                     {{event.get_endtime()}}
+                  </td>
+                  <td>
+                     {{event.get_visibility()}}
+                  </td>
+                  <td>
+                     {{event.get_organizer()}}
+                  </td>
+               </tr>
+            {% endfor %}
+         </table>
+
+        <hr>
+
+         <p>
+            Click here to go back to the <a href="/">homepage</a>.<br>
+         </p>
+
+         <hr>
+         
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         
+         <hr>
+      </body>
+   {% endif %}
+</html>

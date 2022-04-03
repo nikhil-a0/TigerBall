@@ -7,7 +7,8 @@ from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, add_participant,\
-    update_event, search_pending_event, update_participant
+    update_event, search_pending_event, update_participant,\
+    get_yes_events, get_maybe_events, get_no_events
 
 #-----------------------------------------------------------------------
 
@@ -125,3 +126,32 @@ def event_details():
     html = render_template('eventdetails.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/myevents', methods=['GET', 'POST'])
+
+def my_events():
+    username = auth.authenticate().strip()
+
+    status = 'not checked'
+    if request.method == 'GET':
+        status = request.args.get('status')
+    if status == None:
+        status = 'attending'
+
+    events = None
+    if status == 'attending':
+        events = get_yes_events(username)
+    elif status == 'uncertain':
+        events = get_maybe_events(username)
+    elif status == 'not_attending':
+        events = get_no_events(username)
+    else:
+        print('NONE OF THE OPTIONS')
+
+
+    html = render_template('myevents.html', status=status, username=username, events=events)
+    response = make_response(html)
+    return response
+
