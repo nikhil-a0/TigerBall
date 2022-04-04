@@ -180,7 +180,7 @@ def my_events():
     print("PAST IF")
 
 
-    html = render_template('myevents.html', status=status, username=username, events=events)
+    html = render_template('event.html', status=status, username=username, events=events)
     print("BEFORE MAKING RESPONSE")
     response = make_response(html)
     return response
