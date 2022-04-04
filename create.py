@@ -6,7 +6,6 @@
 #-----------------------------------------------------------------------
 
 from sys import argv, stderr, exit
-from sqlite3 import connect as sqlite_connect
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from schema import Base, Events, EventsParticipants
