@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <a href="index">
+            <aside>
+                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                <p>tigerball</p>
+            </aside>
+        </a>
+        
+
+        <section>
+            <aside>
+                <p>create event </p>
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </aside>
+            <aside>
+                <a href="index">homepage </a>
+                <i class="fa fa-home" aria-hidden="true"></i>
+            </aside>
+        </section>
+    </header>
+
+
+    <div class="box-container">
+        <div class="box-header">
+            <h3>register for {{details[0].get_organizer()}}'s {{details[0].get_visibility()}} event</h3>
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+
+        <form class="box-inner" action="?event_id={{event_id}}" method="post">
+            <div class="event-container">
+                <p>response:</p>
+                <div class="events">
+                    <input type="submit" name="Accept" value="Accept">
+                    <input type="submit" name="Decline" value="Decline">
+                    <input type="submit" name="Undecided" value="Undecided">
+                </div>
+            </div>
+
+            <section>
+                <div class="box-left">
+                    <aside>
+                        <label>sport</label>
+                        <p>{{details[0].get_sport()}}</p>
+                    </aside>
+
+                    <aside>
+                        <label>location</label>
+                        <p>{{details[0].get_location()}}</p>
+                    </aside>
+
+                    <aside>
+                        <label>Skill Level</label>
+                        <p>{{details[0].get_skill_level()}}</p>
+                    </aside>
+                </div>
+
+                <div class="box-right">
+                    <aside>
+                        <label>date</label>
+                        <p>{{details[0].get_date()}}</p>
+                    </aside>
+
+                    <aside>
+                        <label>Start & end time</label>
+                        <p>{{details[0].get_starttime()}} - {{details[0].get_endtime()}} </p>
+                    </aside>
+
+                    <aside>
+                        <label>sign ups</label>
+                        <p>{{details[0].get_participant_count()}}/{{details[0].get_capacity()}}</p>
+                    </aside>
+                </div>
+            </section>
+
+                <p>attendees</p>
+            <section>
+                <label>Attending</label>
+                <p>
+                    {% for part in details[1]: %}
+                        {{part}},
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <label>Undecided</label>
+                <p>
+                    {% for part in details[3]: %}
+                        {{part}},
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <label>Not Attending</label>
+                <p>
+                    {% for part in details[2]: %}
+                        {{part}},
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <label>No Response</label>
+                <p>
+                    {% for part in details[4]: %}
+                        {{part}},
+                    {% endfor %} 
+                </p>
+            </section>
+
+        </form>
+    </div>
+</body>
+</html>

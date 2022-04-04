@@ -182,6 +182,7 @@ def search_pending_event(username):
         session = Session()
 
         pendingEvents = (session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).
+            filter(EventsParticipants.participant_id == username).
             filter(EventsParticipants.participant_status == "no response").
             filter(Events.organizer != username).\
             order_by(Events.event_date).\
@@ -234,10 +235,6 @@ def update_participant(eventid, username, status):
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
                 port=5432))
-        print("eventid: " + str(eventid))
-        print("username:---" + str(username) + "---")
-        print("status: " + str(status))
-
         Session = sessionmaker(bind=engine)
         session = Session()
 

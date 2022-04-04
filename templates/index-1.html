@@ -4,130 +4,162 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-    <title>Document</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Helvetica">
+    <title>Tigerball</title>
 </head>
 <body>
     <header>
-        <aside>
-            <i class="fa fa-futbol-o" aria-hidden="true"></i>
-            <p>tigerball</p>
-        </aside>
+        <a href="index">
+            <aside>
+                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                <p>tigerball</p>
+            </aside>
+        </a>
 
-        <aside>
-            <p>my events</p>
-            <i class="fa fa-user-circle" aria-hidden="true"></i>
-        </aside>
+        <section>
+            <aside>
+                <a href="create">create event </a>
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </aside>
+            <aside>
+                <a href="myevents">my events </a>
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+            </aside>
+        </section>
     </header>
 
     <main>
-        <div class="main-head">
-            <h2>pending invites</h2>
+        <h2>pending invites</h2>
 
-            <aside>
-                <p>create event</p>
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            </aside>
-        </div>
-
-        <!-- PENDING INVITES JINJA TEMPLATES -->
-
-        <div class="main-content">
-            <i class="fas fa-basketball-ball"></i>
-            <div>
-                <p>Private Basketball Game</p>
-                <div class="line"></div>
-                <p>3/6 People &#8901; 3/29 &#8901; 7:00 pm - 8:30 pm</p>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <i class="fa fa-futbol-o" aria-hidden="true"></i>
-            <div>
-                <p>Public Soccer Game</p>
-                <div class="line"></div>
-                <p>5/10 People &#8901; 3/29 &#8901; 9:00 pm - 10:30 pm</p>
-            </div>
-        </div>
-
-        <div class="main-container">
-            <div class="main-inner">
+        {% for pending_event in pending_events: %}
+        <a href="eventdetails?event_id={{pending_event.get_event_id()}}">
+            <div class="main-content">
+                <!-- <i class="fas fa-basketball-ball"></i> -->
+                <span class="emoji">
+                    {% if pending_event.get_sport() == 'basketball' %}
+                    &#127936;
+                    {% elif pending_event.get_sport() == 'soccer' %}
+                    &#9917;
+                    {% elif pending_event.get_sport() == 'spikeball' %}
+                    &#128993;
+                    {% elif pending_event.get_sport() == 'football' %}
+                    &#127944;
+                {% endif %}
+                </span>
                 <div>
-                    <label for="sports">Sport</label><br>
-                    <select name="sports" id="sports">
-                        <option value="soccer">Soccer</option>
-                        <option value="baseball">Baseball</option>
-                        <option value="basketball">Basketball</option>
-                        <option value="football">Football</option>
-                    </select>
+                    <p>{{pending_event.get_visibility()}} {{pending_event.get_sport()}} game</p>
+                    <div class="line"></div>
+                    <p>{{pending_event.get_participant_count()}}/{{pending_event.get_capacity()}} People &#8901; {{pending_event.get_date()}} &#8901; {{pending_event.get_starttime().strftime("%I:%M %p")}} - {{pending_event.get_endtime().strftime("%I:%M %p")}}</p>
                 </div>
-                <div class="line2"></div>
             </div>
+        </a>
+        
+        {% endfor %}
+
+        <!-- FILTER OPEN EVENTS -->
+        <form action="index" method="get">
+            <div class="main-container">
+                <div class="main-inner">
+                    <div>
+                        <label for="sport_f">Sport</label><br>
+                        <select name="sport_f" id="sport_f">
+                            <option value=""></option>
+                            <option value="basketball">Basketball</option>
+                            <option value="soccer">Soccer</option>
+                            <option value="spikeball">Spikeball</option>
+                        </select>
+                    </div>
+                    <div class="line2"></div>
+                </div>
+
+                    <div class="main-inner">
+                        <div>
+                            <label for="skill_level_f">Skill Level</label><br>
+                            <select name="skill_level_f" id="skill_level_f">
+                                <option value="no preference">Mixed</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                    <div class="line2"></div>
+                </div>
 
                 <div class="main-inner">
                     <div>
-                        <label for="skill">Skill Level</label><br>
-                        <select name="skill" id="skill">
-                            <option value="begin">Beginner</option>
-                            <option value="advance">Advanced</option>
-                            <option value="intermediate">Intermediate</option>
-                        </select>
+                        <label for="capacity_f">Capacity &#8804;</label><br>
+                        <input type="number" id="capacity_f" name="capacity_f" value="{{capacity_f}}">
                     </div>
-                <div class="line2"></div>
-            </div>
-
-            <div class="main-inner">
-                <div>
-                    <label for="date">Date:</label><br>
-                    <input type="date" id="date" name="date">
+                    <div class="line2"></div>
                 </div>
-                <div class="line2"></div>
-            </div>
 
-            <div class="main-inner">
-                <div>
-                    <label for="start">Availability (start)</label><br>
-                    <input type="time" id="start" name="start">
+                <div class="main-inner">
+                    <div>
+                        <label for="date">Date:</label><br>
+                        <input type="date" id="date_f" name="date_f" value="{{date_f}}">
+                    </div>
+                    <div class="line2"></div>
                 </div>
-                <div class="line2"></div>
-            </div>
 
-            <div class="main-inner">
-                <div>
-                    <label for="end">Availability (end)</label><br>
-                    <input type="time" id="end" name="end">
+                <div class="main-inner">
+                    <div>
+                        <label for="start_time_f">Availability (start)</label><br>
+                        <input type="time" id="start_time_f" name="start_time_f" value="{{start_time_f}}">
+                    </div>
+                    <div class="line2"></div>
                 </div>
-                <div class="line2"></div>
-            </div>
 
-            <div class="main-inner">
-                <button type="submit" class="searchButton">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-               </button>
+                <div class="main-inner">
+                    <div>
+                        <label for="end_time_f">Availability (end)</label><br>
+                        <input type="time" id="end_time_f" name="end_time_f" value="{{end_time_f}}">
+                    </div>
+                    <div class="line2"></div>
+                </div>
+
+                <div class="main-inner">
+                    <button type="submit" class="searchButton">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                </div>
             </div>
-        </div>
+        </form>
+            
 
         <h2>open events</h2>
 
-        <div class="main-content">
-            <i class="fas fa-basketball-ball"></i>
-            <div>
-                <p>Public Spikeball Game</p>
-                <div class="line"></div>
-                <p>2/4 People &#8901; 4/1 &#8901; 9:15 pm - 10:00 pm</p>
+    {% for event in events: %}
+        {% if event.get_organizer() == username %}
+        <a href="eventupdate?event_id={{event.get_event_id()}}">
+        {% else %}
+        <a href="eventdetails?event_id={{event.get_event_id()}}">
+     {% endif %}
+            <div class="main-content">
+                <span class="emoji">
+                    {% if event.get_sport() == 'basketball' %}
+                    &#127936;
+                    {% elif event.get_sport() == 'soccer' %}
+                    &#9917;
+                    {% elif event.get_sport() == 'spikeball' %}
+                    &#128993;;
+                    {% elif event.get_sport() == 'football' %}
+                    &#127944;
+                    {% endif %}    
+                </span>
+                            
+                <div>
+                    <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
+                    <div class="line"></div>
+                    <p>{{event.get_participant_count()}}/{{event.get_capacity()}} People &#8901; {{event.get_date()}} &#8901; {{event.get_starttime().strftime("%I:%M %p")}} - {{event.get_endtime().strftime("%I:%M %p")}}</p>
+                </div>
             </div>
-        </div>
+        </a>
+        {% endfor %}
 
-        <div class="main-content">
-            <i class="fas fa-basketball-ball"></i>
-            <div>
-                <p>Private Basketball Game</p>
-                <div class="line"></div>
-                <p>5/10 People &#8901; 4/1 &#8901; 9:15 pm - 10:00 pm</p>
-            </div>
-        </div>
     </main>
+
 </body>
 </html>

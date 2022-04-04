@@ -16,7 +16,7 @@ app = Flask(__name__, template_folder='templates')
 
 app.secret_key = APP_SECRET_KEY
 
-USERNAME_ = 'normal'
+USERNAME_ = 'chad'
 import auth
 
 #-----------------------------------------------------------------------
@@ -35,19 +35,7 @@ def index():
     # Pending Events
 
     pending_events = search_pending_event(username)
-    if request.method == 'POST':
-        initializer_array = [request.form.get('sport_c'), 
-                            request.form.get('location_c'), 
-                            request.form.get('date_c'),
-                            request.form.get('start_time_c'),
-                            request.form.get('end_time_c'),
-                            request.form.get('visibility_c'),
-                            username,
-                            request.form.get('capacity_c'),
-                            request.form.get('skill_level_c')]
-
-        create_event(initializer_array)
-        query_data = ['','','','','','','']
+    query_data = ['','','','','','','']
 
     if request.method == 'GET':
         query_data = [request.args.get('sport_f'),
@@ -61,13 +49,43 @@ def index():
                 query_data[i] = ''
 
     print("after get")
+    print(pending_events)
     events = search_event(query_data)
-    html = render_template('index.html', username = username, pending_events = pending_events, events = events)
+    html = render_template('index-1.html', username = username, pending_events = pending_events, events = events)
     response = make_response(html)
     
     return response
 
 #-----------------------------------------------------------------------
+@app.route('/create', methods=['GET','POST'])
+def create():
+    if USERNAME_ == 'normal':
+        username = auth.authenticate().strip()
+    else:
+        username = USERNAME_
+
+    if request.method == 'POST':
+        initializer_array = [request.form.get('sport_c'), 
+                            request.form.get('location_c'), 
+                            request.form.get('date_c'),
+                            request.form.get('start_time_c'),
+                            request.form.get('end_time_c'),
+                            request.form.get('visibility_c'),
+                            username,
+                            request.form.get('capacity_c'),
+                            request.form.get('skill_level_c')]
+        print(initializer_array)
+        create_event(initializer_array)
+        return redirect(url_for('my_events'))
+
+    
+    html = render_template('create.html', username = username)
+    response = make_response(html)
+    
+    return response
+
+
+
 
 @app.route('/register', methods=['GET','POST'])
 def register():
@@ -125,7 +143,7 @@ def event_details():
         return redirect(url_for('index'))
   
     details = get_details(event_id)
-    html = render_template('eventdetails.html', details = details, event_id = event_id, username = username)
+    html = render_template('eventdetails-1.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
 
@@ -162,7 +180,7 @@ def my_events():
     print("PAST IF")
 
 
-    html = render_template('event.html', status=status, username=username, events=events)
+    html = render_template('myevents.html', status=status, username=username, events=events)
     print("BEFORE MAKING RESPONSE")
     response = make_response(html)
     return response
@@ -203,7 +221,7 @@ def event_update():
             update_event(initializer_array)
     
     details = get_details(event_id)
-    html = render_template('eventupdate.html', details = details, event_id = event_id, username = username)
+    html = render_template('eventupdate-1.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
 
