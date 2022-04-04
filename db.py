@@ -174,6 +174,7 @@ def search_pending_event(username):
         session = Session()
 
         pendingEvents = (session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).
+            filter(EventsParticipants.participant_id == username).
             filter(EventsParticipants.participant_status == "no response").
             filter(Events.organizer != username).all())
 
