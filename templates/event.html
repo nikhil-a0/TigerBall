@@ -11,70 +11,97 @@
 </head>
 <body>
     <header>
-        <aside>
-            <i class="fa fa-futbol-o" aria-hidden="true"></i>
-            <p>tigerball</p>
-        </aside>
+        <a href="/">
+            <aside>
+                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                <p>tigerball</p>
+            </aside>
+        </a>
 
         <section>
-            <aside>
-                <p>create event</p>
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            </aside>
-            <aside>
-                <p>homepage</p>
-                <i class="fa fa-home" aria-hidden="true"></i>
-            </aside>
+            <a href="/create">
+                <aside>
+                    <p>create event</p>
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </aside>
+            </a>
+            <a href="/">
+                <aside>
+                    <p>homepage</p>
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                </aside>
+            </a>
         </section>
     </header>
 
     <main>
         <strong>my events</strong><span>see all events you're organizing and have responded to</span>
 
-        <div class="events">
-            <div>
-                <button type="button">Attending</button>
-                <i class="fa fa-check-square" aria-hidden="true"></i>
-            </div>
+        <form action="myevents" method="get">
+            <div class="events">
+                Events that I am:
+                <select id="status" name="status">
+                    <div>
+                        <option value=""></option>
+                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                    </div>
 
-            <div>
-                <button type="button">Unsure</button>
-                <i class="fa fa-question" aria-hidden="true"></i>
-            </div>
+                    <div>
+                        <option value="attending">attending</option>
+                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                    </div>
 
-            <div>
-                <button type="button">Not Attending</button>
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </div>
-        </div>
+                    <div>
+                        <option value="uncertain">uncertain about</option>
+                        <i class="fa fa-question" aria-hidden="true"></i>
+                    </div>
 
-        <div class="main-content">
-            <i class="fas fa-basketball-ball"></i>
-            <div>
-                <p>Public Spikeball Game</p>
-                <div class="line"></div>
-                <p>2/4 People &#8901; 4/1 &#8901; 9:15 pm - 10:00 pm</p>
+                    <div>
+                        <option value="not_attending">not attending</option>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                </select>
+                <input type="submit" value="View">
             </div>
-        </div>
+        </form>
 
-        <div class="main-content" id="mainOrg">
-            <i class="fas fa-basketball-ball"></i>
-            <div>
-                <p>Public Basketball Game</p>
-                <div class="line"></div>
-                <p>5/10 People &#8901; 4/1 &#8901; 9:15 pm - 10:00 pm</p>
-            </div>
-            <p class="org">organizer</p>
-        </div>
+        <strong>
+            {% if status == 'attending' %}
+                attending:
+            {% elif status == 'uncertain' %}
+                uncertain:
+            {% elif status == 'not_attending' %}
+                not attending:
+            {% endif %}
+        </strong>
 
-        <div class="main-content">
-            <i class="fas fa-basketball-ball"></i>
-            <div>
-                <p>Private Football Game</p>
-                <div class="line"></div>
-                <p>2/4 People &#8901; 4/6 &#8901; 7:15 pm - 08:30 pm</p>
-            </div>
-        </div>
+        {% for event in events: %}
+            {% if event.get_organizer() == username %}
+                <a href="eventupdate?event_id={{event.get_event_id()}}">
+                    <div class="main-content" id="mainOrg">
+                        <i class="fas fa-basketball-ball"></i>
+                        <div>
+                            <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
+                            <div class="line"></div>
+                            <p>{{event.get_participant_count()}}/{{event.get_capacity()}} People &#8901; {{event.get_date()}} &#8901; {{event.get_starttime()}} - {{event.get_endtime()}}</p>
+                        </div>
+                        <p class="org">organizer</p>
+                    </div>
+                </a>
+            {% else %}
+                <a href="eventdetails?event_id={{event.get_event_id()}}">
+                    <div class="main-content">
+                        <i class="fas fa-basketball-ball"></i>
+                        <div>
+                            <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
+                            <div class="line"></div>
+                            <p>
+                            {{event.get_participant_count()}}/{{event.get_capacity()}} People &#8901; {{event.get_date()}} &#8901; {{event.get_starttime()}} - {{event.get_endtime()}}</p>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
     </main>
 </body>
 </html>

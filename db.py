@@ -12,6 +12,7 @@ from schema import Base, Events, EventsParticipants
 import psycopg2
 from psycopg2 import connect
 from event import Event
+from datetime import datetime, timezone, timedelta
 
 #-----------------------------------------------------------------------
 
@@ -142,9 +143,16 @@ def search_event(args_arr):
         
         all_filters.append(Events.visibility == 'public')
 
+        # consider time zones for date and time
+        # tz_NY = timezone(timedelta(hours=-4))
+        # curr = datetime.now(tz_NY)
+
         myevents = (session.query(Events)
-            .filter(*all_filters)
-            .all())
+            .filter(*all_filters).\
+            # filter(datetime.combine(Events.event_date, Events.end_time) > curr).\
+            order_by(Events.event_date).\
+            order_by(Events.start_time).\
+            order_by(Events.end_time).all())
 
         returned_events = []
         for event in myevents:
@@ -175,7 +183,10 @@ def search_pending_event(username):
 
         pendingEvents = (session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).
             filter(EventsParticipants.participant_status == "no response").
-            filter(Events.organizer != username).all())
+            filter(Events.organizer != username).\
+            order_by(Events.event_date).\
+            order_by(Events.start_time).\
+            order_by(Events.end_time).all())
 
         returnedPendingEvents = []
         for event in pendingEvents:
@@ -234,14 +245,29 @@ def update_participant(eventid, username, status):
         	filter(EventsParticipants.event_id == eventid).
             filter(EventsParticipants.participant_id == username).first())
 
+        evToUpdate = (session.query(Events).
+                filter(Events.event_id == eventid).one())
+
         if participant == None:
             print("participant not found")
             newRow = EventsParticipants(event_id = eventid, participant_id = 
         	    username, participant_status = status)
             session.add(newRow)
+            evToUpdate.participant_count += 1
 
         else:
+            oldStatus = participant.participant_status
+            if oldStatus == 'accepted':
+                oldNum = 1
+            else:
+                oldNum = 0
+            if status == 'accepted':
+                newNum = 1
+            else:
+                newNum = 0
             participant.participant_status = status
+            evToUpdate.participant_count += (newNum - oldNum)
+
         
         session.commit()
         session.close()
@@ -338,7 +364,10 @@ def get_yes_events(username):
 
         events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
             filter(EventsParticipants.participant_status == "accepted").\
-            filter(EventsParticipants.participant_id == username).all()
+            filter(EventsParticipants.participant_id == username).\
+            order_by(Events.event_date).\
+            order_by(Events.start_time).\
+            order_by(Events.end_time).all()
 
         returnEvents = []
         for event in events:
@@ -370,7 +399,10 @@ def get_no_events(username):
 
         events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
             filter(EventsParticipants.participant_status == "declined").\
-            filter(EventsParticipants.participant_id == username).all()
+            filter(EventsParticipants.participant_id == username).\
+            order_by(Events.event_date).\
+            order_by(Events.start_time).\
+            order_by(Events.end_time).all()
 
         returnEvents = []
         for event in events:
@@ -402,7 +434,10 @@ def get_maybe_events(username):
 
         events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
             filter(EventsParticipants.participant_status == "undecided").\
-            filter(EventsParticipants.participant_id == username).all()
+            filter(EventsParticipants.participant_id == username).\
+            order_by(Events.event_date).\
+            order_by(Events.start_time).\
+            order_by(Events.end_time).all()
 
         returnEvents = []
         for event in events:
