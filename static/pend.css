@@ -15,6 +15,13 @@ a {
 }
 
 .addParticipant {
+    max-width: 200px;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgb(255, 177, 85);
+    cursor: pointer;
     text-align: center;
 }
 

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='event.css') }}" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Helvetica">
     <title>Document</title>
 </head>
 <body>
@@ -79,7 +80,17 @@
             {% if event.get_organizer() == username %}
                 <a href="eventupdate?event_id={{event.get_event_id()}}">
                     <div class="main-content" id="mainOrg">
-                        <i class="fas fa-basketball-ball"></i>
+                        <span class="emoji">
+                            {% if event.get_sport() == 'basketball' %}
+                            &#127936;
+                            {% elif event.get_sport() == 'soccer' %}
+                            &#9917;
+                            {% elif event.get_sport() == 'spikeball' %}
+                            &#128993;
+                            {% elif event.get_sport() == 'football' %}
+                            &#127944;
+                        {% endif %}
+                        </span>
                         <div>
                             <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
                             <div class="line"></div>
@@ -91,7 +102,17 @@
             {% else %}
                 <a href="eventdetails?event_id={{event.get_event_id()}}">
                     <div class="main-content">
-                        <i class="fas fa-basketball-ball"></i>
+                        <span class="emoji">
+                            {% if event.get_sport() == 'basketball' %}
+                            &#127936;
+                            {% elif event.get_sport() == 'soccer' %}
+                            &#9917;
+                            {% elif event.get_sport() == 'spikeball' %}
+                            &#128993;
+                            {% elif event.get_sport() == 'football' %}
+                            &#127944;
+                        {% endif %}
+                        </span>
                         <div>
                             <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
                             <div class="line"></div>

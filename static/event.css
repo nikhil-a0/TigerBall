@@ -2,10 +2,15 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: "Helvetica"
+}
+
+.emoji {
+    font-size: 30px;
 }
 
 header {
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
     color: black;
     display: flex;
     justify-content: space-between;
@@ -71,7 +76,7 @@ a {
     grid-template-columns: 33% 34% 33%;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
     text-align: center;
 }
 
@@ -85,7 +90,7 @@ a {
 .events div button {
     border: 0;
     outline: 0;  
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
     font-size: 25px;
 }
 
@@ -128,7 +133,7 @@ a {
     border: 2px solid gray;
     border-radius: 10px;
     padding: 20px 4px;
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
     color: white;
 }
 
@@ -220,13 +225,13 @@ a {
     padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
     cursor: pointer;
     text-align: center;
 }
 
 .box-button button {
     border: 0;
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
 }
 
