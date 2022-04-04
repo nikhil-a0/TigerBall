@@ -221,7 +221,7 @@ def event_update():
             update_event(initializer_array)
     
     details = get_details(event_id)
-    html = render_template('eventupdate.html', details = details, event_id = event_id, username = username)
+    html = render_template('eventupdate-1.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
 

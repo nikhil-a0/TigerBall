@@ -224,10 +224,6 @@ def update_participant(eventid, username, status):
         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
                 port=5432))
-        print("eventid: " + str(eventid))
-        print("username:---" + str(username) + "---")
-        print("status: " + str(status))
-
         Session = sessionmaker(bind=engine)
         session = Session()
 

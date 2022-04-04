@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-    <title>Document</title>
+    <title>Tigerball</title>
 </head>
 <body>
     <header>
-        <aside>
-            <i class="fa fa-futbol-o" aria-hidden="true"></i>
-            <p>tigerball</p>
-        </aside>
+        <a href="index">
+            <aside>
+                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                <p>tigerball</p>
+            </aside>
+        </a>
 
         <section>
             <aside>
@@ -71,7 +73,7 @@
                     </aside>
 
                     <aside>
-                        <label>change capacity</label>
+                        <label>capacity</label>
                         <input type="number" name="capacity_c" value="{{capacity_c}}">
                     </aside>
                 </div>

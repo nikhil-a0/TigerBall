@@ -47,41 +47,39 @@
                     <input type="submit" name="Undecided" value="Undecided">
                 </div>
             </div>
-        </form>
 
             <section>
                 <div class="box-left">
                     <aside>
                         <label>sport</label>
-                        <div class="detail">{{details[0].get_sport()}}</div>
+                        <p>{{details[0].get_sport()}}</p>
                     </aside>
 
                     <aside>
                         <label>location</label>
-                        <div class="detail">{{details[0].get_location()}}</div>
+                        <p>{{details[0].get_location()}}</p>
                     </aside>
 
                     <aside>
                         <label>Skill Level</label>
-                        {{details[0].get_skill_level()}}
+                        <p>{{details[0].get_skill_level()}}</p>
                     </aside>
                 </div>
 
                 <div class="box-right">
                     <aside>
                         <label>date</label>
-                        {{details[0].get_date()}}
+                        <p>{{details[0].get_date()}}</p>
                     </aside>
 
                     <aside>
                         <label>Start & end time</label>
-                        {{details[0].get_starttime()}}
-                        {{details[0].get_endtime()}}
+                        <p>{{details[0].get_starttime()}} - {{details[0].get_endtime()}} </p>
                     </aside>
 
                     <aside>
                         <label>sign ups</label>
-                        {{details[0].get_participant_count()}}/{{details[0].get_capacity()}}
+                        <p>{{details[0].get_participant_count()}}/{{details[0].get_capacity()}}</p>
                     </aside>
                 </div>
             </section>
@@ -120,15 +118,7 @@
                 </p>
             </section>
 
-            <section>
-                <p>
-                    <label for="pub">Public</label><br>
-                </p>
-
-                <p>
-                    <label for="pri">Private</label><br>
-                </p>
-            </section>
+        </form>
     </div>
 </body>
 </html>
