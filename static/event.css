@@ -58,6 +58,11 @@ strong {
     padding:0 10px 0 30px;
 }
 
+a {
+    color: black;
+    text-decoration:none;
+}
+
 .events {
     max-width: 900px;
     width: 100%;
