@@ -5,6 +5,7 @@
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
+from flask.ext.heroku import Heroku
 from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant,\
@@ -13,6 +14,10 @@ from db import search_event, create_event, get_details, invite_participant,\
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='templates')
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/pre-registration'
+heroku = Heroku(app)
+db = SQLAlchemy(app)
+
 
 app.secret_key = APP_SECRET_KEY
 
