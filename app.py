@@ -16,7 +16,7 @@ app = Flask(__name__, template_folder='templates')
 
 app.secret_key = APP_SECRET_KEY
 
-USERNAME_ = 'chad'
+USERNAME_ = 'normal'
 import auth
 
 #-----------------------------------------------------------------------
