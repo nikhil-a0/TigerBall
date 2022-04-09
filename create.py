@@ -21,13 +21,13 @@ def main():
         exit(1)
 
     try:
-        conn = psycopg2.connect(database='postgresql',
-            port=5432)
-        conn.autocommit = True
-        cursor = conn.cursor()
-        cursor.execute("DROP DATABASE IF EXISTS d5olnm6egr5314")
-        cursor.execute("CREATE DATABASE d5olnm6egr5314")
-        print('DATABASE CREATED')
+        # conn = psycopg2.connect(database='postgresql',
+        #     port=5432)
+        # conn.autocommit = True
+        # cursor = conn.cursor()
+        # cursor.execute("DROP DATABASE IF EXISTS d5olnm6egr5314")
+        # cursor.execute("CREATE DATABASE d5olnm6egr5314")
+        # print('DATABASE CREATED')
 
         engine = create_engine('postgres://fjoacapxjmfqdq:6bc7c2106fefb7d79382461eaa98fe8cab9b686892fd9022c20abcfd88ace07c@ec2-34-207-12-160.compute-1.amazonaws.com:5432/d5olnm6egr5314',
             creator=lambda: psycopg2.connect(database='d5olnm6egr5314',
