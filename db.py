@@ -17,8 +17,10 @@ from config import ENVIRONMENT_
 
 if ENVIRONMENT_ == 'dev':
     DATABASE_URL = 'postgresql+psycopg2://@5432/tigerballdb'
+    database_ = 'tigerballdb'
 elif ENVIRONMENT_ == 'deploy':
     DATABASE_URL = 'postgresql://fjoacapxjmfqdq:6bc7c2106fefb7d79382461eaa98fe8cab9b686892fd9022c20abcfd88ace07c@ec2-34-207-12-160.compute-1.amazonaws.com:5432/d5olnm6egr5314'
+    database_ = 'd5olnm6egr5314'
 
 
 #-----------------------------------------------------------------------
@@ -28,7 +30,7 @@ def create_event(initializer_array):
 
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
         
         Session = sessionmaker(bind=engine)
@@ -78,7 +80,7 @@ def create_event(initializer_array):
 def update_event(args_arr):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
         
         Session = sessionmaker(bind=engine)
@@ -121,7 +123,7 @@ def update_event(args_arr):
 def search_event(args_arr):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
         
         Session = sessionmaker(bind=engine)
@@ -187,7 +189,7 @@ def search_event(args_arr):
 def search_pending_event(username):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
 
         Session = sessionmaker(bind=engine)
@@ -223,7 +225,7 @@ def search_pending_event(username):
 def invite_participant(args_arr):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
 
         Session = sessionmaker(bind=engine)
@@ -245,7 +247,7 @@ def invite_participant(args_arr):
 def update_participant(eventid, username, status):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -291,7 +293,7 @@ def update_participant(eventid, username, status):
 def get_details(event_id):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
         print('ENGINE CREATED')
 
@@ -365,7 +367,7 @@ def get_details(event_id):
 def get_yes_events(username):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
 
         Session = sessionmaker(bind=engine)
@@ -400,7 +402,7 @@ def get_yes_events(username):
 def get_no_events(username):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
 
         Session = sessionmaker(bind=engine)
@@ -435,7 +437,7 @@ def get_no_events(username):
 def get_maybe_events(username):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
 
         Session = sessionmaker(bind=engine)
