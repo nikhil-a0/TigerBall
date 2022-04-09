@@ -16,9 +16,13 @@ from config import USERNAME_, ENVIRONMENT_
 app = Flask(__name__, template_folder='templates')
 
 if ENVIRONMENT_ == 'deploy':
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://fjoacapxjmfqdq:6bc7c2106fefb7d79382461eaa98fe8cab9b686892fd9022c20abcfd88ace07c@ec2-34-207-12-160.compute-1.amazonaws.com:5432/d5olnm6egr5314'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fjoacapxjmfqdq:6bc7c2106fefb7d79382461eaa98fe8cab9b686892fd9022c20abcfd88ace07c@ec2-34-207-12-160.compute-1.amazonaws.com:5432/d5olnm6egr5314'
+    app.debug = False
 elif ENVIRONMENT_ == 'dev':
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql+psycopg2://@5432/tigerballdb'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://@5432/tigerballdb'
+    app.debug = True
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = APP_SECRET_KEY
 
 import auth
@@ -38,23 +42,25 @@ def index():
 
     # Pending Events
 
-    pending_events = search_pending_event(username)
+    # pending_events = search_pending_event(username)
     query_data = ['','','','','','','']
+    pending_events = query_data
+    events = pending_events
 
-    if request.method == 'GET':
-        query_data = [request.args.get('sport_f'),
-                    request.args.get('skill_level_f'),
-                    request.args.get('capacity_f'),
-                    request.args.get('date_f'),
-                    request.args.get('start_time_f'),
-                    request.args.get('end_time_f')]
-        for i in range(0, len(query_data)):
-            if query_data[i] is None:
-                query_data[i] = ''
+    # if request.method == 'GET':
+    #     query_data = [request.args.get('sport_f'),
+    #                 request.args.get('skill_level_f'),
+    #                 request.args.get('capacity_f'),
+    #                 request.args.get('date_f'),
+    #                 request.args.get('start_time_f'),
+    #                 request.args.get('end_time_f')]
+    #     for i in range(0, len(query_data)):
+    #         if query_data[i] is None:
+    #             query_data[i] = ''
 
-    print("after get")
-    print(pending_events)
-    events = search_event(query_data)
+    # print("after get")
+    # print(pending_events)
+    # events = search_event(query_data)
     html = render_template('index-1.html', username = username, pending_events = pending_events, events = events)
     response = make_response(html)
     
