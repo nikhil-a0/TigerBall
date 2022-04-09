@@ -9,6 +9,7 @@ from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant,\
     get_yes_events, get_maybe_events, get_no_events
+from config import USERNAME_
 
 #-----------------------------------------------------------------------
 
@@ -17,7 +18,7 @@ app = Flask(__name__, template_folder='templates')
 
 app.secret_key = APP_SECRET_KEY
 
-USERNAME_ = 'lisa'
+USERNAME_ = 'normal'
 import auth
 
 #-----------------------------------------------------------------------

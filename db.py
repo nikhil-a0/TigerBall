@@ -13,6 +13,13 @@ import psycopg2
 from psycopg2 import connect
 from event import Event
 from datetime import datetime, timezone, timedelta
+from config import ENVIRONMENT_
+
+if ENVIRONMENT_ == 'dev':
+    DATABASE_URL = 'postgresql+psycopg2://@5432/tigerballdb'
+elif ENVIRONMENT_ == 'deploy':
+    DATABASE_URL = 'postgresql+psycopg2://@5432/tigerballdb'
+
 
 #-----------------------------------------------------------------------
 
@@ -125,21 +132,26 @@ def search_event(args_arr):
         if args_arr[0]:
             all_filters.append(Events.sport == str(args_arr[0]))
         
-        # conditional location
+        # conditional skill level
         if args_arr[1]:
-            all_filters.append(Events.skill_level == str(args_arr[1]))
-        
-        # conditional event_date
+            if str(args_arr[1]) != 'no preference':
+                all_filters.append(Events.skill_level == str(args_arr[1]))
+
+        # conditional capacity
         if args_arr[2]:
-            all_filters.append(Events.event_date == str(args_arr[2]))
+            all_filters.append(Events.capacity <= int(args_arr(2)))
+                
+        # conditional event_date
+        if args_arr[3]:
+            all_filters.append(Events.event_date == str(args_arr[3]))
 
         # conditional start_time
-        if args_arr[3]:
-            all_filters.append(Events.start_time >= str(args_arr[3]))
+        if args_arr[4]:
+            all_filters.append(Events.start_time >= str(args_arr[4]))
         
         # conditional end_time
-        if args_arr[4]:
-            all_filters.append(Events.end_time <= str(args_arr[4]))
+        if args_arr[5]:
+            all_filters.append(Events.end_time <= str(args_arr[5]))
         
         all_filters.append(Events.visibility == 'public')
 
