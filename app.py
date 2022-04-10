@@ -7,7 +7,7 @@ from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
 from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
-    update_event, search_pending_event, update_participant,\
+    update_event, search_pending_event, update_participant, delete_old_events,\
     get_yes_events, get_maybe_events, get_no_events
 from config import USERNAME_, ENVIRONMENT_
 
@@ -42,25 +42,25 @@ def index():
 
     # Pending Events
 
-    # pending_events = search_pending_event(username)
-    query_data = ['','','','','','','']
-    pending_events = query_data
-    events = pending_events
 
-    # if request.method == 'GET':
-    #     query_data = [request.args.get('sport_f'),
-    #                 request.args.get('skill_level_f'),
-    #                 request.args.get('capacity_f'),
-    #                 request.args.get('date_f'),
-    #                 request.args.get('start_time_f'),
-    #                 request.args.get('end_time_f')]
-    #     for i in range(0, len(query_data)):
-    #         if query_data[i] is None:
-    #             query_data[i] = ''
+    delete_old_events()
+    pending_events = search_pending_event(username)
+    query_data = ['','','','','','','']
+
+    if request.method == 'GET':
+        query_data = [request.args.get('sport_f'),
+                    request.args.get('skill_level_f'),
+                    request.args.get('capacity_f'),
+                    request.args.get('date_f'),
+                    request.args.get('start_time_f'),
+                    request.args.get('end_time_f')]
+        for i in range(0, len(query_data)):
+            if query_data[i] is None:
+                query_data[i] = ''
 
     # print("after get")
     # print(pending_events)
-    # events = search_event(query_data)
+    events = search_event(query_data)
     html = render_template('index-1.html', username = username, pending_events = pending_events, events = events)
     response = make_response(html)
     
@@ -170,15 +170,12 @@ def my_events():
 
     status = 'not checked'
     if request.method == 'GET':
-        print("ITO IF")
         status = request.args.get('status')
-        print("GOT GET STATUS")
     if status == None:
         status = 'attending'
 
     events = None
     if status == 'attending':
-        print("GETTING")
         events = get_yes_events(username)
     elif status == 'uncertain':
         events = get_maybe_events(username)
@@ -187,11 +184,9 @@ def my_events():
     else:
         print('NONE OF THE OPTIONS')
     
-    print("PAST IF")
 
 
     html = render_template('event.html', status=status, username=username, events=events)
-    print("BEFORE MAKING RESPONSE")
     response = make_response(html)
     return response
 

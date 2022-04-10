@@ -12,7 +12,7 @@ from schema import Base, Events, EventsParticipants
 import psycopg2
 from psycopg2 import connect
 from event import Event
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, date
 from config import ENVIRONMENT_
 
 if ENVIRONMENT_ == 'dev':
@@ -110,15 +110,28 @@ def update_event(args_arr):
         print(ex, file=stderr)
         exit(1)
 
-# def delete_event(event_id):
-#     try:
-#         engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
-#             creator=lambda: psycopg2.connect(database='tigerballdb',
-#                 port=5432))  
+def delete_old_events():
+    try:
+        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))  
 
-#     except Exception as ex:
-#         print(ex, file=stderr)
-#         exit(1)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        events_to_delete = (session.query(Events)
+                        .filter(Events.event_date <= date.today())
+                        .filter(Events.start_time < datetime.now().time()))
+        for event in events_to_delete:
+            session.delete(event)
+
+        session.commit()
+        session.close()
+        engine.dispose()
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
 
 def search_event(args_arr):
     try:
@@ -162,10 +175,10 @@ def search_event(args_arr):
         # curr = datetime.now(tz_NY)
 
         myevents = (session.query(Events)
-            .filter(*all_filters).\
+            .filter(*all_filters).
             # filter(datetime.combine(Events.event_date, Events.end_time) > curr).\
-            order_by(Events.event_date).\
-            order_by(Events.start_time).\
+            order_by(Events.event_date).
+            order_by(Events.start_time).
             order_by(Events.end_time).all())
 
         returned_events = []
