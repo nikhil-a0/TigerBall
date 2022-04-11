@@ -11,6 +11,8 @@ from sqlalchemy.orm import sessionmaker
 from schema import Base, Events, EventsParticipants
 import psycopg2
 from psycopg2 import connect
+from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
+
 
 #-----------------------------------------------------------------------
 
@@ -29,8 +31,8 @@ def main():
         # cursor.execute("CREATE DATABASE d5olnm6egr5314")
         # print('DATABASE CREATED')
 
-        engine = create_engine('postgresql://fjoacapxjmfqdq:6bc7c2106fefb7d79382461eaa98fe8cab9b686892fd9022c20abcfd88ace07c@ec2-34-207-12-160.compute-1.amazonaws.com:5432/d5olnm6egr5314',
-            creator=lambda: psycopg2.connect(database='d5olnm6egr5314',
+        engine = create_engine(DATABASE_URL,
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))
         print('ENGINE CREATED')
 
@@ -39,15 +41,6 @@ def main():
 
         Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
-
-        #---------------------------------------------------------------
-
-#         event = Events(sport='soccer', location='poe', event_date='2022-03-21',
-#             start_time='14:30:00', end_time='15:30:00', visibility='public',
-#             organizer='rdange')
-#         session.add(event)
-#         session.commit()
-#         print('FAKE EVENT ADDED')
 
         #---------------------------------------------------------------
 
