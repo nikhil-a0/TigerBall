@@ -10,9 +10,10 @@ from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
     get_status_events
 from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
+import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-import os
+
 
 
 #-----------------------------------------------------------------------
@@ -200,21 +201,21 @@ def event_update():
         participant_id = request.form.get('participant_id')
         if participant_id != None: 
             invite_participant([event_id, participant_id])
+
             message = Mail(
-                from_email='nikhila@princeton.edu',
-                to_emails='nikhil.a244@gmail.com',
-                subject='SendGrid Integration Test 1',
-                html_content='<p>Hi<p>\
-                    <strong>Test 1</strong>')
+                from_email='from_email@example.com',
+                to_emails='to@example.com',
+                subject='Sending with Twilio SendGrid is Fun',
+                html_content='<strong>and easy to do anywhere, even with Python</strong>')
             try:
                 sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
                 response = sg.send(message)
-                print(response.status_code) 
+                print(response.status_code)
                 print(response.body)
                 print(response.headers)
-                
+
             except Exception as e:
-                print(e.message)
+                print("Error")
 
 
         initializer_array = [event_id,
