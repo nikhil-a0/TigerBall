@@ -425,7 +425,7 @@ def get_status_events(username, status):
             engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
             creator=lambda: psycopg2.connect(database='tigerballdb',
                 port=5432))
-                
+
         Session = sessionmaker(bind=engine)
         session = Session()
 
