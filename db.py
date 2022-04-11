@@ -132,7 +132,8 @@ def delete_old_events():
 
 def search_event(args_arr):
     try:
-        engine = create_engine(DATABASE_URL)
+        engine = create_engine(DATABASE_URL,
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
         
         Session = sessionmaker(bind=engine)
         session = Session()
