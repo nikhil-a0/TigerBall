@@ -8,7 +8,7 @@ from flask import render_template
 from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
-    get_yes_events, get_maybe_events, get_no_events
+    get_status_events
 from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
 
 #-----------------------------------------------------------------------
@@ -170,15 +170,7 @@ def my_events():
     if status == None:
         status = 'attending'
 
-    events = None
-    if status == 'attending':
-        events = get_yes_events(username)
-    elif status == 'uncertain':
-        events = get_maybe_events(username)
-    elif status == 'not_attending':
-        events = get_no_events(username)
-    else:
-        print('NONE OF THE OPTIONS')
+    events = get_status_events(username, status)
     
 
 

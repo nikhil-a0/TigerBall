@@ -368,7 +368,17 @@ def get_details(event_id):
         print(ex, file=stderr)
         exit(1)
 
-def get_yes_events(username):
+def get_status_events(username, status):
+    partstat = ''
+    if status == 'attending':
+        partstat = 'accepted'
+    elif status == 'uncertain':
+        partstat = 'undecided'
+    elif status == 'not_attending':
+        partstat = 'declined'
+    else:
+        print('NONE OF THE OPTIONS')
+    
     try:
         engine = create_engine(DATABASE_URL,
             creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
@@ -377,75 +387,7 @@ def get_yes_events(username):
         session = Session()
 
         events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
-            filter(EventsParticipants.participant_status == "accepted").\
-            filter(EventsParticipants.participant_id == username).\
-            order_by(Events.event_date).\
-            order_by(Events.start_time).\
-            order_by(Events.end_time).all()
-
-        returnEvents = []
-        for event in events:
-            return_event = Event([event.event_id, 
-                event.sport, event.location, event.event_date,
-                event.start_time, event.end_time,
-                event.visibility, event.organizer, event.capacity,
-                event.participant_count, event.skill_level])
-            returnEvents.append(return_event)
-        
-        session.close()
-        engine.dispose()
-        
-        return returnEvents
-          
-
-    except Exception as ex:
-        print(ex, file=stderr)
-        exit(1)
-
-def get_no_events(username):
-    try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-
-        Session = sessionmaker(bind=engine)
-        session = Session()
-
-        events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
-            filter(EventsParticipants.participant_status == "declined").\
-            filter(EventsParticipants.participant_id == username).\
-            order_by(Events.event_date).\
-            order_by(Events.start_time).\
-            order_by(Events.end_time).all()
-
-        returnEvents = []
-        for event in events:
-            return_event = Event([event.event_id, 
-                event.sport, event.location, event.event_date,
-                event.start_time, event.end_time,
-                event.visibility, event.organizer, event.capacity,
-                event.participant_count, event.skill_level])
-            returnEvents.append(return_event)
-        
-        session.close()
-        engine.dispose()
-        
-        return returnEvents
-          
-
-    except Exception as ex:
-        print(ex, file=stderr)
-        exit(1)
-
-def get_maybe_events(username):
-    try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-
-        Session = sessionmaker(bind=engine)
-        session = Session()
-
-        events = session.query(Events).join(EventsParticipants, Events.event_id == EventsParticipants.event_id).\
-            filter(EventsParticipants.participant_status == "undecided").\
+            filter(EventsParticipants.participant_status == partstat).\
             filter(EventsParticipants.participant_id == username).\
             order_by(Events.event_date).\
             order_by(Events.start_time).\
