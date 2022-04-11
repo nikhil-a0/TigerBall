@@ -36,7 +36,7 @@ def index():
 
 
     # Pending Events
-
+#needless comment
 
     # delete_old_events()
     #pending_events = search_pending_event(username)
