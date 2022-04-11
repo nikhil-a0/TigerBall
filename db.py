@@ -13,10 +13,14 @@ import psycopg2
 from psycopg2 import connect
 from event import Event
 from datetime import datetime, date
+from os import environ
+import os
 from config import ENVIRONMENT_, DATABASE_URL, database_
 
 
 #-----------------------------------------------------------------------
+
+
 
 # Create event and add organizer as accepted 
 def create_event(initializer_array):
@@ -128,9 +132,7 @@ def delete_old_events():
 
 def search_event(args_arr):
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+        engine = create_engine(DATABASE_URL)
         
         Session = sessionmaker(bind=engine)
         session = Session()
