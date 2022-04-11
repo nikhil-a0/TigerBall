@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from schema import Base, Events, EventsParticipants
 import psycopg2
 from psycopg2 import connect
-from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
+from config import USERNAME_, ENVIRONMENT_, DATABASE_URL, database_
 
 
 #-----------------------------------------------------------------------
