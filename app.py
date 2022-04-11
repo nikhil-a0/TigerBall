@@ -39,8 +39,8 @@ def index():
 #needless comment
 
     # delete_old_events()
-    #pending_events = search_pending_event(username)
-    # query_data = ['','','','','','','']
+    pending_events = search_pending_event(username)
+    query_data = ['','','','','','','']
 
     if request.method == 'GET':
         query_data = [request.args.get('sport_f'),
@@ -53,11 +53,11 @@ def index():
             if query_data[i] is None:
                 query_data[i] = ''
     
-#  events = events, username = username, pending_events = pending_events, 
+#  
     # print("after get")
     # print(pending_events)
     events = search_event(query_data)
-    html = render_template('index-1.html', events = events)
+    html = render_template('index-1.html', events = events, username = username, pending_events = pending_events)
     response = make_response(html)
     
     return response
