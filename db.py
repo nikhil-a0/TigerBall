@@ -26,8 +26,13 @@ from config import ENVIRONMENT_, DATABASE_URL, database_
 def create_event(initializer_array):
 
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
         
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -75,9 +80,14 @@ def create_event(initializer_array):
 
 def update_event(args_arr):
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-        
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
         Session = sessionmaker(bind=engine)
         session = Session()
 
@@ -107,8 +117,13 @@ def update_event(args_arr):
 
 def delete_old_events():
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -129,9 +144,14 @@ def delete_old_events():
 
 def search_event(args_arr):
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-        
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
         Session = sessionmaker(bind=engine)
         session = Session()
 
@@ -194,8 +214,13 @@ def search_event(args_arr):
 
 def search_pending_event(username):
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -229,9 +254,13 @@ def search_pending_event(username):
 
 def invite_participant(args_arr):
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -251,9 +280,14 @@ def invite_participant(args_arr):
 
 def update_participant(eventid, username, status):
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+                
         Session = sessionmaker(bind=engine)
         session = Session()
 
@@ -297,9 +331,13 @@ def update_participant(eventid, username, status):
 # Returns [ [details] , [participants] ]
 def get_details(event_id):
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-        print('ENGINE CREATED')
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -380,9 +418,14 @@ def get_status_events(username, status):
         print('NONE OF THE OPTIONS')
     
     try:
-        engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+                
         Session = sessionmaker(bind=engine)
         session = Session()
 
