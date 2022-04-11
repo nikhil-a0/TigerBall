@@ -57,7 +57,7 @@ def index():
     # print("after get")
     # print(pending_events)
     events = search_event(query_data)
-    html = render_template('index-1.html')
+    html = render_template('index-1.html', events = events)
     response = make_response(html)
     
     return response
