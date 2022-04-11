@@ -27,8 +27,7 @@ def create_event(initializer_array):
 
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
         
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -77,8 +76,7 @@ def create_event(initializer_array):
 def update_event(args_arr):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
         
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -110,8 +108,7 @@ def update_event(args_arr):
 def delete_old_events():
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))  
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -234,8 +231,8 @@ def search_pending_event(username):
 def invite_participant(args_arr):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -256,8 +253,8 @@ def invite_participant(args_arr):
 def update_participant(eventid, username, status):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+
         Session = sessionmaker(bind=engine)
         session = Session()
 
@@ -302,8 +299,7 @@ def update_participant(eventid, username, status):
 def get_details(event_id):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
         print('ENGINE CREATED')
 
         Session = sessionmaker(bind=engine)
@@ -376,8 +372,7 @@ def get_details(event_id):
 def get_yes_events(username):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -411,8 +406,7 @@ def get_yes_events(username):
 def get_no_events(username):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
 
         Session = sessionmaker(bind=engine)
         session = Session()
@@ -446,8 +440,7 @@ def get_no_events(username):
 def get_maybe_events(username):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
 
         Session = sessionmaker(bind=engine)
         session = Session()
