@@ -112,8 +112,8 @@ def update_event(args_arr):
 
 def delete_old_events():
     try:
-        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
-            creator=lambda: psycopg2.connect(database='tigerballdb',
+        engine = create_engine(DATABASE_URL,
+            creator=lambda: psycopg2.connect(database=database_,
                 port=5432))  
 
         Session = sessionmaker(bind=engine)
