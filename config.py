@@ -9,6 +9,7 @@ if ENVIRONMENT_ == 'dev':
     database_ = 'tigerballdb'
 elif ENVIRONMENT_ == 'deploy':
     DATABASE_URL = environ.get('DATABASE_URL')
+    database_ = 'helloworld'
 
 
 # normal or whatever username you want
