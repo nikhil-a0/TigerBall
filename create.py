@@ -32,12 +32,11 @@ def main():
         # print('DATABASE CREATED')
 
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
-        print('ENGINE CREATED')
-
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        
         Session = sessionmaker(bind=engine)
         session = Session()
+        print('ENGINE CREATED')
 
         Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
