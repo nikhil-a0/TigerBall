@@ -195,8 +195,7 @@ def search_event(args_arr):
 def search_pending_event(username):
     try:
         engine = create_engine(DATABASE_URL,
-            creator=lambda: psycopg2.connect(database=database_,
-                port=5432))
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
 
         Session = sessionmaker(bind=engine)
         session = Session()
