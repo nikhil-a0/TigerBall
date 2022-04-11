@@ -52,11 +52,12 @@ def index():
         for i in range(0, len(query_data)):
             if query_data[i] is None:
                 query_data[i] = ''
-# , username = username, pending_events = pending_events, 
+    
+#  events = events, username = username, pending_events = pending_events, 
     # print("after get")
     # print(pending_events)
-    events = search_event(query_data)
-    html = render_template('index-1.html', events = events)
+    # events = search_event(query_data)
+    html = render_template('index-1.html')
     response = make_response(html)
     
     return response
