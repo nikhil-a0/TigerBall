@@ -9,18 +9,13 @@ from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
     get_yes_events, get_maybe_events, get_no_events
-from config import USERNAME_, ENVIRONMENT_
+from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
 
 #-----------------------------------------------------------------------
 
 app = Flask(__name__, template_folder='templates')
 
-if ENVIRONMENT_ == 'deploy':
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fjoacapxjmfqdq:6bc7c2106fefb7d79382461eaa98fe8cab9b686892fd9022c20abcfd88ace07c@ec2-34-207-12-160.compute-1.amazonaws.com:5432/d5olnm6egr5314'
-    app.debug = False
-elif ENVIRONMENT_ == 'dev':
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://@5432/tigerballdb'
-    app.debug = True
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = APP_SECRET_KEY
