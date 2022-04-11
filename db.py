@@ -303,7 +303,8 @@ def update_participant(eventid, username, status):
             newRow = EventsParticipants(event_id = eventid, participant_id = 
         	    username, participant_status = status)
             session.add(newRow)
-            evToUpdate.participant_count += 1
+            if status == 'accepted':
+                evToUpdate.participant_count += 1
 
         else:
             oldStatus = participant.participant_status
