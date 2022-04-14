@@ -13,7 +13,9 @@ from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-
+from python_http_client.exceptions import HTTPError
+import json
+from sys import stderr
 
 
 #-----------------------------------------------------------------------
@@ -24,6 +26,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = APP_SECRET_KEY
+
 
 import auth
 
@@ -199,23 +202,37 @@ def event_update():
     if request.method == 'POST':
             # update 1 participant if added
         participant_id = request.form.get('participant_id')
-        if participant_id != None: 
+        if participant_id != None:
+            # add the participant to the eventsparticipants table
             invite_participant([event_id, participant_id])
 
+            # send email notification of invitation
+            details = get_details(event_id)[0]
+
             message = Mail(
-                from_email='from_email@example.com',
-                to_emails='to@example.com',
-                subject='Sending with Twilio SendGrid is Fun',
-                html_content='<strong>and easy to do anywhere, even with Python</strong>')
+                from_email='nikhila@princeton.edu',
+                to_emails='nikhila@princeton.edu')
+            message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
+            message.dynamic_template_data = {
+                "participant_id": participant_id,
+                "organizer_id": details.get_organizer(),
+                "sport": details.get_sport(),
+                "date": details.get_date(),
+                "start_time": details.get_starttime(),
+                "end_time": details.get_endtime(),
+                "location": details.get_location()
+            }
             try:
                 sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+                print("1")
                 response = sg.send(message)
+                print("2")
                 print(response.status_code)
                 print(response.body)
                 print(response.headers)
 
-            except Exception as e:
-                print("Error")
+            except Exception as ex:
+                print(ex, file=stderr)
 
 
         initializer_array = [event_id,
