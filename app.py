@@ -157,7 +157,7 @@ def event_details():
         return redirect(url_for('index'))
   
     details = get_details(event_id)
-    html = render_template('eventdetails-1.html', details = details, event_id = event_id, username = username)
+    html = render_template('eventdetails-.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
 
@@ -202,16 +202,19 @@ def event_update():
     if request.method == 'POST':
             # update 1 participant if added
         participant_id = request.form.get('participant_id')
+        # validate netid
         if participant_id != None:
             # add the participant to the eventsparticipants table
             invite_participant([event_id, participant_id])
 
+        
             # send email notification of invitation
+                # Need to get netid of user for to_emails
             details = get_details(event_id)[0]
 
             message = Mail(
-                from_email='nikhila@princeton.edu',
-                to_emails='nikhila@princeton.edu')
+                from_email='tigerballprinceton@gmail.com',
+                to_emails='nikhil.a244@gmail.com')
             message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
             message.dynamic_template_data = {
                 "participant_id": participant_id,
@@ -224,9 +227,7 @@ def event_update():
             }
             try:
                 sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-                print("1")
                 response = sg.send(message)
-                print("2")
                 print(response.status_code)
                 print(response.body)
                 print(response.headers)
@@ -252,7 +253,7 @@ def event_update():
             update_event(initializer_array)
     
     details = get_details(event_id)
-    html = render_template('eventupdate-1.html', details = details, event_id = event_id, username = username)
+    html = render_template('eventupdate-2.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
 

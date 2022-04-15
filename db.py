@@ -394,7 +394,7 @@ def get_details(event_id):
         details.append(undecided)
         details.append(noresponse)
 
-        print(details)
+        # print(details)
 
         session.commit()
 

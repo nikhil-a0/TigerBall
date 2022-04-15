@@ -136,6 +136,13 @@
                     </p>
                 </section>
             </form>
+
+            <div>
+                <input class="form-control input-lg" id="participantIdInput" type="text" name="dept" placeholder="Enter the the invitee's name or netid" autofocus> 
+            </div>
+
+
+
             <div class="box-button">
                 Add Participant
                 <form action="?event_id={{event_id}}" method="post" name="updateparticipant">
@@ -158,7 +165,57 @@
                     </table>
                 </form>
             </div>
+            <div class="container-fluid" id="resultsRows"> Hello World</div>
 
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+        </script>
+  
+        <script>
+           'use strict';
+  
+  
+           function handleResponse(response)
+           {
+              $('#resultsRows').html(response);
+           }
+  
+           let request = null;
+  
+           function getResults() 
+           {
+              let invitee = $('#inviteeInput').val();
+              
+  
+              dept = encodeURIComponent(dept)
+              number = encodeURIComponent(number)
+              area = encodeURIComponent(area)
+              title = encodeURIComponent(title)
+  
+              let url = '/searchresults?dept=' + dept + '&number=' + number + '&area=' + area + '&title=' + title
+  
+              if (request != null)
+                 request.abort();
+  
+              request = $.ajax(
+                 {
+                    type: 'GET',
+                    url: url,
+                    success: handleResponse
+                 }
+              );
+           }
+  
+           function setup()
+           {
+              $('#deptInput').on('input', getResults);
+              $('#numberInput').on('input', getResults);
+              $('#areaInput').on('input', getResults);
+              $('#titleInput').on('input', getResults);
+           }
+  
+           $('document').ready(setup);
+           getResults();
+        </script>
     </body>
 </html>
