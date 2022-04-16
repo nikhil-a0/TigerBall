@@ -1,0 +1,126 @@
+h2 {
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 30px;
+}
+
+.main-container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 30px auto 50px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 3px solid black;
+    border-radius: 10px;
+    background-color: rgb(230, 176, 76);
+    padding:3px 10px 10px 10px;
+    text-align: center;
+}
+
+.main-container i {
+    font-size: 30px;
+}
+
+.main-inner {
+    display: flex;
+    align-items: center;
+}
+
+.main-inner div label {
+    color: gray;
+}
+
+.searchButton {
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.line2 {
+    border-right: 3px solid black;
+    height: 40px;
+    padding: 0 20px;
+}
+
+.box-inner section input {
+    width: 60%;
+    padding: 5px;
+    background-color: white;
+    border: 0;
+    float: right;
+}
+
+#sector {
+    max-width: 150px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#sector input {
+    float: inherit;
+    width: inherit;
+}
+
+.event-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.events {
+    max-width: 600px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 33% 34% 33%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(230, 176, 76);
+    text-align: center;
+}
+
+.events button {
+    outline: 0;  
+    background-color: rgb(230, 176, 76);
+    font-size: 25px;
+    border: 1px solid black;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.priv-basketball {
+    display: flex;
+    align-items: center;
+    padding-left: 0 !important;
+}
+
+.org {
+    position: relative;
+    right: -30%;
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 20px 4px;
+    background-color: rgb(230, 176, 76);
+    color: white;
+}
+
+
+.add {
+    text-align: center;
+    font-weight: inherit !important;
+    padding: 10px 0;
+}
+
+  @media screen and (max-width: 610px) {
+    .events {
+        display: block;
+    width: inherit;
+    background: inherit;
+    }
+
+    .events button {
+        width: 50%;
+        margin-bottom: 5px;
+    }
+}

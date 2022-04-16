@@ -1,0 +1,74 @@
+strong {
+    font-weight: bold;
+    font-size: 30px;
+    padding:0 10px 0 30px;
+}
+
+.events {
+    max-width: 900px;
+    width: 100%;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: 33% 34% 33%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(230, 176, 76);
+    text-align: center;
+}
+
+.events div {
+    border: 1px solid black;
+    padding: 10px 20px;
+    cursor: pointer;
+   
+}
+
+.events div button {
+    border: 0;
+    outline: 0;  
+    background-color: rgb(230, 176, 76);
+    font-size: 25px;
+}
+
+#mainOrg {
+    padding: 0 10px;
+}
+
+.priv-basketball {
+    display: flex;
+    align-items: center;
+    padding-left: 0 !important;
+}
+
+.org {
+    position: relative;
+    right: -30%;
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 20px 4px;
+    background-color: rgb(230, 176, 76);
+    color: white;
+}
+
+
+.box-inner section input {
+    width: 60%;
+    padding: 5px;
+    border: 0;
+}
+
+.box-right aside:nth-of-type(2) *{
+    margin: 0 5px;
+}
+
+.box-inner section:nth-of-type(9) {
+    max-width: 150px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.box-inner section:nth-of-type(9) input {
+    width: inherit;
+}
+
+
