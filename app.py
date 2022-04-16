@@ -16,6 +16,7 @@ from sendgrid.helpers.mail import Mail
 from python_http_client.exceptions import HTTPError
 import json
 from sys import stderr
+from req_lib import getOneUndergrad
 
 
 #-----------------------------------------------------------------------
@@ -157,7 +158,7 @@ def event_details():
         return redirect(url_for('index'))
   
     details = get_details(event_id)
-    html = render_template('eventdetails-.html', details = details, event_id = event_id, username = username)
+    html = render_template('eventdetails-1.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
 
@@ -200,39 +201,54 @@ def event_update():
     details = get_details(event_id)
 
     if request.method == 'POST':
+        print("IN POST REQUEST")
+        netid = request.form.get('net_id')
+        print("netid: " + netid)
             # update 1 participant if added
-        participant_id = request.form.get('participant_id')
+        # participant_id = request.form.get('participant_id')
         # validate netid
-        if participant_id != None:
-            # add the participant to the eventsparticipants table
-            invite_participant([event_id, participant_id])
-
-        
-            # send email notification of invitation
-                # Need to get netid of user for to_emails
-            details = get_details(event_id)[0]
-
-            message = Mail(
-                from_email='tigerballprinceton@gmail.com',
-                to_emails='nikhil.a244@gmail.com')
-            message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
-            message.dynamic_template_data = {
-                "participant_id": participant_id,
-                "organizer_id": details.get_organizer(),
-                "sport": details.get_sport(),
-                "date": details.get_date(),
-                "start_time": details.get_starttime(),
-                "end_time": details.get_endtime(),
-                "location": details.get_location()
-            }
+        if netid != None:
             try:
-                sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-                response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
+                req = getOneUndergrad(netid=netid)
+                if req.ok:  
+                    undergrad = req.json()
+                    # add the participant to the eventsparticipants table
+                    invite_participant([event_id, undergrad['net_id']])
 
+                    # send email notification of invitation
+                        
+                    details = get_details(event_id)[0]
+
+                    organizer_req = getOneUndergrad(netid=details.get_organizer())
+                    organizer = organizer_req.json()
+                    print("SHOULD BE NIKHIL:" + undergrad['first_name'])
+
+                    message = Mail(
+                        from_email='tigerballprinceton@gmail.com',
+                        to_emails=undergrad['email'])
+                    message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
+                    message.dynamic_template_data = {
+                        "participant_first_name": undergrad['first_name'],    
+                        "organizer_first_name": organizer['first_name'],
+                        "sport": details.get_sport(),
+                        "date": details.get_date(),
+                        "start_time": details.get_starttime(),
+                        "end_time": details.get_endtime(),
+                        "location": details.get_location()
+                    }
+                    try:
+                        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+                        response = sg.send(message)
+                        print(response.status_code)
+                        print(response.body)
+                        print(response.headers)
+
+                    except Exception as ex:
+                        print(ex, file=stderr)
+            
             except Exception as ex:
+                html = "<div class='px-2'><p> A server error occurred. \
+                    Please contact the system administrator. </p></div>"
                 print(ex, file=stderr)
 
 
@@ -256,6 +272,46 @@ def event_update():
     html = render_template('eventupdate-2.html', details = details, event_id = event_id, username = username)
     response = make_response(html)
     return response
+
+#-----------------------------------------------------------------------
+@app.route('/participant', methods=['GET', 'POST'])
+
+def participant():
+
+    event_id = request.args.get('event_id')
+    print("EVENT ID:" + event_id)
+    participantID = request.args.get('participant_id')
+    print("PARTICIPANT ID: " + participantID)
+
+    html = '<table class="table table-striped">\
+                        <tbody id="resultsRows">\
+                        <tr><th>Invite the following student:</th></tr>'
+
+    if len(str(participantID)) >= 3:
+
+        # Display clickable button to invite the specified student 
+        try:
+            
+            req = getOneUndergrad(netid=participantID)
+            if req.ok:  
+                undergrad = req.json()
+                pattern='<tr><td><form action="/eventupdate?event_id=%s" method="post" name="invitevalidatedparticipant"><button name="net_id" value=%s>%s %s</button></form></td></tr>'
+                html += pattern % (event_id, undergrad['net_id'], undergrad['full_name'], undergrad['class_year'])
+            
+            else:
+                html += '<tr><td> Not a valid netid </td></tr>'
+
+            html += "</tbody></table>"
+            response = make_response(html)
+
+        except Exception as ex:
+            html = "<div class='px-2'><p> A server error occurred. \
+                Please contact the system administrator. </p></div>"
+            print(ex, file=stderr)
+
+            response = make_response(html)
+        
+        return response
 
 if __name__ == '__main__':
     app.run(debug=True)

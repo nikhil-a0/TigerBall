@@ -11,6 +11,8 @@
 </head>
     <body>
         <header>
+            <!-- <span>{{event_id}}</span> -->
+            <meta name="event_id" content="{{event_id}}">
             <a href="index">
                 <aside>
                     <i class="fa fa-futbol-o" aria-hidden="true"></i>
@@ -137,35 +139,16 @@
                 </section>
             </form>
 
-            <div>
-                <input class="form-control input-lg" id="participantIdInput" type="text" name="dept" placeholder="Enter the the invitee's name or netid" autofocus> 
-            </div>
-
-
-
             <div class="box-button">
-                Add Participant
-                <form action="?event_id={{event_id}}" method="post" name="updateparticipant">
-                    <table>
-                        <tr>
-                            <td style = "text-align: right">
-                                NetID:
-                            </td>
-                            <td>
-                                <input type="text" name="participant_id" value="{{participant_id}}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                            </td>
-                            <td>
-                                <input type="submit" value="Submit">
-                            </td>
-                        </tr>
-                    </table>
-                </form>
+                <input class="form-control input-lg" id="participantIDInput" type="text" name="participant_id" placeholder="Enter the the invitee's name or netid" autofocus> 
             </div>
-            <div class="container-fluid" id="resultsRows"> Hello World</div>
+
+            <div class="container-fluid" id="resultsRows"></div>
+
+
+
+
+
 
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
@@ -184,15 +167,16 @@
   
            function getResults() 
            {
-              let invitee = $('#inviteeInput').val();
+              let participantID = $('#participantIDInput').val();
+              let event_id = $('meta[name="event_id"]').attr("content");
               
   
-              dept = encodeURIComponent(dept)
-              number = encodeURIComponent(number)
-              area = encodeURIComponent(area)
-              title = encodeURIComponent(title)
+              participantID = encodeURIComponent(participantID)
+              event_id = encodeURIComponent(event_id)
+
+              
   
-              let url = '/searchresults?dept=' + dept + '&number=' + number + '&area=' + area + '&title=' + title
+              let url = '/participant?event_id=' + event_id + '&participant_id=' + participantID
   
               if (request != null)
                  request.abort();
@@ -208,13 +192,11 @@
   
            function setup()
            {
-              $('#deptInput').on('input', getResults);
-              $('#numberInput').on('input', getResults);
-              $('#areaInput').on('input', getResults);
-              $('#titleInput').on('input', getResults);
+              $('#participantIDInput').on('input', getResults);
            }
   
            $('document').ready(setup);
+           var event_id = $('meta[name="event_id"]').attr("content");
            getResults();
         </script>
     </body>
