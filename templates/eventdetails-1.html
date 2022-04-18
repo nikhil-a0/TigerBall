@@ -10,7 +10,7 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
+    <!-- <header>
         <a href="index">
             <aside>
                 <i class="fa fa-futbol-o" aria-hidden="true"></i>
@@ -33,7 +33,7 @@
                 </aside>
             </a>
         </section>
-    </header>
+    </header> -->
 
 
     <div class="box-container">
@@ -42,7 +42,7 @@
             <i class="fa fa-times" aria-hidden="true"></i>
         </div>
 
-        <form class="box-inner" action="?event_id={{event_id}}" method="post">
+        <form class="box-inner" id="register" action="?event_id={{event_id}}" method="post">
             <div class="event-container">
                 <p>response:</p>
                 <div class="events">
@@ -53,7 +53,7 @@
             </div>
 
             <section>
-                <div class="box-left">
+                <div class="box-left" id="registerBox">
                     <aside>
                         <label>sport</label>
                         <p>{{details[0].get_sport()}}</p>
@@ -70,7 +70,7 @@
                     </aside>
                 </div>
 
-                <div class="box-right">
+                <div class="box-right" id="registerBox">
                     <aside>
                         <label>date</label>
                         <p>{{details[0].get_date()}}</p>

@@ -55,7 +55,7 @@
     height: 48px;
     border-radius: 30px;
     border: none;
-    background: red;
+    background:  rgb(255, 177, 85);
     color: white;
     cursor: pointer;
   }
@@ -67,7 +67,7 @@
 
 
 header {
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
     color: black;
     display: flex;
     justify-content: space-between;
@@ -212,14 +212,14 @@ main span {
     padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
     cursor: pointer;
     text-align: center;
 }
 
 .box-button button {
     border: 0;
-    background-color: rgb(230, 176, 76);
+    background-color: rgb(255, 177, 85);
 }
 
 .part {

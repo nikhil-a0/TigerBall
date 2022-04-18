@@ -167,7 +167,7 @@ def search_event(args_arr):
 
         # conditional capacity
         if args_arr[2]:
-            all_filters.append(Events.capacity <= int(args_arr(2)))
+            all_filters.append(Events.capacity <= int(args_arr[2]))
                 
         # conditional event_date
         if args_arr[3]:

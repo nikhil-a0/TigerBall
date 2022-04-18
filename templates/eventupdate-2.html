@@ -11,7 +11,6 @@
 </head>
     <body>
         <header>
-            <!-- <span>{{event_id}}</span> -->
             <meta name="event_id" content="{{event_id}}">
             <a href="index">
                 <aside>
@@ -104,9 +103,12 @@
                 <div class="box-button">
                     <button type="submit">Update</button>
                 </div>
-                <p>attendees</p>
+
+                <p>Attendees</p>
                 <section>
-                    <label>Attending</label>
+                    <aside>
+                        <label>Attending</label>
+                    </aside>
                     <p>
                         {% for part in details[1]: %}
                             {{part}},
@@ -151,8 +153,8 @@
 
 
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
-        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
   
         <script>
            'use strict';
