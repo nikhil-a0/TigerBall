@@ -206,74 +206,79 @@ def event_details():
             
 
         else:
-            print("IN POST REQUEST")
-            netid = request.form.get('net_id')
+            groupinv = request.form.get('groupinv')
+            if groupinv is not None and len(groupinv)>0:
+                groupinvs = groupinv.split(', ')
+                invite_group(event_id, groupinvs)
+            else:
+                print("IN POST REQUEST")
+                netid = request.form.get('net_id')
+                print("netid: " + netid)
+                    # update 1 participant if added
+                # participant_id = request.form.get('participant_id')
+                # validate netid
+                if netid != None:
+                    try:
+                        req = getOneUndergrad(netid=netid)
+                        if req.ok:  
+                            undergrad = req.json()
+                            # add the participant to the eventsparticipants table
+                            invite_participant([event_id, undergrad['net_id']])
 
-                # update 1 participant if added
-            # participant_id = request.form.get('participant_id')
-            # validate netid
-            if netid != None:
-                try:
-                    req = getOneUndergrad(netid=netid)
-                    if req.ok:  
-                        undergrad = req.json()
-                        # add the participant to the eventsparticipants table
-                        invite_participant([event_id, undergrad['net_id']])
+                            # send email notification of invitation
+                                
+                            details = get_details(event_id)[0]
 
-                        # send email notification of invitation
+                            organizer_req = getOneUndergrad(netid=details.get_organizer())
+                            organizer = organizer_req.json()
+                            print("SHOULD BE NIKHIL:" + undergrad['first_name'])
+
+                            message = Mail(
+                                from_email='tigerballprinceton@gmail.com',
+                                to_emails=undergrad['email'])
+                            message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
                             
-                        details = get_details(event_id)[0]
+                            message.dynamic_template_data = {
+                                "participant_first_name": undergrad['first_name'],    
+                                "organizer_first_name": organizer['first_name'],
+                                "sport": details.get_sport(),
+                                "date": str(details.get_date().strftime('%-m/%-d')),
+                                "start_time": str(details.get_starttime().strftime('%I:%M %p')),
+                                "end_time": str(details.get_endtime().strftime('%I:%M %p')),
+                                "location": details.get_location()
+                            }
+                            print("SEND NOW :) ")
+                            try:
+                                sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+                                response = sg.send(message)
+                                print(response.status_code)
+                                print(response.body)
+                                print(response.headers)
 
-                        organizer_req = getOneUndergrad(netid=details.get_organizer())
-                        organizer = organizer_req.json()
-                        print("SHOULD BE NIKHIL:" + undergrad['first_name'])
-
-                        message = Mail(
-                            from_email='tigerballprinceton@gmail.com',
-                            to_emails=undergrad['email'])
-                        message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
-                        
-                        message.dynamic_template_data = {
-                            "participant_first_name": undergrad['first_name'],    
-                            "organizer_first_name": organizer['first_name'],
-                            "sport": details.get_sport(),
-                            "date": str(details.get_date().strftime('%-m/%-d')),
-                            "start_time": str(details.get_starttime().strftime('%I:%M %p')),
-                            "end_time": str(details.get_endtime().strftime('%I:%M %p')),
-                            "location": details.get_location()
-                        }
-                        print("SEND NOW :) ")
-                        try:
-                            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-                            response = sg.send(message)
-                            print(response.status_code)
-                            print(response.body)
-                            print(response.headers)
-
-                        except Exception as ex:
-                            print(ex, file=stderr)
-                
-                except Exception as ex:
-                    html = "<div class='px-2'><p> A server error occurred. \
-                        Please contact the system administrator. </p></div>"
-                    print(ex, file=stderr)
+                            except Exception as ex:
+                                print(ex, file=stderr)
+                    
+                    except Exception as ex:
+                        html = "<div class='px-2'><p> A server error occurred. \
+                            Please contact the system administrator. </p></div>"
+                        print(ex, file=stderr)
 
 
-            initializer_array = [event_id,
-                                request.form.get('sport_c'), 
-                                request.form.get('location_c'), 
-                                request.form.get('date_c'),
-                                request.form.get('start_time_c'),
-                                request.form.get('end_time_c'),
-                                request.form.get('visibility_c'),
-                                request.form.get('organizer_id_c')]
-            changed = False
-            for x in range(1, len(initializer_array)):
-                if initializer_array[x] != None:
-                    changed = True
+                initializer_array = [event_id,
+                                    request.form.get('sport_c'), 
+                                    request.form.get('location_c'), 
+                                    request.form.get('date_c'),
+                                    request.form.get('start_time_c'),
+                                    request.form.get('end_time_c'),
+                                    request.form.get('visibility_c'),
+                                    request.form.get('organizer_id_c')]
+                changed = False
+                for x in range(1, len(initializer_array)):
+                    if initializer_array[x] != None:
+                        changed = True
 
-            if changed == True:
-                update_event(initializer_array)
+                if changed == True:
+                    update_event(initializer_array)
     
 
     if details[0].get_organizer() != username:
