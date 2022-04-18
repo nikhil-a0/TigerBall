@@ -207,7 +207,7 @@ def event_details():
         else:
             print("IN POST REQUEST")
             netid = request.form.get('net_id')
-            print("netid: " + netid)
+
                 # update 1 participant if added
             # participant_id = request.form.get('participant_id')
             # validate netid
@@ -343,13 +343,14 @@ def event_update():
     details = get_details(event_id)
 
     if request.method == 'POST':
-        print("IN POST REQUEST")
+        print("IN POST REQUEST EVENT UPDATE")
         netid = request.form.get('net_id')
-        print("netid: " + netid)
+
             # update 1 participant if added
         # participant_id = request.form.get('participant_id')
         # validate netid
         if netid != None:
+            print("NETID DON't WORK !=  None")
             try:
                 req = getOneUndergrad(netid=netid)
                 if req.ok:  
@@ -397,18 +398,16 @@ def event_update():
         initializer_array = [event_id,
                             request.form.get('sport_c'), 
                             request.form.get('location_c'), 
+                            request.form.get('skill_level_c'),
                             request.form.get('date_c'),
                             request.form.get('start_time_c'),
                             request.form.get('end_time_c'),
-                            request.form.get('visibility_c'),
-                            request.form.get('organizer_id_c')]
-        changed = False
-        for x in range(1, len(initializer_array)):
-            if initializer_array[x] != None:
-                changed = True
-
-        if changed == True:
-            update_event(initializer_array)
+                            request.form.get('capacity_c'),
+                            request.form.get('visibility_c')]
+    
+        print(initializer_array)
+        
+        update_event(initializer_array)
 
         global toOpen
         toOpen = event_id
