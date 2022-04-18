@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Profile</title>
+   </head>
+   {% if error_msg|length > 0 %}
+      <body>
+         <h1>{{username}}'s Profile</h1>
+         <h1>
+            id: {str(event_id)}
+         </h1>
+         <p>
+            {{error_msg}}
+         </p>
+         <hr>
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         <hr>
+      </body>
+   {% else %}
+      <body>
+        <h1>Username: {{username}}</h1>
+        
+        <hr>
+
+        <h2>My groups:</h2>
+
+        <table>
+            <tr>
+               <td>
+                  <strong>Group ID</strong>
+               </td>
+               <td>
+                  <strong>Group Name</strong>
+               </td>
+            </tr>
+
+            {% for group in groups: %}
+               <tr>
+                  <td>
+                     <a href="groupdetails?group_id={{group[0]}}">{{group[0]}}</a>
+                  </td>
+                  <td>
+                     {{group[1]}}
+                  </td>
+               </tr>
+            {% endfor %}
+         </table>
+
+        <hr>
+
+         <p>
+            Click here to go back to the <a href="/">homepage</a>.<br>
+         </p>
+
+         <hr>
+         
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         
+         <hr>
+      </body>
+   {% endif %}
+</html>

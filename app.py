@@ -8,7 +8,8 @@ from flask import render_template
 from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
-    get_status_events
+    get_status_events, create_group, view_groups, get_group_details,\
+    add_to_group, leave_group
 from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
 import os
 from sendgrid import SendGridAPIClient
@@ -100,6 +101,71 @@ def create():
     html = render_template('create.html', username = username)
     response = make_response(html)
     
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/profile', methods=['GET', 'POST'])
+
+def profile():
+    if USERNAME_ == 'normal':
+        username = auth.authenticate().strip()
+    else:
+        username = USERNAME_
+
+    groups = view_groups(username)
+
+    html = render_template('profile.html', username=username, groups=groups)
+    response = make_response(html)
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/creategroup', methods=['GET','POST'])
+def creategroup():
+    if USERNAME_ == 'normal':
+        username = auth.authenticate().strip()
+    else:
+        username = USERNAME_
+
+    if request.method == 'POST':
+        # members are space-separated netids
+        members = request.form.get('members')
+        groupname = request.form.get('groupname')
+        memlist = members.split(' ')
+        initializer_array = [groupname] + memlist
+        create_group(initializer_array, username)
+        return redirect(url_for('profile'))
+
+    html = render_template('creategroup.html', username=username)
+    response = make_response(html)
+
+    return response
+
+#-----------------------------------------------------------------------
+
+@app.route('/groupdetails', methods=['GET', 'POST'])
+def group_details():
+    if USERNAME_ == 'normal':
+        username = auth.authenticate().strip()
+    else:
+        username = USERNAME_
+
+    group_id = request.args.get('group_id')
+    
+    # [groupname, member, member, ...]
+    groupdets = get_group_details(group_id)
+
+    if request.method == 'POST':
+        # space-separated netids
+        newmems = request.form.get('newmems')
+        netids = newmems.split(' ')
+        add_to_group(group_id, netids)
+        return redirect(url_for('groupdetails'))
+
+    html = render_template('groupdetails.html', username=username, groupdets=groupdets, group_id=group_id)
+    response = make_response(html)
+
     return response
 
 #-----------------------------------------------------------------------
