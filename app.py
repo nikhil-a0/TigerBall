@@ -228,15 +228,17 @@ def event_details():
                             from_email='tigerballprinceton@gmail.com',
                             to_emails=undergrad['email'])
                         message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
+                        
                         message.dynamic_template_data = {
                             "participant_first_name": undergrad['first_name'],    
                             "organizer_first_name": organizer['first_name'],
                             "sport": details.get_sport(),
-                            "date": details.get_date(),
-                            "start_time": details.get_starttime(),
-                            "end_time": details.get_endtime(),
+                            "date": str(details.get_date().strftime('%-m/%-d')),
+                            "start_time": str(details.get_starttime().strftime('%I:%M %p')),
+                            "end_time": str(details.get_endtime().strftime('%I:%M %p')),
                             "location": details.get_location()
                         }
+                        print("SEND NOW :) ")
                         try:
                             sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
                             response = sg.send(message)
@@ -311,7 +313,7 @@ def get_my_events():
         username = auth.authenticate().strip()
     else:
         username = USERNAME_
-        
+
     status = 'not checked'
     if request.method == 'GET':
         status = request.args.get('status')
@@ -368,9 +370,9 @@ def event_update():
                         "participant_first_name": undergrad['first_name'],    
                         "organizer_first_name": organizer['first_name'],
                         "sport": details.get_sport(),
-                        "date": details.get_date(),
-                        "start_time": details.get_starttime(),
-                        "end_time": details.get_endtime(),
+                        "date": str(details.get_date().strftime('%-m/%-d')),
+                        "start_time": str(details.get_starttime().strftime('%I:%M %p')),
+                        "end_time": str(details.get_endtime().strftime('%I:%M %p')),
                         "location": details.get_location()
                     }
                     try:
