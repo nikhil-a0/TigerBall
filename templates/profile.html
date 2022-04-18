@@ -1,62 +1,60 @@
 <!DOCTYPE html>
-<html>
-   <head>
-      <title>Profile</title>
-   </head>
-   {% if error_msg|length > 0 %}
-      <body>
-         <h1>{{username}}'s Profile</h1>
-         <h1>
-            id: {str(event_id)}
-         </h1>
-         <p>
-            {{error_msg}}
-         </p>
-         <hr>
-         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
-         <hr>
-      </body>
-   {% else %}
-      <body>
-        <h1>Username: {{username}}</h1>
-        
-        <hr>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='event.css') }}" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Helvetica">
+    <title>Profile</title>
+</head>
+<body>
+    <header>
+        <a href="/">
+            <aside>
+                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                <p>tigerball</p>
+            </aside>
+        </a>
 
-        <h2>My groups:</h2>
+        <section>
+            <a href="/creategroup">
+                <aside>
+                    <p>create group</p>
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </aside>
+            </a>
+            <a href="/">
+                <aside>
+                    <p>homepage</p>
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                </aside>
+            </a>
+        </section>
+    </header>
 
-        <table>
-            <tr>
-               <td>
-                  <strong>Group ID</strong>
-               </td>
-               <td>
-                  <strong>Group Name</strong>
-               </td>
-            </tr>
+    <main>
+        <strong>username: {{username}}</strong>
 
-            {% for group in groups: %}
-               <tr>
-                  <td>
-                     <a href="groupdetails?group_id={{group[0]}}">{{group[0]}}</a>
-                  </td>
-                  <td>
-                     {{group[1]}}
-                  </td>
-               </tr>
-            {% endfor %}
-         </table>
+        <strong>
+            my groups:
+        </strong>
 
-        <hr>
-
-         <p>
-            Click here to go back to the <a href="/">homepage</a>.<br>
-         </p>
-
-         <hr>
-         
-         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
-         
-         <hr>
-      </body>
-   {% endif %}
+        {% for group in groups: %}
+             <a href="groupdetails?group_id={{group[0]}}">
+                 <div class="main-content">
+                     </span>
+                     <div>
+                         <p>group id: {{group[0]}}</p>
+                         <div class="line"></div>
+                         <p>
+                         group name: {{group[1]}}</p>
+                     </div>
+                 </div>
+             </a>
+        {% endfor %}
+    </main>
+</body>
 </html>
