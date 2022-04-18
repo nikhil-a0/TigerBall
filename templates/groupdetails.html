@@ -39,7 +39,9 @@
     <div class="box-container">
         <div class="box-header">
             <h3>group: {{groupdets[0]}}</h3>
-            <i class="fa fa-times" aria-hidden="true"></i>
+            <a href="/profile">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
         </div>
 
         <form class="box-inner" action="?group_id={{group_id}}" method="post">
@@ -77,7 +79,7 @@
                 </div>
 
                 <div class="box-right" id="registerBox">
-                    <p>members</p>
+                    members
                     <section>
                         <p>
                             {% for mem in groupdets[1:]: %}
@@ -87,42 +89,6 @@
                     </section>
                 </div>
             
-
-            <!-- </section>
-
-                <p>attendees</p>
-            <section>
-                <label>Attending</label>
-                <p>
-                    {% for part in details[1]: %}
-                        {{part}},
-                    {% endfor %} 
-                </p>
-            </section>
-            <section>
-                <label>Undecided</label>
-                <p>
-                    {% for part in details[3]: %}
-                        {{part}},
-                    {% endfor %} 
-                </p>
-            </section>
-            <section>
-                <label>Not Attending</label>
-                <p>
-                    {% for part in details[2]: %}
-                        {{part}},
-                    {% endfor %} 
-                </p>
-            </section>
-            <section>
-                <label>No Response</label>
-                <p>
-                    {% for part in details[4]: %}
-                        {{part}},
-                    {% endfor %} 
-                </p>
-            </section> -->
 
         </form>
     </div>

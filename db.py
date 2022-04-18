@@ -92,13 +92,19 @@ def create_group(initializer_array, username):
         Session = sessionmaker(bind=engine)
         session = Session()
 
+        print(initializer_array)
+
         addedGroup = GroupNames(group_name=initializer_array[0])
 
         session.add(addedGroup)
 
+        print("ADDED GROUP")
+
         gp = (session.query(GroupNames)
             .filter(GroupNames.group_name == addedGroup.group_name)
             .order_by(GroupNames.group_id.desc()).first())
+
+        print("gp")
 
         addedMember = GroupsMembers(group_id =
             gp.group_id, member_id = username)

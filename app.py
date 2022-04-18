@@ -132,6 +132,8 @@ def creategroup():
         # members are space-separated netids
         members = request.form.get('members')
         groupname = request.form.get('groupname')
+        print(members)
+        print(groupname)
         memlist = members.split(' ')
         initializer_array = [groupname] + memlist
         create_group(initializer_array, username)
@@ -145,7 +147,7 @@ def creategroup():
 #-----------------------------------------------------------------------
 
 @app.route('/groupdetails', methods=['GET', 'POST'])
-def group_details():
+def groupdetails():
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -161,7 +163,8 @@ def group_details():
         newmems = request.form.get('newmems')
         netids = newmems.split(' ')
         add_to_group(group_id, netids)
-        return redirect(url_for('groupdetails'))
+        #return redirect(url_for('groupdetails'))
+        return redirect('groupdetails?group_id='+group_id)
 
     html = render_template('groupdetails.html', username=username, groupdets=groupdets, group_id=group_id)
     response = make_response(html)
