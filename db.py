@@ -661,6 +661,11 @@ def get_status_events(username, status):
                 event.visibility, event.organizer, event.capacity,
                 event.participant_count, event.skill_level])
             returnEvents.append(return_event)
+            print(event.sport)
+            print(event.event_date)
+            print(event.start_time)
+            print(event.end_time)
+            print("NEXT EVENT ")
         
         session.close()
         engine.dispose()

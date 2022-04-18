@@ -308,6 +308,13 @@ def my_events():
         status = 'attending'
 
     events = get_status_events(username, status)
+    for event in events:
+        # print(event.get_sport())
+        # print(event.get_date())
+        # print(event.get_starttime())
+        # print(event.get_endtime())
+        # print('NEXT')
+
     
     html = render_template('event2.html', status=status, username=username, events=events)
     response = make_response(html)
