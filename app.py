@@ -183,6 +183,7 @@ def event_details():
     details = get_details(event_id)
 
     if request.method == 'POST':
+        print("GOT into POST method from Accept")
 
         if details[0].get_organizer() != username:
                 # update 1 participant if added
@@ -194,6 +195,9 @@ def event_details():
                 status = 'undecided'
 
             update_participant(event_id, username, status)
+
+            global toOpen
+            toOpen = event_id
             return redirect(url_for('index'))
             
 
@@ -294,11 +298,31 @@ def my_events():
 
     events = get_status_events(username, status)
     
-
-
-    html = render_template('event.html', status=status, username=username, events=events)
+    html = render_template('event2.html', status=status, username=username, events=events)
     response = make_response(html)
     return response
+
+@app.route('/get_my_events', methods=['GET'])
+
+
+
+def get_my_events():
+    if USERNAME_ == 'normal':
+        username = auth.authenticate().strip()
+    else:
+        username = USERNAME_
+        
+    status = 'not checked'
+    if request.method == 'GET':
+        status = request.args.get('status')
+    if status == None:
+        status = 'attending'
+
+    events = get_status_events(username, status)
+    html = render_template('my_events.html', status=status, username=username, events=events)
+    response = make_response(html)
+    return response
+
 
 #-----------------------------------------------------------------------
 @app.route('/eventupdate', methods=['GET', 'POST'])

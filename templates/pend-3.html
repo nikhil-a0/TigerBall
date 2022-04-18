@@ -15,18 +15,17 @@
     <header>
         <a href="/">
             <aside>
-                <i class="fa fa-futbol-o" aria-hidden="true"></i>
                 <p>tigerball</p>
             </aside>
         </a>
 
         <section>
-            <a href="create">
+            <div id="createbutton">
                 <aside>
                     <p>create event</p>
                     <i class="fa fa-plus-circle popbtn" aria-hidden="true"></i>
                 </aside>
-            </a>
+            </div>
             <a href="myevents">
                 <aside>
                     <p>my events</p>
@@ -159,15 +158,14 @@
 
     <div class="box-container popal boxModal" id="boxModal">   
         <div class="popal-content">
-            <div class="box-header">
-                <h3>update event</h3>
-                <i class="fa fa-times close" aria-hidden="true"></i>
-            </div>
-
-            <div class="modal-body">
-            </div>
-    
+            <div class="modal-body"></div>
+        </div>
     </div>
+
+    
+
+
+
 
 
     
@@ -175,67 +173,81 @@
 <!-- Create Event -->
 
 
-    <div class="box-container popal boxModal">
+    <div class="box-container popal boxModal" id="create">
         <div class="popal-content">
             <div class="box-header">
                 <h3>create event</h3>
                 <i class="fa fa-times close" aria-hidden="true"></i>
             </div>
-    
-            <form class="box-inner">
+
+            <form action="create" method="post" class="box-inner">
                 <section>
                     <div class="box-left">
                         <aside>
-                            <label>Sport</label>
-                            <input type="text" name="sport">
+                            <label>sport</label>
+                            <select id="sport_c" name="sport_c">
+                                <option value="basketball">Basketball</option>
+                                <option value="soccer">Soccer</option>
+                                <option value="spikeball">Spikeball</option>
+                             </select>
                         </aside>
     
                         <aside>
-                            <label>Location</label>
-                            <input type="text" name="location">
+                            <label>location</label>
+                            <input type="text" name="location_c" value="{{location_c}}">
                         </aside>
     
                         <aside>
                             <label>Skill Level</label>
-                            <input type="text" name="skill">
+                            <select id="skill_level_c" name="skill_level_c">
+                                <option value="no preference">No Preference</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                             </select>
                         </aside>
                     </div>
     
                     <div class="box-right">
                         <aside>
-                            <label>Date</label>
-                            <input type="date" name="date">
+                            <label>date</label>
+                            <input type="date" name="date_c" value="{{date_c}}">
                         </aside>
     
                         <aside>
-                            <label>Start & End time</label>
-                            <input type="time" name="time">
-                            <input type="time" name="time">
+                            <label>Start & end time</label>
+                            <input type="time" name="start_time_c" value="{{start_time_c}}">
+                            <input type="time" name="end_time_c" value="{{end_time_c}}">
                         </aside>
     
                         <aside>
-                            <label>Capacity</label>
-                            <input type="text" name="cap">
+                            <label>capacity</label>
+                            <input type="number" name="capacity_c" value="{{capacity_c}}">
                         </aside>
                     </div>
                 </section>
+                <!-- <section>
+                    <label>invities</label>
+                    <input type="text" name="add"><br>
+                </section>
+                <p class="add">add netid seperated by one space</p> -->
                 <section id="sector">
                     <p>
-                        <input type="radio" name="pub" value="pub">
+                        <input type="radio" id="pub" name="visibility_c" value="public">
                         <label for="pub">Public</label><br>
                     </p>
     
                     <p>
-                        <input type="radio" id="pri" name="pri" value="pri">
+                        <input type="radio" id="pri" name="visibility_c" value="private">
                         <label for="pri">Private</label><br>
                     </p>
                 </section>
     
                 <div class="box-button">
-                    <button type="submit">Create</button>
+                    <input type="submit" value="Submit">
                 </div>
             </form>
-        </div>
+        </div> 
     </div>
 
 <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
@@ -256,7 +268,7 @@
     let request = null;
 
     function getEventDetails()
-    {
+    {   
         let event_id = $(this).data('id');
 
         event_id = encodeURIComponent(event_id)
@@ -275,9 +287,19 @@
         );
     }
 
+    
+
     function setup()
-    {
+    {   
+        // HOVER OVER EVENT
+        $('.popbtn').hover(function(){
+            $(this).css('cursor', 'pointer');
+        })
+
+        // OPEN MODAL IF CLICKED
         $('.popbtn').click(getEventDetails);
+
+        // CLOSE MODAL IF CLICK OFF
         $(document).on('click', function(e){
             if(!(($(e.target).closest("#boxModal").length > 0 )
             || ($(e.target).closest(".close").length > 0)))
@@ -285,11 +307,13 @@
                 $("#boxModal").hide();
             }
         });
-
+        
+        // CLOSE MODAL
         $(".close").click(function(){
             $("#boxModal").modal('hide');
         });
         
+        // AUTO OPEN IF JUST UPDATED
         if (updatedEventValue != 0)
         {   
             let event_id = $('meta[name="updatedEventValue"]').attr("content");
@@ -309,6 +333,10 @@
         );
             
         }
+        // CREATE
+        $('#createbutton').on('click', function() {
+            $('#create').modal('show');
+        });
     }
  
 

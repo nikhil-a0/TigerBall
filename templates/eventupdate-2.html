@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="event_id" content="{{event_id}}">
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css"> -->
+    <meta name="sport" content="{{details[0].get_sport()}}">
+    <meta name="visibility" content="{{details[0].get_visibility()}}">
+    <meta name="skill_level" content="{{details[0].get_skill_level()}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
@@ -41,7 +43,10 @@
 
         
         
-
+        <div class="box-header">
+            <h3>update event</h3>
+            <i class="fa fa-times close" aria-hidden="true"></i>
+        </div>
         <form class="box-inner" action="?event_id={{event_id}}" method="post">
             <section>
                 <div class="box-left">
@@ -213,7 +218,6 @@
            {
                 let participantID = $('#participantIDInput').val();
                 let event_id = $('meta[name="event_id"]').attr("content"); 
-                alert(participantID + event_id);
            }
                 
 
@@ -221,6 +225,19 @@
             function setup()
             {
                 $('#participantIDInput').on('input', getResults);
+
+                var sport = $('meta[name="sport"]').attr("content");
+                var skill_level = $('meta[name="skill_level"]').attr("content")
+                var visibility = $('meta[name="visibility"]').attr("content")
+                $("#sport_c").val(sport);
+                $("#skill_level_c").val(skill_level);
+                if (visibility == 'public'){
+                    $("#pub").prop("checked", true);
+                }
+                else if (visibility == 'private') {
+                    $("#pri").prop("checked", true);
+                }
+                    
             }  
             
 
