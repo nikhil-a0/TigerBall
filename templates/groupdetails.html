@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <title>Document</title>
+</head>
+<body>
+    <!-- <header>
+        <a href="index">
+            <aside>
+                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                <p>tigerball</p>
+            </aside>
+        </a>
+        
+
+        <section>
+            <a href="create">
+                <aside>
+                    <p>create event</p>
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </aside>
+            </a>
+            <a href="index">
+                <aside>
+                    <p>homepage</p>
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                </aside>
+            </a>
+        </section>
+    </header> -->
+
+
+    <div class="box-container">
+        <div class="box-header">
+            <h3>group: {{groupdets[0]}}</h3>
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+
+        <form class="box-inner" action="?group_id={{group_id}}" method="post">
+            <div class="event-container">
+                <div class="events">
+                    <aside>
+                        <label>add members</label>
+                        <input type="text" name="newmems" value="{{newmems}}">
+                    </aside>
+                    <aside>
+                        <input type="submit" name="Add Members" value="Add Members">
+                    </aside>
+                </div>
+
+
+                <!-- <p>response:</p>
+                <div class="events">
+                    <input type="submit" name="Accept" value="Accept">
+                    <input type="submit" name="Decline" value="Decline">
+                    <input type="submit" name="Undecided" value="Undecided">
+                </div> -->
+            </div>
+
+            <section>
+                <div class="box-left" id="registerBox">
+                    <aside>
+                        <label>group name</label>
+                        <p>{{groupdets[0]}}</p>
+                    </aside>
+
+                    <aside>
+                        <label>group id</label>
+                        <p>{{group_id}}</p>
+                    </aside>
+                </div>
+
+                <div class="box-right" id="registerBox">
+                    <p>members</p>
+                    <section>
+                        <p>
+                            {% for mem in groupdets[1:]: %}
+                                {{mem}}
+                            {% endfor %}
+                        </p>
+                    </section>
+                </div>
+            
+
+            <!-- </section>
+
+                <p>attendees</p>
+            <section>
+                <label>Attending</label>
+                <p>
+                    {% for part in details[1]: %}
+                        {{part}},
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <label>Undecided</label>
+                <p>
+                    {% for part in details[3]: %}
+                        {{part}},
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <label>Not Attending</label>
+                <p>
+                    {% for part in details[2]: %}
+                        {{part}},
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <label>No Response</label>
+                <p>
+                    {% for part in details[4]: %}
+                        {{part}},
+                    {% endfor %} 
+                </p>
+            </section> -->
+
+        </form>
+    </div>
+</body>
+</html>

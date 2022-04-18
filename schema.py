@@ -32,3 +32,15 @@ class EventsParticipants (Base):
 	event_id = Column(Integer)
 	participant_id = Column(String)
 	participant_status = Column(String)
+
+class GroupNames (Base):
+	__tablename__ = 'groupnames'
+	group_id = Column(Integer, primary_key=True, autoincrement=True)
+	group_name = Column(String)
+
+class GroupsMembers (Base):
+	__tablename__ = 'groupsmembers'
+	gm_id = Column(Integer, primary_key=True, autoincrement=True)
+	group_id = Column(Integer)
+	member_id = Column(String)
+

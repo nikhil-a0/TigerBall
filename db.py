@@ -78,6 +78,179 @@ def create_event(initializer_array):
         print(ex, file=stderr)
         exit(1)
 
+# initializer_array: [groupname, member, member, ...]
+def create_group(initializer_array, username):
+    try:
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        addedGroup = GroupNames(group_name=initializer_array[0])
+
+        session.add(addedGroup)
+
+        gp = (session.query(GroupNames)
+            .filter(GroupNames.group_name == addedGroup.group_name)
+            .order_by(GroupNames.group_id.desc()).first())
+
+        addedMember = GroupsMembers(group_id =
+            gp.group_id, member_id = username)
+
+        session.add(addedMember)
+
+        # consider checking for repeats to ensure no double-counting
+        for mem in initializer_array[1:]:
+            addedMember = GroupsMembers(group_id = gp.group_id, member_id = mem)
+            session.add(addedMember)
+        
+        session.commit()
+        
+
+        session.close()
+        engine.dispose()
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
+# see the groups you're in, returns [[gpid, gpname], ...]
+def view_groups(username):
+    try:
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        groups = session.query(GroupNames).join(GroupsMembers, GroupNames.group_id == GroupsMembers.group_id).\
+            filter(GroupsMembers.member_id == username).\
+            order_by(GroupNames.group_id.desc()).all()
+
+        returnGroups = []
+        for group in groups:
+            lst = [group.group_id, group.group_name]
+            returnGroups.append(lst)
+        
+        session.close()
+        engine.dispose()
+        
+        return returnGroups
+          
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
+# see group name and who's in the group
+def get_group_details(group_id):
+    try:
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        groupdets = []
+
+        # search for event in events and get the details, add them to array
+        gp = (session.query(GroupNames).
+            filter(GroupNames.group_id == group_id).one())
+
+        groupdets.append(gp.group_name)
+
+        memsQuery = (session.query(GroupsMembers).
+            filter(GroupsMembers.group_id == group_id).all())
+        for mem in memsQuery:
+            groupdets.append(mem.member_id)
+
+        session.commit()
+
+        session.close()
+        engine.dispose()
+
+        return groupdets
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
+# add netids to group, no double counting
+def add_to_group(group_id, netids):
+    try:
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        for netid in netids:
+            exists = (session.query(GroupsMembers).
+                filter(GroupsMembers.group_id == group_id).
+                filter(GroupsMembers.member_id == netid).all())
+            if len(exists) == 0:
+                newRow = GroupsMembers(group_id=group_id, member_id=netid)
+                session.add(newRow)
+
+        session.commit()
+
+        session.close()
+        engine.dispose()
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
+# leave the group
+def leave_group(group_id, username):
+    print('not implemented in app.py yet')
+    try:
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        gms_to_delete = (session.query(GroupsMembers)
+                        .filter(GroupsMembers.group_id == group_id)
+                        .filter(GroupsMembers.member_id == username))
+        for gm in gms_to_delete:
+            session.delete(gm)
+
+        session.commit()
+        session.close()
+        engine.dispose()
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
 def update_event(args_arr):
     try:
         if ENVIRONMENT_ == 'deploy':
