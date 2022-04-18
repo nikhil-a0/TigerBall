@@ -31,6 +31,8 @@ app.secret_key = APP_SECRET_KEY
 
 import auth
 
+toOpen = 0
+
 #-----------------------------------------------------------------------
 
 @app.route('/', methods=['GET', 'POST'])
@@ -65,7 +67,9 @@ def index():
     # print("after get")
     # print(pending_events)
     events = search_event(query_data)
-    html = render_template('pend-3.html', events = events, username = username, pending_events = pending_events)
+    global toOpen
+    html = render_template('pend-3.html', events = events, username = username, pending_events = pending_events, updatedEventValue = toOpen) 
+    toOpen = 0
     response = make_response(html)
     
     return response
@@ -310,11 +314,17 @@ def event_update():
 
         if changed == True:
             update_event(initializer_array)
+
+        global toOpen
+        toOpen = event_id
+
+    return redirect(url_for('index'))
+        
     
-    details = get_details(event_id)
-    html = render_template('eventupdate-2.html', details = details, event_id = event_id, username = username)
-    response = make_response(html)
-    return response
+    
+
+
+
 
 #-----------------------------------------------------------------------
 @app.route('/participant', methods=['GET', 'POST'])
@@ -334,11 +344,11 @@ def participant():
 
         # Display clickable button to invite the specified student 
         try:
-            
+
             req = getOneUndergrad(netid=participantID)
             if req.ok:  
                 undergrad = req.json()
-                pattern='<tr><td><form action="/eventupdate?event_id=%s" method="post" name="invitevalidatedparticipant"><button name="net_id" value=%s>%s %s</button></form></td></tr>'
+                pattern=pattern='<tr><td><form action="/eventupdate?event_id=%s" method="post" name="invitevalidatedparticipant"><button name="net_id" value=%s>%s %s</button></form></td></tr>'
                 html += pattern % (event_id, undergrad['net_id'], undergrad['full_name'], undergrad['class_year'])
             
             else:
@@ -355,6 +365,12 @@ def participant():
             response = make_response(html)
         
         return response
+    
+    else:
+        html='<table class="table table-striped">\
+                        <tbody id="resultsRows">\
+                        <tr><th>Netid must be at least three characters. </th></tr>'
+        
 
 if __name__ == '__main__':
     app.run(debug=True)

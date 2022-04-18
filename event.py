@@ -8,9 +8,12 @@ class Event:
         self._event_id = initializer_array[0]
         self._sport = initializer_array[1]
         self._location =  initializer_array[2]
-        self._date = initializer_array[3].strftime('%-m/%-d')
-        self._starttime = initializer_array[4].strftime('%I:%M %p')
-        self._endtime = initializer_array[5].strftime('%I:%M %p')
+        self._date = initializer_array[3]
+        self._starttime = initializer_array[4]
+        self._endtime = initializer_array[5]
+        # self._date = initializer_array[3].strftime('%-m/%-d')
+        # self._starttime = initializer_array[4].strftime('%I:%M %p')
+        # self._endtime = initializer_array[5].strftime('%I:%M %p')
         self._visibility = initializer_array[6]
         self._organizer = initializer_array[7]
         self._capacity = initializer_array[8]

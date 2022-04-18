@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css">
+    <meta name="event_id" content="{{event_id}}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <title>Document</title>
 </head>
     <body>
-        <header>
+        <!-- <header>
             <meta name="event_id" content="{{event_id}}">
             <a href="index">
                 <aside>
@@ -33,173 +36,202 @@
                     </aside>
                 </a>
             </section>
-        </header>
+        </header> -->
 
 
-        <div class="box-container">
-            <div class="box-header">
-                <h3>update event</h3>
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </div>
+        
+        
 
-            <form class="box-inner" action="?event_id={{event_id}}" method="post">
-                <section>
-                    <div class="box-left">
-                        <aside>
-                            <label>Sport</label>
-                            <select id="sport_c" name="sport_c">
-                                <option value="basketball">Basketball</option>
-                                <option value="soccer">Soccer</option>
-                                <option value="spikeball">Spikeball</option>
-                            </select>
-                        </aside>
+        <form class="box-inner" action="?event_id={{event_id}}" method="post">
+            <section>
+                <div class="box-left">
+                    <aside>
+                        <label>Sport</label>
+                        <select id="sport_c" name="sport_c">
+                            <option value="basketball">Basketball</option>
+                            <option value="soccer">Soccer</option>
+                            <option value="spikeball">Spikeball</option>
+                        </select>
+                    </aside>
 
-                        <aside>
-                            <label>Location</label>
-                            <input type="text" name="location_c" value="{{details[0].get_location()}}">
-                        </aside>
+                    <aside>
+                        <label>Location</label>
+                        <input type="text" name="location_c" value="{{details[0].get_location()}}">
+                    </aside>
 
-                        <aside>
-                            <label>Skill Level</label>
-                            <select id="skill_level_c" name="skill_level_c">
-                                <option value="no preference">No Preference</option>
-                                <option value="beginner">Beginner</option>
-                                <option value="intermediate">Intermediate</option>
-                                <option value="advanced">Advanced</option>
-                            </select>
-                        </aside>
-                    </div>
-
-                    <div class="box-right">
-                        <aside>
-                            <label>Date</label>
-                            <input type="date" name="date_c" value="{{details[0].get_date()}}">
-                        </aside>
-
-                        <aside>
-                            <label>Start & end time</label>
-                            <input type="time" name="start_time_c" value="{{details[0].get_starttime()}}">
-                            <input type="time" name="end_time_c" value="{{details[0].get_endtime()}}">
-                        </aside>
-
-                        <aside>
-                            <label>Capacity</label>
-                            <input type="number" name="capacity_c" value="{{details[0].get_capacity()}}">
-                        </aside>
-                    </div>
-                </section>
-                <section id="sector">
-                    <p>
-                        <input type="radio" id="pub" name="visibility_c" value="public">
-                        <label for="pub">Public</label><br>
-                    </p>
-
-                    <p>
-                        <input type="radio" id="pri" name="visibility_c" value="private">
-                        <label for="pri">Private</label><br>
-                    </p>
-                </section>
-
-                <div class="box-button">
-                    <button type="submit">Update</button>
+                    <aside>
+                        <label>Skill Level</label>
+                        <select id="skill_level_c" name="skill_level_c">
+                            <option value="no preference">No Preference</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </aside>
                 </div>
 
-                <p>Attendees</p>
-                <section>
+                <div class="box-right">
                     <aside>
-                        <label>Attending</label>
+                        <label>Date</label>
+                        <input type="date" name="date_c" value="{{details[0].get_date()}}">
                     </aside>
-                    <p>
-                        {% for part in details[1]: %}
-                            {{part}},
-                        {% endfor %} 
-                    </p>
-                </section>
-                <section>
-                    <label>Undecided</label>
-                    <p>
-                        {% for part in details[3]: %}
-                            {{part}},
-                        {% endfor %} 
-                    </p>
-                </section>
-                <section>
-                    <label>Not Attending</label>
-                    <p>
-                        {% for part in details[2]: %}
-                            {{part}},
-                        {% endfor %} 
-                    </p>
-                </section>
-                <section>
-                    <label>No Response</label>
-                    <p>
-                        {% for part in details[4]: %}
-                            {{part}},
-                        {% endfor %} 
-                    </p>
-                </section>
-            </form>
 
-            <div class="box-button">
-                <input class="form-control input-lg" id="participantIDInput" type="text" name="participant_id" placeholder="Enter the the invitee's name or netid" autofocus> 
+                    <aside>
+                        <label>Start & end time</label>
+                        <input type="time" name="start_time_c" value="{{details[0].get_starttime()}}">
+                        <input type="time" name="end_time_c" value="{{details[0].get_endtime()}}">
+                    </aside>
+
+                    <aside>
+                        <label>Capacity</label>
+                        <input type="number" name="capacity_c" value="{{details[0].get_capacity()}}">
+                    </aside>
+                </div>
+            </section>
+
+            <section id="sector">
+                <p>
+                    <input type="radio" id="pub" name="visibility_c" value="public">
+                    <label for="pub">Public</label><br>
+                </p>
+
+                <p>
+                    <input type="radio" id="pri" name="visibility_c" value="private">
+                    <label for="pri">Private</label><br>
+                </p>
+            </section>
+
+            <div class="box-button" id="submitbutton">
+                <button type="submit">Update</button>
             </div>
 
-            <div class="container-fluid" id="resultsRows"></div>
+            
+            <p>Attendees</p>
+            <section>
+                <aside>
+                    <label>Attending</label>
+                </aside>
+                <p>
+                    {% for part in details[1]: %}
+                        {% if part == details[1][details[1]|length -1]: %}
+                        {{part}}
+                        {% else %}
+                        {{part}},
+                        {% endif %}
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <aside>
+                    <label>Undecided</label>
+                </aside>
+                <p>
+                    {% for part in details[3]: %}
+                        {% if part == details[3][details[3]|length -1]: %}
+                        {{part}}
+                        {% else %}
+                        {{part}},
+                        {% endif %}
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <aside>
+                    <label>Not Attending</label>
+                </aside>
+                <p>
+                    {% for part in details[2]: %}
+                        {% if part == details[2][details[2]|length -1]: %}
+                        {{part}}
+                        {% else %}
+                        {{part}},
+                        {% endif %}
+                    {% endfor %} 
+                </p>
+            </section>
+            <section>
+                <aside>
+                    <label>No Response</label>
+                </aside>
+                
+                <p>
+                    {% for part in details[4]: %}
+                        {% if part == details[4][details[4]|length -1]: %}
+                        {{part}}
+                        {% else %}
+                        {{part}},
+                        {% endif %}
+                    {% endfor %} 
+                </p>
+            </section>
+        </form>
 
+        <div class="box-button">
+            <input class="form-control input-lg" id="participantIDInput" type="text" name="participant_id" placeholder="Enter the invitee's netid" autofocus> 
+        </div>
 
-
-
-
+        <div class="box-inner" id="resultsRows">
 
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+
+
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 
   
         <script>
            'use strict';
   
   
-           function handleResponse(response)
-           {
-              $('#resultsRows').html(response);
-           }
-  
-           let request = null;
-  
-           function getResults() 
-           {
-              let participantID = $('#participantIDInput').val();
-              let event_id = $('meta[name="event_id"]').attr("content");
-              
-  
-              participantID = encodeURIComponent(participantID)
-              event_id = encodeURIComponent(event_id)
+            function handleResponse(response)
+            {
+                $('#resultsRows').html(response);
+            }
+            
+            function getResults()
+            {
+                let participantID = $('#participantIDInput').val();
+                let event_id = $('meta[name="event_id"]').attr("content");
 
-              
-  
-              let url = '/participant?event_id=' + event_id + '&participant_id=' + participantID
-  
-              if (request != null)
-                 request.abort();
-  
-              request = $.ajax(
-                 {
+                participantID = encodeURIComponent(participantID)
+                event_id = encodeURIComponent(event_id)
+
+                let url = '/participant?event_id=' + event_id + '&participant_id=' + participantID
+
+                if (request != null)
+                    request.abort();
+                
+                request = $.ajax(
+                {
                     type: 'GET',
                     url: url,
                     success: handleResponse
-                 }
-              );
+                });
            }
-  
-           function setup()
+
+           function invite()
            {
-              $('#participantIDInput').on('input', getResults);
+                let participantID = $('#participantIDInput').val();
+                let event_id = $('meta[name="event_id"]').attr("content"); 
+                alert(participantID + event_id);
            }
+                
+
+
+            function setup()
+            {
+                $('#participantIDInput').on('input', getResults);
+            }  
+            
+
+            $('document').ready(setup);
+            
+            console.log("hello world 2");
+
   
-           $('document').ready(setup);
-           var event_id = $('meta[name="event_id"]').attr("content");
-           getResults();
+                      
+           // var event_id = $('meta[name="event_id"]').attr("content");
+            //    getResults();
         </script>
     </body>
 </html>

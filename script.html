@@ -1,0 +1,16 @@
+'<script>
+
+    function invite()
+    {
+        let participantID = $('#participantIDInput').val();
+        let event_id = $('meta[name="event_id"]').attr("content"); 
+        alert(participantID + event_id);
+    }
+
+    function setup()
+    {
+        $('#participant').on('click', invite)
+    }
+
+    $('document').ready(setup);
+</script>'
