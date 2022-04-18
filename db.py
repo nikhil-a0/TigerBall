@@ -457,6 +457,44 @@ def invite_participant(args_arr):
         print(ex, file=stderr)
         exit(1)
 
+# groupinvs is a list of group names
+def invite_group(event_id, groupinvs):
+    try:
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        for group in groupinvs:
+            gn = (session.query(GroupNames).
+                filter(GroupNames.group_name == group).first())
+            gnid = gn.group_id
+            memsToAdd = (session.query(GroupsMembers).
+                filter(GroupsMembers.group_id == gnid).all())
+            for mem in memsToAdd:
+                exists = (session.query(EventsParticipants).
+                    filter(EventsParticipants.event_id == event_id).
+                    filter(EventsParticipants.participant_id == mem).all())
+                if len(exists) == 0:
+                    newRow = EventsParticipants(event_id = event_id, participant_id =
+                        mem, participant_status = "no response")
+                    session.add(newRow)
+
+        session.commit()
+
+        session.close()
+        engine.dispose()
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
 def update_participant(eventid, username, status):
     try:
         if ENVIRONMENT_ == 'deploy':
