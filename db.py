@@ -8,7 +8,7 @@
 from sys import argv, stderr, exit
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from schema import Base, Events, EventsParticipants
+from schema import Base, Events, EventsParticipants, GroupNames, GroupsMembers
 import psycopg2
 from psycopg2 import connect
 from event import Event
