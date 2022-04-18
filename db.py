@@ -278,15 +278,14 @@ def update_event(args_arr):
             .one())
         ev.sport = args_arr[1]
         ev.location = args_arr[2]
-        ev.event_date = args_arr[3]
-        ev.start_time = args_arr[4]
-        ev.end_time = args_arr[5]
-        ev.visibility = args_arr[6]
-        ev.organizer = args_arr[7]
+        ev.skill_level = args_arr[3]
+        ev.event_date = args_arr[4]
+        ev.start_time = args_arr[5]
+        ev.end_time = args_arr[6]
+        ev.capacity = args_arr[7]
+        ev.visibility = args_arr[8]
         
         session.commit()
-        
-
         session.close()
         engine.dispose()
 

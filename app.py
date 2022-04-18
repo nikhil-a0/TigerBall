@@ -60,8 +60,9 @@ def index():
                     request.args.get('date'),
                     request.args.get('start_time'),
                     request.args.get('end_time')]
+ 
         for i in range(0, len(query_data)):
-            if query_data[i] is None:
+            if query_data[i] is None or query_data[0] == 'none':
                 query_data[i] = ''
     
 #  
@@ -348,13 +349,14 @@ def event_update():
     details = get_details(event_id)
 
     if request.method == 'POST':
-        print("IN POST REQUEST")
+        print("IN POST REQUEST EVENT UPDATE")
         netid = request.form.get('net_id')
-        print("netid: " + netid)
+
             # update 1 participant if added
         # participant_id = request.form.get('participant_id')
         # validate netid
         if netid != None:
+            print("NETID DON't WORK !=  None")
             try:
                 req = getOneUndergrad(netid=netid)
                 if req.ok:  
@@ -399,20 +401,20 @@ def event_update():
                 print(ex, file=stderr)
 
 
-        initializer_array = [event_id,
-                            request.form.get('sport_c'), 
-                            request.form.get('location_c'), 
-                            request.form.get('date_c'),
-                            request.form.get('start_time_c'),
-                            request.form.get('end_time_c'),
-                            request.form.get('visibility_c'),
-                            request.form.get('organizer_id_c')]
-        changed = False
-        for x in range(1, len(initializer_array)):
-            if initializer_array[x] != None:
-                changed = True
 
-        if changed == True:
+        else:
+            initializer_array = [event_id,
+                                request.form.get('sport_c'), 
+                                request.form.get('location_c'), 
+                                request.form.get('skill_level_c'),
+                                request.form.get('date_c'),
+                                request.form.get('start_time_c'),
+                                request.form.get('end_time_c'),
+                                request.form.get('capacity_c'),
+                                request.form.get('visibility_c')]
+        
+            print(initializer_array)
+            
             update_event(initializer_array)
 
         global toOpen
