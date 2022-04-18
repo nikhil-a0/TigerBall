@@ -60,8 +60,9 @@ def index():
                     request.args.get('date'),
                     request.args.get('start_time'),
                     request.args.get('end_time')]
+ 
         for i in range(0, len(query_data)):
-            if query_data[i] is None:
+            if query_data[i] is None or query_data[0] == 'none':
                 query_data[i] = ''
     
 #  
@@ -395,19 +396,21 @@ def event_update():
                 print(ex, file=stderr)
 
 
-        initializer_array = [event_id,
-                            request.form.get('sport_c'), 
-                            request.form.get('location_c'), 
-                            request.form.get('skill_level_c'),
-                            request.form.get('date_c'),
-                            request.form.get('start_time_c'),
-                            request.form.get('end_time_c'),
-                            request.form.get('capacity_c'),
-                            request.form.get('visibility_c')]
-    
-        print(initializer_array)
+
+        else:
+            initializer_array = [event_id,
+                                request.form.get('sport_c'), 
+                                request.form.get('location_c'), 
+                                request.form.get('skill_level_c'),
+                                request.form.get('date_c'),
+                                request.form.get('start_time_c'),
+                                request.form.get('end_time_c'),
+                                request.form.get('capacity_c'),
+                                request.form.get('visibility_c')]
         
-        update_event(initializer_array)
+            print(initializer_array)
+            
+            update_event(initializer_array)
 
         global toOpen
         toOpen = event_id
