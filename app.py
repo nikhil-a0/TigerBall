@@ -164,8 +164,8 @@ def groupdetails():
         newmems = request.form.get('newmems')
         netids = newmems.split(' ')
         add_to_group(group_id, netids)
-        #return redirect(url_for('groupdetails'))
-        return redirect('groupdetails?group_id='+group_id)
+        return redirect(url_for('profile'))
+        #return redirect('groupdetails?group_id='+group_id)
 
     html = render_template('groupdetails.html', username=username, groupdets=groupdets, group_id=group_id)
     response = make_response(html)
