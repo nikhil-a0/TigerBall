@@ -43,15 +43,7 @@ def main():
         # Base.metadata.create_all(engine)
 
 
-        conn = psycopg2.connect(database='postgresql',
-            port=5432)
-        conn.autocommit = True
-        cursor = conn.cursor()
-        cursor.execute("DROP DATABASE IF EXISTS d5olnm6egr5314")
-        cursor.execute("CREATE DATABASE d5olnm6egr5314")
-        print('DATABASE CREATED')
-
-        engine = create_engine(DATABASE_URL,
+            engine = create_engine(DATABASE_URL,
             creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
         
         Session = sessionmaker(bind=engine)
@@ -60,6 +52,8 @@ def main():
 
         Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
+
+        
 
         #---------------------------------------------------------------
 
