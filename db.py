@@ -456,8 +456,7 @@ def invite_participant(args_arr):
         print(ex, file=stderr)
         exit(1)
 
-# groupinvs is a list of group names
-def invite_group(event_id, groupinvs):
+def find_group_id(group_name):
     try:
         if ENVIRONMENT_ == 'deploy':
             engine = create_engine(DATABASE_URL,
@@ -470,20 +469,55 @@ def invite_group(event_id, groupinvs):
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        for group in groupinvs:
-            gn = (session.query(GroupNames).
-                filter(GroupNames.group_name == group).first())
-            gnid = gn.group_id
-            memsToAdd = (session.query(GroupsMembers).
-                filter(GroupsMembers.group_id == gnid).all())
-            for mem in memsToAdd:
-                exists = (session.query(EventsParticipants).
-                    filter(EventsParticipants.event_id == event_id).
-                    filter(EventsParticipants.participant_id == mem).all())
-                if len(exists) == 0:
-                    newRow = EventsParticipants(event_id = event_id, participant_id =
-                        mem, participant_status = "no response")
-                    session.add(newRow)
+        gns = (session.query(GroupNames).
+                filter(GroupNames.group_name == group_name).all())
+
+        if len(gns) == 0:
+            gid = None
+        else:
+            gid = gns[0].group_id
+
+        session.commit()
+
+        session.close()
+        engine.dispose()
+
+        return gid
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+
+# gid is the group id
+def invite_group(event_id, gid):
+    try:
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        print('GOT TO PART 1')
+        memsToAdd = (session.query(GroupsMembers).
+                filter(GroupsMembers.group_id == gid).all())
+        print('GOT TO PART 2')
+        print(len(memsToAdd))
+        for mem in memsToAdd:
+            print('2.5')
+            exists = (session.query(EventsParticipants).
+                filter(EventsParticipants.event_id == event_id).
+                filter(EventsParticipants.participant_id == mem.member_id).all())
+            print('GOT TO PART 3')
+            if len(exists) == 0:
+                newRow = EventsParticipants(event_id = event_id, participant_id =
+                    mem.member_id, participant_status = "no response")
+                session.add(newRow)
+                print('GOT TO PART 4')
 
         session.commit()
 

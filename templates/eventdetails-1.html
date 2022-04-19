@@ -129,7 +129,11 @@
             <label>No Response</label>
             <p>
                 {% for part in details[4]: %}
+                    {% if part == details[4][details[4]|length -1]: %}
+                    {{part}}
+                    {% else %}
                     {{part}},
+                    {% endif %}
                 {% endfor %} 
             </p>
         </section>
