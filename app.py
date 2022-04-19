@@ -231,7 +231,6 @@ def event_details():
 
                             organizer_req = getOneUndergrad(netid=details.get_organizer())
                             organizer = organizer_req.json()
-                            print("SHOULD BE NIKHIL:" + undergrad['first_name'])
 
                             message = Mail(
                                 from_email='tigerballprinceton@gmail.com',
