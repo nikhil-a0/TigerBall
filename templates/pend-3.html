@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css">
-    <title>Document</title>
+    <title>TigerBall</title>
 </head>
 <body>
     <header>
@@ -26,9 +26,9 @@
                     <i class="fa fa-plus-circle popbtn" aria-hidden="true"></i>
                 </aside>
             </div>
-            <a href="myevents">
+            <a href="profile">
                 <aside>
-                    <p>my events</p>
+                    <p>profile</p>
                     <i class="fa fa-user-circle" aria-hidden="true"></i>
                 </aside>
             </a>
@@ -150,6 +150,10 @@
 
         </div>
         {% endfor %}
+
+        {% if events|length == 0 %}
+        <p> No events of this category found </p>
+        {% endif %}
 <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
 <!-- Update event -->
 
