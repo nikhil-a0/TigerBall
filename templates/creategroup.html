@@ -4,35 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css"> 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <title>Tigerball</title>
 </head>
 <body>
     <header>
-        <a href="index">
+        <a href="/">
             <aside>
-                <i class="fa fa-futbol-o" aria-hidden="true"></i>
                 <p>tigerball</p>
             </aside>
         </a>
 
         <section>
-            <a href="/">
+            <div id="createbutton">
                 <aside>
-                    <p>homepage</p>
-                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <p>create group</p>
+                    <i class="fa fa-plus-circle popbtn" aria-hidden="true"></i>
+                </aside>
+            </div>
+            <a href="myevents">
+                <aside>
+                    <p>my events</p>
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>
                 </aside>
             </a>
         </section>
+
+
+
     </header>
 
     <div class="box-container">
-        <div class="box-header">
-            <h3>create group</h3>
-            <i class="fa fa-times" aria-hidden="true"></i>
-        </div>
+        
 
         <form action="creategroup" method="post" class="box-inner">
             <section>

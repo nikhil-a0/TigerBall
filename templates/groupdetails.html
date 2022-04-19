@@ -1,10 +1,10 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <title>Document</title>
@@ -36,61 +36,59 @@
     </header> -->
 
 
-    <div class="box-container">
-        <div class="box-header">
-            <h3>group: {{groupdets[0]}}</h3>
-            <a href="/profile">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </a>
-        </div>
+    <div class="box-header">
+        <h3>group: {{groupdets[0]}}</h3>
+        <a href="/profile">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
 
-        <form class="box-inner" action="?group_id={{group_id}}" method="post">
-            <div class="event-container">
-                <div class="events">
-                    <aside>
-                        <label>add members</label>
-                        <input type="text" name="newmems" value="{{newmems}}">
-                    </aside>
-                    <aside>
-                        <input type="submit" name="Add Members" value="Add Members">
-                    </aside>
-                </div>
-
-
-                <!-- <p>response:</p>
-                <div class="events">
-                    <input type="submit" name="Accept" value="Accept">
-                    <input type="submit" name="Decline" value="Decline">
-                    <input type="submit" name="Undecided" value="Undecided">
-                </div> -->
+    <form class="box-inner" action="?group_id={{group_id}}" method="post">
+        <div class="event-container">
+            <div class="events">
+                <aside>
+                    <label>add members</label>
+                    <input type="text" name="newmems" value="{{newmems}}">
+                </aside>
+                <aside>
+                    <input type="submit" name="Add Members" value="Add Members">
+                </aside>
             </div>
 
-            <section>
-                <div class="box-left" id="registerBox">
-                    <aside>
-                        <label>group name</label>
-                        <p>{{groupdets[0]}}</p>
-                    </aside>
 
-                    <aside>
-                        <label>group id</label>
-                        <p>{{group_id}}</p>
-                    </aside>
-                </div>
+            <!-- <p>response:</p>
+            <div class="events">
+                <input type="submit" name="Accept" value="Accept">
+                <input type="submit" name="Decline" value="Decline">
+                <input type="submit" name="Undecided" value="Undecided">
+            </div> -->
+        </div>
 
-                <div class="box-right" id="registerBox">
-                    members
-                    <section>
-                        <p>
-                            {% for mem in groupdets[1:]: %}
-                                {{mem}}
-                            {% endfor %}
-                        </p>
-                    </section>
-                </div>
-            
+        <section>
+            <div class="box-left" id="registerBox">
+                <aside>
+                    <label>group name</label>
+                    <p>{{groupdets[0]}}</p>
+                </aside>
 
-        </form>
-    </div>
+                <aside>
+                    <label>group id</label>
+                    <p>{{group_id}}</p>
+                </aside>
+            </div>
+
+            <div class="box-right" id="registerBox">
+                members
+                <section>
+                    <p>
+                        {% for mem in groupdets[1:]: %}
+                            {{mem}}
+                        {% endfor %}
+                    </p>
+                </section>
+            </div>
+        
+
+    </form>
 </body>
 </html>
