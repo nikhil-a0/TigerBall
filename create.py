@@ -43,7 +43,7 @@ def main():
         # Base.metadata.create_all(engine)
 
 
-            engine = create_engine(DATABASE_URL,
+        engine = create_engine(DATABASE_URL,
             creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
         
         Session = sessionmaker(bind=engine)
