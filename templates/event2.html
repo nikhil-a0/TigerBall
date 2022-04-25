@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="updatedEventValue" content="{{updatedEventValue}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='event-3.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
@@ -12,10 +15,10 @@
     <title>My Events</title>
 </head>
 <body>
-    <header>
+    <header id="myheader">
         <a href="/">
             <aside>
-                <p>tigerball</p>
+                <p>TigerBall</p>
             </aside>
         </a>
 
@@ -30,7 +33,7 @@
     </header>
 
     <main>
-        <strong>my events</strong><span>see all events you're organizing and have responded to</span>
+        <strong>My Events</strong><span>see all events you're organizing and have responded to </span>
 
         <div class="events">
             <div class="button" data-id=attending>
@@ -62,7 +65,7 @@
                     &#128993;
                     {% elif event.get_sport() == 'football' %}
                     &#127944;
-                    {% endif %}    
+                    {% endif %}   
                 </span>
                 <div>
                     <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
@@ -93,7 +96,7 @@
 <div class="box-container popal boxModal" id="create">
     <div class="popal-content">
         <div class="box-header">
-            <h3>create event</h3>
+            <h3>Create Event</h3>
             <i class="fa fa-times close" aria-hidden="true"></i>
         </div>
 
@@ -102,7 +105,7 @@
                 <div class="box-left">
                     <aside>
                         <label>sport</label>
-                        <select id="sport_c" name="sport_c">
+                        <select id="sport_c" name="sport_c" class="form-control">
                             <option value="basketball">Basketball</option>
                             <option value="soccer">Soccer</option>
                             <option value="spikeball">Spikeball</option>
@@ -111,12 +114,12 @@
 
                     <aside>
                         <label>location</label>
-                        <input type="text" name="location_c" value="{{location_c}}">
+                        <input type="text" name="location_c" class="form-control" value="{{location_c}}">
                     </aside>
 
                     <aside>
                         <label>Skill Level</label>
-                        <select id="skill_level_c" name="skill_level_c">
+                        <select id="skill_level_c" class="form-control" name="skill_level_c">
                             <option value="no preference">No Preference</option>
                             <option value="beginner">Beginner</option>
                             <option value="intermediate">Intermediate</option>
@@ -128,18 +131,18 @@
                 <div class="box-right">
                     <aside>
                         <label>date</label>
-                        <input type="date" name="date_c" value="{{date_c}}">
+                        <input type="date" name="date_c" class="form-control" value="{{date_c}}">
                     </aside>
 
                     <aside>
                         <label>Start & end time</label>
-                        <input type="time" name="start_time_c" value="{{start_time_c}}">
-                        <input type="time" name="end_time_c" value="{{end_time_c}}">
+                        <input type="time" name="start_time_c" class="form_control" value="{{start_time_c}}">
+                        <input type="time" name="end_time_c" class="form-control" value="{{end_time_c}}">
                     </aside>
 
                     <aside>
                         <label>capacity</label>
-                        <input type="number" name="capacity_c" value="{{capacity_c}}">
+                        <input type="number" name="capacity_c" class="form-control" value="{{capacity_c}}">
                     </aside>
                 </div>
             </section>
@@ -151,17 +154,17 @@
             <section id="sector">
                 <p>
                     <input type="radio" id="pub" name="visibility_c" value="public">
-                    <label for="pub">Public</label><br>
+                    <label class="radiolabel" for="pub">Public</label><br>
                 </p>
 
                 <p>
                     <input type="radio" id="pri" name="visibility_c" value="private">
-                    <label for="pri">Private</label><br>
+                    <label class="radiolabel" for="pri">Private</label><br>
                 </p>
             </section>
 
             <div class="box-button">
-                <input type="submit" value="Submit">
+                <input type="submit" class="createsubmit" value="Submit">
             </div>
         </form>
     </div> 
@@ -192,7 +195,7 @@
         let request = null;
 
         function getEvents()
-        {   $('.button').css('background-color','rgb(255, 177, 85)');
+        {   $('.button').css('background-color','#f58025');
             $(this).css('background-color','gainsboro');
             let status = $(this).data('id');
             status = encodeURIComponent(status)
@@ -286,5 +289,6 @@
         var updatedEventValue = $('meta[name="updatedEventValue"]').attr("content");
     </script>
 
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

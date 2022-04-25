@@ -12,7 +12,7 @@ strong {
     grid-template-columns: 33% 34% 33%;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(255, 177, 85);
+    background-color: #f58025;
     text-align: center;
 }
 
@@ -36,7 +36,7 @@ a {
 .events div button {
     border: 0;
     outline: 0;  
-    background-color: rgb(255, 177, 85);
+    background-color: transparent;
     font-size: 25px;
 }
 
@@ -57,29 +57,35 @@ a {
     border: 2px solid gray;
     border-radius: 10px;
     padding: 20px 4px;
-    background-color: rgb(255, 177, 85);
+    background-color: #f58025;
     color: white;
+}
+#sector {
+    max-width: 150px;
+width: 100%;
+margin: 0 auto;
 }
 
 
 .box-inner section input {
-    width: 60%;
-    padding: 5px;
+  /* width: 60%;
+    padding: 5px;*/
     border: 0;
+
 }
 
 .box-right aside:nth-of-type(2) *{
-    margin: 0 5px;
+ /*   margin: 0 5px;*/
 }
 
 .box-inner section:nth-of-type(9) {
-    max-width: 150px;
+max-width: 150px;
     width: 100%;
     margin: 0 auto;
 }
 
 .box-inner section:nth-of-type(9) input {
-    width: inherit;
+   width: inherit;
 }
 
 

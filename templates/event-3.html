@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <link rel="stylesheet" href="../css/main.css" type="text/css">
     <link rel="stylesheet" href="../css/event.css" type="text/css">
+
     <title>Document</title>
 </head>
 <body>
-    <header>
+    <header id="myheader">
         <aside>
             <i class="fa fa-futbol-o" aria-hidden="true"></i>
-            <p>Tigerball</p>
+            <p>TigerBall</p>
         </aside>
 
         <section>
@@ -32,7 +33,7 @@
     </header>
 
     <main>
-        <strong>my events</strong><span>see all events you're organizing and have responded to</span>
+        <strong>my events</strong><span>see all events you're organizing and have responded to blah blah</span>
 
         <div class="events">
             <div>
@@ -81,5 +82,7 @@
             </div>
         </div>
     </main>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
