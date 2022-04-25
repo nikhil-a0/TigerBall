@@ -80,19 +80,19 @@ a {
 }
 
 .events {
-    max-width: 600px;
+    max-width: 900px;
     width: 100%;
     display: grid;
     grid-template-columns: 33% 34% 33%;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(255, 177, 85);
+    background-color: #f58025;
     text-align: center;
 }
 
 .events button {
     outline: 0;  
-    background-color: rgb(255, 177, 85);
+    background-color: #f58025;
     font-size: 25px;
     border: 1px solid black;
     padding: 10px 20px;
@@ -111,7 +111,7 @@ a {
     border: 2px solid gray;
     border-radius: 10px;
     padding: 20px 4px;
-    background-color: rgb(255, 177, 85);
+    background-color: #f58025;
     color: white;
 }
 
