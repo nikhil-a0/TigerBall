@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="updatedEventValue" content="{{updatedEventValue}}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
@@ -12,10 +17,10 @@
     <title>TigerBall</title>
 </head>
 <body>
-    <header>
-        <a href="/">
+    <header id="myheader">     
+          <a href="/">
             <aside>
-                <p>tigerball</p>
+                <p>TigerBall</p>
             </aside>
         </a>
 
@@ -72,7 +77,7 @@
             <div class="search-inputs">
               <label for="sports"> 
                 <div class="label">Sport</div>
-                <select name="sport" id="sports">
+                <select name="sport" id="sports"  class="form-control">
                     <option value="none"></option>
                     <option value="basketball">Basketball</option>
                     <option value="spikeball">Spikeball</option>
@@ -85,7 +90,7 @@
             <div class="search-inputs">
               <label for="skill"> 
                 <div class="label">Skill Level</div>
-                <select name="skill_level" id="skill">
+                <select name="skill_level" id="skill" class="form-control">
                     <option value="no preference">Mixed</option>
                     <option value="begin">Beginner</option>
                     <option value="advance">Advanced</option>
@@ -97,30 +102,30 @@
             <div class="search-inputs">
                 <label for="capacity"> 
                   <div class="label">Capacity &#8804;</div>
-                  <input type="number" id="capacity" name="capacity" min="1"/>
+                  <input type="number" id="capacity" name="capacity" min="1" class="form-control"/>
                 </label>
               </div>
 
             <div class="search-inputs">
               <label for="date"> 
                 <div class="label">Date:</div>
-                <input type="date" id="date" name="date" min="{{date}}"/>
+                <input type="date" id="date" name="date" min="{{date}}" class="form-control"/>
               </label>
             </div>
             <div class="search-inputs">
               <label for="starts"> 
                 <div class="label">Availability (start)</div>
-                <input type="time" id="start" name="start_time" min="{{time}}"/>
+                <input type="time" id="start" name="start_time" min="{{time}}" class="form-control"/>
               </label>
             </div>
             <div class="search-inputs">
                 <label for="end"> 
                   <div class="label">Availability (end)</div>
-                  <input type="time" id="end" name="end_time"/>
+                  <input type="time" id="end" name="end_time" class="form-control"/>
                 </label>
               </div>
             <div class="search-button">
-              <button type="submit"><i class="fas fa-search fa-xs"></i>Search</button>
+              <button class="btn" type="submit"><i class="fas fa-search fa-xs"></i>Search</button>
             </div>
         </form>
 <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
@@ -183,7 +188,7 @@
                     <div class="box-left">
                         <aside>
                             <label>sport</label>
-                            <select id="sport_c" name="sport_c">
+                            <select id="sport_c" name="sport_c" class="form-control">
                                 <option value="basketball">Basketball</option>
                                 <option value="soccer">Soccer</option>
                                 <option value="spikeball">Spikeball</option>
@@ -192,12 +197,12 @@
     
                         <aside>
                             <label>location</label>
-                            <input type="text" name="location_c" value="{{location_c}}" required>
+                            <input type="text" name="location_c" value="{{location_c}}" class="form-control" required>
                         </aside>
     
                         <aside>
                             <label>Skill Level</label>
-                            <select id="skill_level_c" name="skill_level_c">
+                            <select id="skill_level_c" class="form-control" name="skill_level_c">
                                 <option value="no preference">No Preference</option>
                                 <option value="beginner">Beginner</option>
                                 <option value="intermediate">Intermediate</option>
@@ -209,18 +214,18 @@
                     <div class="box-right">
                         <aside>
                             <label>date</label>
-                            <input type="date" name="date_c" value="{{date_c}}" min="{{date}}" required>
+                            <input type="date" name="date_c" value="{{date_c}}" min="{{date}}" class="form-control" required>
                         </aside>
     
                         <aside>
                             <label>Start & end time</label>
-                            <input type="time" name="start_time_c" value="{{start_time_c}}" required>
-                            <input type="time" name="end_time_c" value="{{end_time_c}}" required>
+                            <input type="time" class="form-control" name="start_time_c" value="{{start_time_c}}" required>
+                            <input type="time" class="form-control" name="end_time_c" value="{{end_time_c}}" required>
                         </aside>
     
                         <aside>
                             <label>capacity</label>
-                            <input type="number" name="capacity_c" value="{{capacity_c}}" min="1">
+                            <input type="number" class="form-control" name="capacity_c" value="{{capacity_c}}" min="1">
                         </aside>
                     </div>
                 </section>
@@ -232,19 +237,19 @@
                 <section id="sector">
                     <p>
                         <input type="radio" id="pub" name="visibility_c" value="public" required>
-                        <label for="pub">Public</label><br>
+                        <label class="radiolabel" for="pub">Public</label><br>
                     </p>
     
                     <p>
                         <input type="radio" id="pri" name="visibility_c" value="private" required>
-                        <label for="pri">Private</label><br>
+                        <label class="radiolabel" for="pri">Private</label><br>
                     </p>
                 </section>
     
                 <div class="box-button" id="submitbutton">
-                    <input type="submit" value="Submit">
+                    <input type="submit" class="createsubmit" value="Submit">
                 </div>
-            </form>
+                 </form>
         </div> 
     </div>
 
@@ -383,7 +388,7 @@
  
 </script>
 
-
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>

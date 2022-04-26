@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+   
     <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
@@ -12,10 +16,10 @@
     <title>Profile</title>
 </head>
 <body>
-    <header>
+    <header id="myheader">
         <a href="/">
             <aside>
-                <p>tigerball</p>
+                <p>TigerBall</p>
             </aside>
         </a>
 
@@ -66,7 +70,7 @@
     <div class="box-container popal boxModal" id="create">
         <div class="popal-content">
             <div class="box-header">
-                <h3>create event</h3>
+                <h3>Create Group</h3>
                 <i class="fa fa-times close" aria-hidden="true"></i>
             </div>
 
@@ -95,7 +99,7 @@
                 <p class="add">add netid seperated by one space</p> -->
         
                 <div class="box-button">
-                    <input type="submit" value="create group">
+                    <input type="submit"  class="createsubmit"value="create group">
                 </div>
             </form>         
         </div> 
@@ -192,6 +196,6 @@
 
    
 
-
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
