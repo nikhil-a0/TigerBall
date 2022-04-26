@@ -305,10 +305,10 @@ def delete_old_events():
 
         Session = sessionmaker(bind=engine)
         session = Session()
-
+        
         events_to_delete = (session.query(Events)
-            .filter(and_(Events.event_date <= date.today(),
-            Events.end_time < datetime.now().time())))
+                .filter(Events.event_date < date.today()))
+            
 
         for event in events_to_delete:
             session.delete(event)
@@ -320,6 +320,37 @@ def delete_old_events():
     except Exception as ex:
         print(ex, file=stderr)
         exit(1)
+
+def delete_todays_old_events():
+    try:
+        if ENVIRONMENT_ == 'deploy':
+            engine = create_engine(DATABASE_URL,
+                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        elif ENVIRONMENT_ == 'dev':
+            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+            creator=lambda: psycopg2.connect(database='tigerballdb',
+                port=5432))
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        events_to_delete = (session.query(Events)
+            .filter(and_(Events.event_date == date.today(),
+            Events.end_time < datetime.now().time())))
+
+        for event in events_to_delete:
+            session.delete(event)
+        
+        session.commit()
+        session.close()
+        engine.dispose()
+
+    except Exception as ex:
+        print(ex, file=stderr)
+        exit(1)
+        
+
+            
 
 def search_event(args_arr):
     try:

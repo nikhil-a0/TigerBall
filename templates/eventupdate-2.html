@@ -81,14 +81,15 @@
                 <div class="box-right">
                     <aside>
                         <label>Date</label>
-                        <input class="form-control" type="date" name="date_c" value="{{details[0].get_date()}}">
+                        <input class="form-control timing" type="date" name="date_c" value="{{details[0].get_date()}}">
                     </aside>
 
                     <aside>
                         <label>Start & end time</label>
-                        <input class="form-control" type="time" name="start_time_c" value="{{details[0].get_starttime()}}">
-                        <input class="form-control" type="time" name="end_time_c" value="{{details[0].get_endtime()}}">
+                        <input class="form-control timing" type="time" name="start_time_c" value="{{details[0].get_starttime()}}">
+                        <input class="form-control timing" type="time" name="end_time_c" value="{{details[0].get_endtime()}}">
                     </aside>
+                    <div id="timingerror"></div>
 
                     <aside>
                         <label>Capacity</label>
@@ -222,6 +223,38 @@
                 let participantID = $('#participantIDInput').val();
                 let event_id = $('meta[name="event_id"]').attr("content"); 
            }
+           function handleCheckTimesResponse(response)
+           {
+               $('#timingerror').html(response)
+           }
+
+           function checkTimes()
+           {
+
+                let start_time = $('#start_time').val();
+                let end_time = $('#end_time').val();
+                let event_date = $('#event_date').val();
+
+                start_time = encodeURIComponent(start_time)
+                end_time - encodeURIComponent(end_time)
+                event_date = encodeURIComponent(event_date)
+
+                // alert(start_time + end_time + event_date);
+                
+                
+                let url = '/checktiming?start_time=' + start_time + '&end_time=' + end_time + '&event_date=' + event_date
+
+                if (request != null)
+                    request.abort();
+                
+                request = $.ajax(
+                    {
+                    type: 'GET',
+                    url: url,
+                    success: handleCheckTimesResponse
+                    });
+
+            }
                 
 
 
@@ -240,6 +273,8 @@
                 else if (visibility == 'private') {
                     $("#pri").prop("checked", true);
                 }
+                // CHECK START TIME BEFORE END TIME
+                $('.timing').on('input', checkTimes);
                     
             }  
             

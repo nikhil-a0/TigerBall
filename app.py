@@ -8,7 +8,7 @@ from flask import render_template
 from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
-    get_status_events, create_group, view_groups, get_group_details,\
+    get_status_events, create_group, view_groups, get_group_details, delete_todays_old_events,\
     add_to_group, leave_group, invite_group, find_group_id
 from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
 from datetime import date, datetime, time
@@ -51,6 +51,7 @@ def index():
     # Pending Events
 
     delete_old_events()
+    delete_todays_old_events()
     pending_events = search_pending_event(username)
     query_data = ['','','','','','','']
 
