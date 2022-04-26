@@ -6,7 +6,7 @@
 #-----------------------------------------------------------------------
 
 from sys import argv, stderr, exit
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 from schema import Base, Events, EventsParticipants, GroupNames, GroupsMembers
 import psycopg2
@@ -307,8 +307,9 @@ def delete_old_events():
         session = Session()
 
         events_to_delete = (session.query(Events)
-                        .filter(Events.event_date <= date.today())
-                        .filter(Events.start_time < datetime.now().time()))
+            .filter(and_(Events.event_date <= date.today(),
+            Events.end_time < datetime.now().time())))
+
         for event in events_to_delete:
             session.delete(event)
 
