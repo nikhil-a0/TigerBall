@@ -20,6 +20,7 @@
     <header id="myheader">     
           <a href="/">
             <aside>
+                <img src="{{url_for('static', filename='tigerball_logo.png')}}" id="headerLogo"/>
                 <p>TigerBall</p>
             </aside>
         </a>
@@ -43,34 +44,34 @@
 
     <main>
         {% if pending_events|length > 0: %}
-        <h2>pending invites</h2>
-        {% endif %}
+        <div>
+            <h2 style="display:inline">pending invites</h2>
+            <span style="display:inline" >you've got invites — respond to them when you can!</span>
+        </div>
         
+        {% endif %}
 
         {% for pending_event in pending_events: %}
-        <a href="eventdetails?event_id={{pending_event.get_event_id()}}">
-            <div class="main-content">
-                <!-- <i class="fas fa-basketball-ball"></i> -->
-                <span class="emoji">
-                    {% if pending_event.get_sport() == 'basketball' %}
-                    &#127936;
-                    {% elif pending_event.get_sport() == 'soccer' %}
-                    &#9917;
-                    {% elif pending_event.get_sport() == 'spikeball' %}
-                    &#128993;
-                    {% elif pending_event.get_sport() == 'football' %}
-                    &#127944;
-                {% endif %}
-                </span>
-                <div>
-                    <p>{{pending_event.get_visibility()}} {{pending_event.get_sport()}} game</p>
-                    <div class="line"></div>
-                    <p>{{pending_event.get_participant_count()}}/{{pending_event.get_capacity()}} People &#8901; {{pending_event.get_date().strftime('%-m/%-d')}} &#8901; {{pending_event.get_starttime().strftime("%I:%M %p")}} - {{pending_event.get_endtime().strftime("%I:%M %p")}}</p>
-                </div>
+        <div class="main-content popbtn" data-id='{{pending_event.get_event_id()}}'>
+            <span class="emoji">
+                {% if pending_event.get_sport() == 'basketball' %}
+                &#127936;
+                {% elif pending_event.get_sport() == 'soccer' %}
+                &#9917;
+                {% elif pending_event.get_sport() == 'spikeball' %}
+                &#128993;
+                {% elif pending_event.get_sport() == 'football' %}
+                &#127944;
+                {% endif %}    
+            </span>
+            <div>
+                <p>{{pending_event.get_visibility()}} {{pending_event.get_sport()}} game</p>
+                <div class="line"></div>
+                <p>{{pending_event.get_participant_count()}}/{{pending_event.get_capacity()}} People &#8901; {{pending_event.get_date().strftime('%-m/%-d')}} &#8901; {{pending_event.get_starttime().strftime("%I:%M %p")}} - {{pending_event.get_endtime().strftime("%I:%M %p")}}</p>
             </div>
-        </a>
-        
+        </div>
         {% endfor %}
+
         
         
         <form action="index" method="get" class="search"> 
@@ -129,7 +130,8 @@
             </div>
         </form>
 <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
-        <h2>open events</h2>
+        <h2 style="display:inline">open events</h2>
+        <span style="display:inline">join any of these public events</span>
         
         {% for event in events: %}
         <div class="main-content popbtn" data-id='{{event.get_event_id()}}'>
@@ -214,15 +216,15 @@
                     <div class="box-right">
                         <aside>
                             <label>date</label>
-                            <input type="date" name="date_c" value="{{date_c}}" min="{{date}}" class="form-control" required>
+                            <input type="date" name="date_c" value="{{date_c}}" min="{{date}}" class="form-control timing" id="event_date" required>
                         </aside>
     
                         <aside>
                             <label>Start & end time</label>
-                            <input type="time" class="form-control" name="start_time_c" value="{{start_time_c}}" required>
-                            <input type="time" class="form-control" name="end_time_c" value="{{end_time_c}}" required>
+                            <input type="time" class="form-control timing" name="start_time_c" value="{{start_time_c}}" id="start_time" required>
+                            <input type="time" class="form-control timing" name="end_time_c" value="{{end_time_c}}" id="end_time" required>
                         </aside>
-    
+                        <div id="timingerror"></div>
                         <aside>
                             <label>capacity</label>
                             <input type="number" class="form-control" name="capacity_c" value="{{capacity_c}}" min="1">
@@ -253,6 +255,13 @@
         </div> 
     </div>
 
+<!-- ------------------------------------------------------------------------------------------------------------------------------ -->
+
+<!-- <div class="box-container popal boxModal" id="error">
+    <div class="popal-content">
+        <div id="timingerror"></div>
+    </div>
+</div> -->
 <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -291,10 +300,45 @@
         );
     }
 
+    function handleCheckTimesResponse(response)
+    {
+        $('#timingerror').html(response)
+    }
+
+    function checkTimes()
+    {
+
+        let start_time = $('#start_time').val();
+        let end_time = $('#end_time').val();
+        let event_date = $('#event_date').val();
+
+        start_time = encodeURIComponent(start_time)
+        end_time - encodeURIComponent(end_time)
+        event_date = encodeURIComponent(event_date)
+
+        // alert(start_time + end_time + event_date);
+        
+        
+        let url = '/checktiming?start_time=' + start_time + '&end_time=' + end_time + '&event_date=' + event_date
+
+        if (request != null)
+            request.abort();
+        
+        request = $.ajax(
+            {
+            type: 'GET',
+            url: url,
+            success: handleCheckTimesResponse
+            });
+
+    }
+
     
 
     function setup()
-    {   
+    {   // CHECK START TIME BEFORE END TIME
+        $('.timing').on('input', checkTimes);
+
         // HOVER OVER EVENT
         $('.popbtn').hover(function(){
             $(this).css('cursor', 'pointer');
@@ -342,38 +386,6 @@
             $('#create').modal('show');
         });
         
-        // VALIDATE CREATE
-        // $('#create-form').validate({
-        //     rules: {
-        //         location_c: {
-        //             equalTo: '#skill_level_c'
-        //         }
-        //     },
-        //     messages: {
-        //         location_c: {
-        //             equalTo: "Enter 4"
-        //         }
-        //     },
-
-        //     submitHandler: function (form) { // for demo
-        //     alert('valid form submitted'); // for demo
-        //     return false; // for demo
-        //     }
-
-
-        // });
-
-        // $('#createbutton').on('click', function() {
-        //     $('#myform').validate({ // initialize the plugin
-        //         rules: {
-        //             end_time_c: 
-        //         }
-        //     });
-        // });
-
-
-
-
     }
  
 

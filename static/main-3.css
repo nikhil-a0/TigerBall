@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Noto Sans', sans-serif;
-   /* overflow: scroll;*/
+    overflow: scroll;
 }
   
   .search {
@@ -80,7 +80,8 @@
 
 header {
     /*background-color: rgb(255, 177, 85);*/
-    background-color: #f58025;
+    /* make this black */
+    background-color: black;
     color: black;
     display: flex;
     justify-content: space-between;
@@ -88,6 +89,9 @@ header {
     padding: 10px 20px;
     font-weight: bold;
     font-size: 20px;
+    /* position: fixed; 
+    top: 0; 
+    width: 100%;  */
 }
 
 header aside {
@@ -122,6 +126,14 @@ header section {
 header section a {
     text-decoration: none;
     color: black;   
+}
+
+#headerLogo {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-25%);
 }
 
 main {
@@ -262,7 +274,7 @@ main span {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    /* overflow: auto; */
   }
   
 
@@ -274,7 +286,7 @@ main span {
     border: 1px solid #888;
     width: 60%;
     height: 80vh;
-    overflow: scroll;
+    /* overflow: scroll; */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;

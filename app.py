@@ -11,7 +11,7 @@ from db import search_event, create_event, get_details, invite_participant,\
     get_status_events, create_group, view_groups, get_group_details,\
     add_to_group, leave_group, invite_group, find_group_id
 from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
-from datetime import date, datetime
+from datetime import date, datetime, time
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -531,8 +531,52 @@ def participant():
         html='<table class="table table-striped">\
                         <tbody id="resultsRows">\
                         <tr><th>Netid must be at least three characters. </th></tr>'
-        
 
+#-----------------------------------------------------------------------
+@app.route('/checktiming', methods=['GET'])
+
+def checktiming():
+    start_str = request.args.get('start_time')
+    end_str = request.args.get('end_time')
+    event_str = request.args.get('event_date')
+
+    error_message=''
+
+    if start_str and end_str and event_str:
+        start_time = datetime.strptime(start_str, '%H:%M').time()
+        end_time = datetime.strptime(end_str, '%H:%M').time()
+        event_date = datetime.strptime(event_str, '%Y-%m-%d').date()
+
+        print("ENTERED EVENT DATE", event_date)
+        print("TODAY's DATE", date.today())
+
+        print("ENTERED ST", start_time)
+        print("RIGHT NOW TIME", datetime.now().time())
+
+        error_message = ''
+
+        # Event is today
+        if event_date == date.today():
+            if start_time < datetime.now().time() or end_time < datetime.now().time():
+                print("time must be earlier than now")
+                error_message = 'error detected, the event cannot start/end in the past'
+            if end_time <= start_time:
+                error_message = 'error detected, the event\'s end time must be after its start time'
+        # Event is not today
+        elif end_time <= start_time:
+            error_message = 'error detected, the event\'s end time must be after its start time'
+        if start_time > time(22, 0, 0) and end_time > time(0, 0, 0) and end_time < time(2, 0, 0):
+            error_message = 'no error detected, the event starts before midnight and ends slightly after midnight'
+    
+    html = "<aside><div><p> "+ error_message + " </p></div></aside>"
+    # html = "<div><p>"+ start_time+ " " + end_time + " " + event_date + " </p></div>"
+    response = make_response(html)
+    return response
+
+
+
+
+    
 if __name__ == '__main__':
     app.run(debug=True)
 
