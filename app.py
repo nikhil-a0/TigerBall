@@ -11,6 +11,7 @@ from db import search_event, create_event, get_details, invite_participant,\
     get_status_events, create_group, view_groups, get_group_details,\
     add_to_group, leave_group, invite_group, find_group_id
 from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
+from datetime import date, datetime
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -40,7 +41,7 @@ toOpen = 0
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     print("index")
-
+    print("TIME NOW:" + str(datetime.now().time()))
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -69,8 +70,10 @@ def index():
     # print("after get")
     # print(pending_events)
     events = search_event(query_data)
+    
     global toOpen
-    html = render_template('pend-3.html', events = events, username = username, pending_events = pending_events, updatedEventValue = toOpen) 
+    html = render_template('pend-3.html', events = events, username = username,
+    pending_events = pending_events, updatedEventValue = toOpen, date = date.today(), time = datetime.now().time().strftime("%I:%M %p")) 
     toOpen = 0
     response = make_response(html)
     
@@ -99,7 +102,7 @@ def create():
         return redirect(url_for('my_events'))
 
     
-    html = render_template('create.html', username = username)
+    html = render_template('create.html', username = username, date = date.today())
     response = make_response(html)
     
     return response
@@ -187,7 +190,6 @@ def event_details():
     details = get_details(event_id)
 
     if request.method == 'POST':
-        print("GOT into POST method from Accept")
 
         if details[0].get_organizer() != username:
                 # update 1 participant if added

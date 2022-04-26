@@ -39,7 +39,7 @@
     
     <div class="box-header">
         <h3>register for {{details[0].get_organizer()}}'s {{details[0].get_visibility()}} event</h3>
-        <i class="fa fa-times close" aria-hidden="true"></i>
+        <i class="fa fa-times close" class="close" data-dismiss="modal" aria-hidden="true" id="close-button"></i>
     </div>
 
     <form class="box-inner" id="register" action="/eventdetails?event_id={{event_id}}" method="post">
@@ -140,3 +140,4 @@
     </form>
 </body>
 </html>
+
