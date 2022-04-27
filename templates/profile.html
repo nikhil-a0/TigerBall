@@ -55,15 +55,12 @@
 
         {% for group in groups: %}
         <div class="main-content popbtn" data-id='{{group[0]}}'>
-            <div class="main-content">
-                </span>
-                <div>
-                    <p>group id: {{group[0]}}</p>
-                    <div class="line"></div>
-                    <p>
-                    group name: {{group[1]}}</p>
-                </div>
+            <div class="groupdetails">
+                <p>group id: {{group[0]}}</p>
+                <div class="line"></div>
+                <p>group name: {{group[1]}}</p>
             </div>
+            <p class="org">Add members</p>
         </div>
 
         {% endfor %}

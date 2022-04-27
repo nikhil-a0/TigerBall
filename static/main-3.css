@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     font-family: 'Noto Sans', sans-serif;
-    overflow: scroll;
 }
   
   .search {
@@ -16,7 +15,6 @@
     margin: 20px auto;
     cursor: pointer;
     flex-wrap: wrap;
-    padding-top:30px;
   }
   
   .search .label {
@@ -35,6 +33,11 @@
       display:none !important;
       background-color:transparent !important;
   }
+  
+  .search-button {
+    margin-top:20px;
+   }
+
   
   .search-inputs {
     /*flex: 1 0 auto;*/
@@ -403,4 +406,46 @@ main span {
 }
 a:hover {
     text-decoration: none;
+}
+
+.main-content .groupdetails {
+    min-width:180px;
+}
+.events1 label {
+    float: left;
+    margin-right: 10px;
+    vertical-align: middle;
+    margin-top: 8px;
+  }
+  #registerBox label {
+      min-width:135px;
+      font-weight:bold;
+  }
+  #registerBox label,
+  #registerBox p {
+      text-transform:capitalize;
+  }
+/*-color:green;
+    color:white;
+}
+.decline {
+    background-color:red;
+    color:white;
+}*/
+.accept,.decline, .undecide{
+    padding:10px;
+    border-radius:20px;
+    border: 1px solid;
+margin-right: 10px;
+background-color:#f58025;
+color:white;
+}
+#register .events {
+    background-color:transparent;
+}
+hr {
+    border: 1px solid #999999;
+}
+#registerBox p  {
+    font-weight:normal;
 }
