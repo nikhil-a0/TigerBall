@@ -160,10 +160,11 @@ def groupdetails():
     groupdets = get_group_details(group_id)
 
     if request.method == 'POST':
+        netid = request.form.get('net_id')
         # space-separated netids
-        newmems = request.form.get('newmems')
-        netids = newmems.split(' ')
-        add_to_group(group_id, netids)
+        # newmems = request.form.get('newmems')
+        # netids = newmems.split(' ')
+        add_to_group(group_id, [netid])
         return redirect(url_for('profile'))
         #return redirect('groupdetails?group_id='+group_id)
 
@@ -506,6 +507,53 @@ def checktiming():
     response = make_response(html)
     return response
 
+#-----------------------------------------------------------------------
+@app.route('/addtogroup', methods=['GET'])
+
+def addtogroup():
+    group_id = request.args.get('group_id')
+    print("group ID:" + group_id)
+    participantID = request.args.get('participant_id')
+    print("PARTICIPANT ID: " + participantID)
+
+    html = '<table class="table table-striped">\
+                        <tbody id="resultsRows">'
+
+    # if len(str(participantID)) >= 3:
+    if len(str(participantID)) >= 1:
+
+        # Display clickable button to invite the specified student or group
+        try:
+
+            req = getOneUndergrad(netid=participantID)
+            if req.ok:  
+                html += '<tr><th>Invite the following student to the group:</th></tr>'
+                undergrad = req.json()
+                pattern=pattern='<tr><td><form action="/groupdetails?group_id=%s" method="post" name="invitevalidatedparticipant"><button name="net_id" value=%s>%s \'%s</button></form></td></tr>'
+                html += pattern % (group_id, undergrad['net_id'], undergrad['full_name'], undergrad['class_year'])
+            
+            else:
+                html += '<tr><th>Invite the following student:</th></tr>'
+                html += '<tr><td> Not a valid netid or group name</td></tr>'
+
+            html += "</tbody></table>"
+            response = make_response(html)
+
+        except Exception as ex:
+            html = "<div class='px-2'><p> A server error occurred. \
+                Please contact the system administrator. </p></div>"
+            print(ex, file=stderr)
+
+            response = make_response(html)
+        
+        return response
+    
+    else:
+        html='<table class="table table-striped">\
+                        <tbody id="resultsRows">\
+                        <tr><th>Netid must be at least three characters. </th></tr>'
+        response = make_response(html)
+        return response
 
 
 

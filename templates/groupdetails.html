@@ -11,31 +11,6 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- <header>
-        <a href="index">
-            <aside>
-                <i class="fa fa-futbol-o" aria-hidden="true"></i>
-                <p>tigerball</p>
-            </aside>
-        </a>
-        
-
-        <section>
-            <a href="create">
-                <aside>
-                    <p>create event</p>
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                </aside>
-            </a>
-            <a href="index">
-                <aside>
-                    <p>homepage</p>
-                    <i class="fa fa-home" aria-hidden="true"></i>
-                </aside>
-            </a>
-        </section>
-    </header> -->
-
 
     <div class="box-header">
         <h3>group: {{groupdets[0]}}</h3>
@@ -47,13 +22,13 @@
     <form class="box-inner" action="/groupdetails?group_id={{group_id}}" method="post">
         <div class="event-container">
             <div class="events1">
-                <aside>
+                <!-- <aside>
                     <label>add members</label>
                     <input type="text" class="form-control" name="newmems" value="{{newmems}}">
                 </aside>
                 <aside>
                     <input type="submit" class="btn" name="Add Members" value="Add Members">
-                </aside>
+                </aside> -->
             </div>
 
 
@@ -79,11 +54,15 @@
             </div>
 
             <div class="box-right" id="registerBox">
-                members
+                <strong>members</strong>
                 <section>
                     <p>
                         {% for mem in groupdets[1:]: %}
+                            {% if mem == groupdets[groupdets|length -1]: %}
                             {{mem}}
+                            {% else %}
+                            {{mem}},
+                            {% endif %}
                         {% endfor %}
                     </p>
                 </section>
@@ -93,14 +72,20 @@
         <section id="sector">
             <button type="submit" class="buttonclass" value="Submit" id="leave_group_id">Leave Group</button> 
         </section>
-        
+
 
     </form>
 
+    <div class="box-button" style="background-color:transparent">
+        <input class="form-control" id="participantIDInput" type="text" name="participant_id" placeholder="Invite netid" autofocus> 
+    </div>
+
+    <div class="box-inner" id="resultsRows"></div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script>src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"</script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"</script>
 
     <script>
 
@@ -130,9 +115,37 @@
 
         }
 
+        function handleResponse(response)
+        {
+            $('#resultsRows').html(response);
+        }
+
+        function getResults()
+        {   
+            let participantID = $('#participantIDInput').val();
+            let group_id = $('meta[name="group_id"]').attr("content");
+
+            participantID = encodeURIComponent(participantID)
+            group_id = encodeURIComponent(group_id)
+
+            // NOT /participant
+            let url = '/addtogroup?group_id=' + group_id + '&participant_id=' + participantID
+
+            if (request != null)
+                request.abort();
+            
+            request = $.ajax(
+            {
+                type: 'GET',
+                url: url,
+                success: handleResponse
+            });
+        }
+
         function setup()
         {
             $('#leave_group_id').click(leave_group);
+            $('#participantIDInput').on('input', getResults);
         }
         
         $('document').ready(setup)
