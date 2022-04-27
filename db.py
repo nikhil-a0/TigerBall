@@ -443,14 +443,27 @@ def invite_participant(args_arr):
         Session = sessionmaker(bind=engine)
         session = Session()
 
+<<<<<<< HEAD
         newRow = EventsParticipants(event_id = args_arr[0], participant_id = 
         	args_arr[1], participant_status = "no response")
         session.add(newRow)
+=======
+        exists = (session.query(EventsParticipants).
+            filter(EventsParticipants.event_id == args_arr[0]).
+            filter(EventsParticipants.participant_id == args_arr[1]).all())
+        if len(exists) == 0:
+            newRow = EventsParticipants(event_id = args_arr[0], participant_id =
+                args_arr[1], participant_status = "no response")
+            session.add(newRow)
+            return True
+>>>>>>> 6dab41bd0ca8da40236678f2d24608384c73bf76
 
         session.commit()
 
         session.close()
         engine.dispose()
+        return False
+
 
     except Exception as ex:
         print(ex, file=stderr)

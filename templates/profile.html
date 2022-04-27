@@ -50,6 +50,7 @@
 
         {% for group in groups: %}
         <div class="main-content popbtn" data-id='{{group[0]}}'>
+<<<<<<< HEAD
             <span class="emoji"> &#127936;</span>
                 </span>
                 <div class="groupdetails">
@@ -60,6 +61,14 @@
                 </div>
                 <p class="org">Add Members</p>
             
+=======
+            <div class="groupdetails">
+                <p>group id: {{group[0]}}</p>
+                <div class="line"></div>
+                <p>group name: {{group[1]}}</p>
+            </div>
+            <p class="org">Add members</p>
+>>>>>>> 6dab41bd0ca8da40236678f2d24608384c73bf76
         </div>
 
         {% endfor %}
