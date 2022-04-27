@@ -6,7 +6,7 @@
 #-----------------------------------------------------------------------
 
 from sys import argv, stderr, exit
-from sqlalchemy import create_engine, and_
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from schema import Base, Events, EventsParticipants, GroupNames, GroupsMembers
 import psycopg2
@@ -245,7 +245,7 @@ def leave_group(group_id, username):
 
         gms_to_delete = (session.query(GroupsMembers)
                         .filter(GroupsMembers.group_id == group_id)
-                        .filter(GroupsMembers.member_id == username).all())
+                        .filter(GroupsMembers.member_id == username))
         for gm in gms_to_delete:
             session.delete(gm)
 
@@ -305,11 +305,10 @@ def delete_old_events():
 
         Session = sessionmaker(bind=engine)
         session = Session()
-        
-        events_to_delete = (session.query(Events)
-                .filter(Events.event_date < date.today()))
-            
 
+        events_to_delete = (session.query(Events)
+                        .filter(Events.event_date <= date.today())
+                        .filter(Events.start_time < datetime.now().time()))
         for event in events_to_delete:
             session.delete(event)
 
@@ -320,37 +319,6 @@ def delete_old_events():
     except Exception as ex:
         print(ex, file=stderr)
         exit(1)
-
-def delete_todays_old_events():
-    try:
-        if ENVIRONMENT_ == 'deploy':
-            engine = create_engine(DATABASE_URL,
-                creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-        elif ENVIRONMENT_ == 'dev':
-            engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
-            creator=lambda: psycopg2.connect(database='tigerballdb',
-                port=5432))
-        
-        Session = sessionmaker(bind=engine)
-        session = Session()
-
-        events_to_delete = (session.query(Events)
-            .filter(and_(Events.event_date == date.today(),
-            Events.end_time < datetime.now().time())))
-
-        for event in events_to_delete:
-            session.delete(event)
-        
-        session.commit()
-        session.close()
-        engine.dispose()
-
-    except Exception as ex:
-        print(ex, file=stderr)
-        exit(1)
-        
-
-            
 
 def search_event(args_arr):
     try:
@@ -475,13 +443,9 @@ def invite_participant(args_arr):
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        exists = (session.query(EventsParticipants).
-            filter(EventsParticipants.event_id == args_arr[0]).
-            filter(EventsParticipants.participant_id == args_arr[1]).all())
-        if len(exists) == 0:
-            newRow = EventsParticipants(event_id = args_arr[0], participant_id =
-                args_arr[1], participant_status = "no response")
-            session.add(newRow)
+        newRow = EventsParticipants(event_id = args_arr[0], participant_id = 
+        	args_arr[1], participant_status = "no response")
+        session.add(newRow)
 
         session.commit()
 

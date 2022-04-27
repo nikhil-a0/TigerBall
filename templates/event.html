@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='event.css') }}" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Helvetica">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <a href="/">
+            <aside>
+                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                <p>tigerball</p>
+            </aside>
+        </a>
+
+        <section>
+            <a href="/create">
+                <aside>
+                    <p>create event</p>
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </aside>
+            </a>
+            <a href="/">
+                <aside>
+                    <p>homepage</p>
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                </aside>
+            </a>
+        </section>
+    </header>
+
+    <main>
+        <strong>{{username}}'s events</strong><span>see all events you're organizing and have responded to </span>
+
+        <form action="myevents" method="get">
+            <div class="events"></div>
+                <select id="status" name="status">
+                    <div>
+                        <option value=""></option>
+                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                    </div>
+
+                    <div>
+                        <option value="attending">attending</option>
+                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                    </div>
+
+                    <div>
+                        <option value="uncertain">uncertain about</option>
+                        <i class="fa fa-question" aria-hidden="true"></i>
+                    </div>
+
+                    <div>
+                        <option value="not_attending">not attending</option>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                </select>
+                <input type="submit" value="View">
+            </div>
+        </form>
+
+        <strong>
+            {% if status == 'attending' %}
+                attending:
+            {% elif status == 'uncertain' %}
+                uncertain:
+            {% elif status == 'not_attending' %}
+                not attending:
+            {% endif %}
+        </strong>
+
+        {% for event in events: %}
+            {% if event.get_organizer() == username %}
+                <a href="eventupdate?event_id={{event.get_event_id()}}">
+                    <div class="main-content" id="mainOrg">
+                        <span class="emoji">
+                            {% if event.get_sport() == 'basketball' %}
+                            &#127936;
+                            {% elif event.get_sport() == 'soccer' %}
+                            &#9917;
+                            {% elif event.get_sport() == 'spikeball' %}
+                            &#128993;
+                            {% elif event.get_sport() == 'football' %}
+                            &#127944;
+                        {% endif %}
+                        </span>
+                        <div>
+                            <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
+                            <div class="line"></div>
+                            <p>{{event.get_participant_count()}}/{{event.get_capacity()}} People &#8901; {{event.get_date()}} &#8901; {{event.get_starttime()}} - {{event.get_endtime()}}</p>
+                        </div>
+                        <p class="org">organizer</p>
+                    </div>
+                </a>
+            {% else %}
+                <a href="eventdetails?event_id={{event.get_event_id()}}">
+                    <div class="main-content">
+                        <span class="emoji">
+                            {% if event.get_sport() == 'basketball' %}
+                            &#127936;
+                            {% elif event.get_sport() == 'soccer' %}
+                            &#9917;
+                            {% elif event.get_sport() == 'spikeball' %}
+                            &#128993;
+                            {% elif event.get_sport() == 'football' %}
+                            &#127944;
+                        {% endif %}
+                        </span>
+                        <div>
+                            <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
+                            <div class="line"></div>
+                            <p>
+                            {{event.get_participant_count()}}/{{event.get_capacity()}} People &#8901; {{event.get_date()}} &#8901; {{event.get_starttime()}} - {{event.get_endtime()}}</p>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </main>
+</body>
+</html>

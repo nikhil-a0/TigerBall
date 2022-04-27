@@ -3,7 +3,7 @@ import re
 
 # dev or deploy
 
-ENVIRONMENT_ = 'deploy'
+ENVIRONMENT_ = 'dev'
 
 if ENVIRONMENT_ == 'dev':
     DATABASE_URL = 'postgresql+psycopg2://@5432/tigerballdb'
@@ -16,4 +16,4 @@ elif ENVIRONMENT_ == 'deploy':
 
 
 # normal or whatever username you want
-USERNAME_ = 'normal'
+USERNAME_ = 'TEST'

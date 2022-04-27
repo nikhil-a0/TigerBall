@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>TigerBall</title>
+
+      <meta name="viewport"
+         content="width=device-width, initial-scale=1">
+
+      <link rel="stylesheet" href=
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+ 
+
+   </head>
+   {% if error_msg|length > 0 %}
+      <body>
+         <h1>TigerBall</h1>
+         <p>
+            {{error_msg}}
+         </p>
+         <hr>
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         <hr>
+      </body>
+   {% else %}
+      <body>
+         <h1>TigerBall</h1>
+         <p>{{username}}</p>
+         <a href="myevents"> My Events </a>
+
+         <h2>Pending Invites</h2>
+         <table>
+            <tr>
+               <td>
+                  <strong>Event ID</strong>
+               </td>
+               <td>
+                  <strong>Sport</strong>
+               </td>
+               <td>
+                  <strong>Location</strong>
+               </td>
+               <td>
+                  <strong>Date</strong>
+               </td>
+               <td>
+                  <strong>Start Time</strong>
+               </td>
+               <td>
+                  <strong>End Time</strong>
+               </td>
+               <td>
+                  <strong>Visibility</strong>
+               </td>
+               <td>
+                  <strong>Organizer</strong>
+               </td>
+            </tr>
+
+            {% for pending_event in pending_events: %}
+               <tr>
+                  <td>
+                     <a href="eventdetails?event_id={{pending_event.get_event_id()}}">{{pending_event.get_event_id()}}</a>
+                  </td>
+                  <td>
+                     {{pending_event.get_sport()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_location()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_date()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_starttime()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_endtime()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_visibility()}}
+                  </td>
+                  <td>
+                     {{pending_event.get_organizer()}}
+                  </td>
+               </tr>
+            {% endfor %}
+         </table>
+
+
+
+
+         <h2>Create Event</h2>
+         <form action="index" method="post">
+            <table>
+               <tr>
+                  <td style = "text-align: right">
+                     Sport:
+                  </td>
+                  <td>  
+                     <select id="sport_c" name="sport_c">
+                        <option value="basketball">Basketball</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="spikeball">Spikeball</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Location:
+                  </td>
+                  <td>
+                     <input type="text" name="location_c" value="{{location_c}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Date:
+                  </td>
+                  <td>
+                     <input type="date" name="date_c" value="{{date_c}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Start Time:
+                  </td>
+                  <td>
+                     <input type="time" name="start_time_c" value="{{start_time_c}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     End Time:
+                  </td>
+                  <td>
+                     <input type="time" name="end_time_c" value="{{end_time_c}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Visibility:
+                  </td>
+                  <td>
+                     <select id="visibility_c" name="visibility_c">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Capacity Limit:
+                  </td>
+                  <td>
+                     <input type="number" name="capacity_c" value="{{capacity_c}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Skill Level
+                  </td>
+                  <td>
+                     <select id="skill_level_c" name="skill_level_c">
+                        <option value="no preference">No Preference</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                     </select>
+                  </td>
+               </tr>
+
+               <tr>
+                  <td>
+                  </td>
+                  <td>
+                     <input type="submit" value="Submit">
+                  </td>
+               </tr>
+            </table>
+         </form>
+
+         <hr>
+         <hr>
+
+         <h2>Filter Events</h2>
+         <form action="index" method="get">
+            <table>
+               <tr>
+                  <td style = "text-align: right">
+                     Sport:
+                  </td>
+                  <td>
+                     <select id="sport_f" name="sport_f">
+                        <option value=""></option>
+                        <option value="basketball">Basketball</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="spikeball">Spikeball</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Skill Level:
+                  </td>
+                  <td>
+                     <select id="skill_level_f" name="skill_level_f">
+                        <option value=""></option>
+                        <option value="no preference">Mixed</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Capacity &#8804; 
+                  </td>
+                  <td>
+                     <input type="number" name="capacity_f" value="{{capacity_f}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Date:
+                  </td>
+                  <td>
+                     <input type="date" name="date_f" value="{{date_f}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     Start Time:
+                  </td>
+                  <td>
+                     <input type="time" name="start_time_f" value="{{start_time_f}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td style = "text-align: right">
+                     End Time:
+                  </td>
+                  <td>
+                     <input type="time" name="end_time_f" value="{{end_time_f}}">
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                  </td>
+                  <td>
+                     <input type="submit" value="Submit">
+                  </td>
+               </tr>
+            </table>
+         </form>
+
+         <hr>
+
+         <table>
+            <tr>
+               <td>
+                  <strong>Event ID</strong>
+               </td>
+               <td>
+                  <strong>Game Type</strong>
+               </td>
+               <td>
+                  <strong>Attendance</strong>
+               </td>
+               <td>
+                  <strong>Date</strong>
+               </td>
+               <td>
+                  <strong>Start Time</strong>
+               </td>
+               <td>
+                  <strong>End Time</strong>
+               </td>
+            </tr>
+            
+            <h2>Open Events</h2>
+
+            {% for event in events: %}
+               <tr>
+                  <td>
+                     {% if event.get_organizer() == username %}
+                        <a href="eventupdate?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                     {% else %}
+                        <a href="eventdetails?event_id={{event.get_event_id()}}">{{event.get_event_id()}}</a>
+                     
+                     {% endif %}
+                     
+                     
+                     
+                  </td>
+                  <td>
+                     {{event.get_visibility()}} {{event.get_sport()}} game
+                  </td>
+                  <td>
+                     {{event.get_participant_count()}}/{{event.get_capacity()}} People
+                  </td>
+                  <td>
+                     {{event.get_date()}}
+                  </td>
+                  <td>
+                     {{event.get_starttime()}}
+                  </td>
+                  <td>
+                     {{event.get_endtime()}}
+                  </td>
+               </tr>
+            {% endfor %}
+         </table>
+         <hr>
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         <hr>
+
+
+      </body>
+   {% endif %}
+</html>
