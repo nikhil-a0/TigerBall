@@ -172,6 +172,19 @@ def groupdetails():
 
     return response
 
+@app.route('/leavegroup', methods=['GET', 'POST'])
+def leavegroup():
+    if USERNAME_ == 'normal':
+        username = auth.authenticate().strip()
+    else:
+        username = USERNAME_
+
+    group_id = request.args.get('group_id')
+    
+    leave_group(group_id, username)
+
+    return redirect(url_for('profile'))
+
 #-----------------------------------------------------------------------
 
 @app.route('/eventdetails', methods=['GET', 'POST'])
