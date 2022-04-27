@@ -1,0 +1,24 @@
+{% for event in events: %}
+        <div class="main-content popbtn" data-id='{{event.get_event_id()}}'>
+            <span class="emoji">
+                {% if event.get_sport() == 'basketball' %}
+                &#127936;
+                {% elif event.get_sport() == 'soccer' %}
+                &#9917;
+                {% elif event.get_sport() == 'spikeball' %}
+                &#128993;
+                {% elif event.get_sport() == 'football' %}
+                &#127944;
+                {% endif %}    
+            </span>
+            <div>
+                <p>{{event.get_visibility()}} {{event.get_sport()}} game</p>
+                <div class="line"></div>
+                <p>{{event.get_participant_count()}}/{{event.get_capacity()}} People &#8901; {{event.get_date().strftime('%-m/%-d')}} &#8901; {{event.get_starttime().strftime('%I:%M %p')}} - {{event.get_endtime().strftime('%I:%M %p')}}</p>
+            </div>
+            {% if event.get_organizer() == username %}
+            <p class="org">organizer</p>
+            {% endif %}
+
+        </div>
+        {% endfor %}

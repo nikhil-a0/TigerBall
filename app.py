@@ -8,10 +8,9 @@ from flask import render_template
 from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
-    get_status_events, create_group, view_groups, get_group_details, delete_todays_old_events,\
+    get_status_events, create_group, view_groups, get_group_details,\
     add_to_group, leave_group, invite_group, find_group_id
 from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
-from datetime import date, datetime, time
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -36,12 +35,12 @@ import auth
 toOpen = 0
 
 #-----------------------------------------------------------------------
-# Main page
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     print("index")
-    print("TIME NOW:" + str(datetime.now().time()))
+
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -51,7 +50,6 @@ def index():
     # Pending Events
 
     delete_old_events()
-    delete_todays_old_events()
     pending_events = search_pending_event(username)
     query_data = ['','','','','','','']
 
@@ -71,17 +69,14 @@ def index():
     # print("after get")
     # print(pending_events)
     events = search_event(query_data)
-    
     global toOpen
-    html = render_template('pend-3.html', events = events, username = username,
-    pending_events = pending_events, updatedEventValue = toOpen, date = date.today(), time = datetime.now().time().strftime("%I:%M %p")) 
+    html = render_template('pend-3.html', events = events, username = username, pending_events = pending_events, updatedEventValue = toOpen) 
     toOpen = 0
     response = make_response(html)
     
     return response
 
 #-----------------------------------------------------------------------
-# Create Event Form data (#create) is submitted to here
 @app.route('/create', methods=['GET','POST'])
 def create():
     if USERNAME_ == 'normal':
@@ -101,11 +96,16 @@ def create():
                             request.form.get('skill_level_c')]
         print(initializer_array)
         create_event(initializer_array)
+        return redirect(url_for('my_events'))
 
-    return redirect(url_for('my_events'))
+    
+    html = render_template('create.html', username = username)
+    response = make_response(html)
+    
+    return response
 
 #-----------------------------------------------------------------------
-# Shows groups
+
 @app.route('/profile', methods=['GET', 'POST'])
 
 def profile():
@@ -172,19 +172,6 @@ def groupdetails():
 
     return response
 
-@app.route('/leavegroup', methods=['GET', 'POST'])
-def leavegroup():
-    if USERNAME_ == 'normal':
-        username = auth.authenticate().strip()
-    else:
-        username = USERNAME_
-
-    group_id = request.args.get('group_id')
-    
-    leave_group(group_id, username)
-
-    return redirect(url_for('profile'))
-
 #-----------------------------------------------------------------------
 
 @app.route('/eventdetails', methods=['GET', 'POST'])
@@ -200,6 +187,7 @@ def event_details():
     details = get_details(event_id)
 
     if request.method == 'POST':
+        print("GOT into POST method from Accept")
 
         if details[0].get_organizer() != username:
                 # update 1 participant if added
@@ -217,6 +205,76 @@ def event_details():
             return redirect(url_for('index'))
             
 
+        else:
+            print("IN POST REQUEST")
+            netid = request.form.get('net_id')
+            print("netid: " + netid)
+                # update 1 participant if added
+            # participant_id = request.form.get('participant_id')
+            # validate netid
+            if netid != None:
+                try:
+                    req = getOneUndergrad(netid=netid)
+                    if req.ok:  
+                        undergrad = req.json()
+                        # add the participant to the eventsparticipants table
+                        invite_participant([event_id, undergrad['net_id']])
+
+                        # send email notification of invitation
+                            
+                        details = get_details(event_id)[0]
+
+                        organizer_req = getOneUndergrad(netid=details.get_organizer())
+                        organizer = organizer_req.json()
+
+                        message = Mail(
+                            from_email='tigerballprinceton@gmail.com',
+                            to_emails=undergrad['email'])
+                        message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
+                        
+                        message.dynamic_template_data = {
+                            "participant_first_name": undergrad['first_name'],    
+                            "organizer_first_name": organizer['first_name'],
+                            "sport": details.get_sport(),
+                            "date": str(details.get_date().strftime('%-m/%-d')),
+                            "start_time": str(details.get_starttime().strftime('%I:%M %p')),
+                            "end_time": str(details.get_endtime().strftime('%I:%M %p')),
+                            "location": details.get_location()
+                        }
+                        print("SEND NOW :) ")
+                        try:
+                            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+                            response = sg.send(message)
+                            print(response.status_code)
+                            print(response.body)
+                            print(response.headers)
+
+                        except Exception as ex:
+                            print(ex, file=stderr)
+                
+                except Exception as ex:
+                    html = "<div class='px-2'><p> A server error occurred. \
+                        Please contact the system administrator. </p></div>"
+                    print(ex, file=stderr)
+
+
+            initializer_array = [event_id,
+                                request.form.get('sport_c'), 
+                                request.form.get('location_c'), 
+                                request.form.get('date_c'),
+                                request.form.get('start_time_c'),
+                                request.form.get('end_time_c'),
+                                request.form.get('visibility_c'),
+                                request.form.get('organizer_id_c')]
+            changed = False
+            for x in range(1, len(initializer_array)):
+                if initializer_array[x] != None:
+                    changed = True
+
+            if changed == True:
+                update_event(initializer_array)
+    
+
     if details[0].get_organizer() != username:
         html = render_template('eventdetails-1.html', details = details, event_id = event_id, username = username)
     else:
@@ -229,6 +287,7 @@ def event_details():
 #-----------------------------------------------------------------------
 
 @app.route('/myevents', methods=['GET', 'POST'])
+
 def my_events():
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
@@ -255,8 +314,10 @@ def my_events():
     response = make_response(html)
     return response
 
-#-----------------------------------------------------------------------
 @app.route('/get_my_events', methods=['GET'])
+
+
+
 def get_my_events():
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
@@ -289,12 +350,14 @@ def event_update():
     details = get_details(event_id)
 
     if request.method == 'POST':
+        print("IN POST REQUEST EVENT UPDATE")
         netid = request.form.get('net_id')
 
-        # update 1 participant if added
+            # update 1 participant if added
+        # participant_id = request.form.get('participant_id')
         # validate netid
         if netid != None:
-
+            print("NETID DON't WORK !=  None")
             try:
                 req = getOneUndergrad(netid=netid)
                 if req.ok:  
@@ -307,44 +370,51 @@ def event_update():
                     details = get_details(event_id)[0]
 
                     organizer_req = getOneUndergrad(netid=details.get_organizer())
-                    if organizer_req.ok:
-                        organizer = organizer_req.json()
+                    organizer = organizer_req.json()
+                    print("SHOULD BE NIKHIL:" + undergrad['first_name'])
 
-                        message = Mail(
-                            from_email='tigerballprinceton@gmail.com',
-                            to_emails=undergrad['email'])
-                        message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
-                        message.dynamic_template_data = {
-                            "participant_first_name": undergrad['first_name'],    
-                            "organizer_first_name": organizer['first_name'],
-                            "sport": details.get_sport(),
-                            "date": str(details.get_date().strftime('%-m/%-d')),
-                            "start_time": str(details.get_starttime().strftime('%I:%M %p')),
-                            "end_time": str(details.get_endtime().strftime('%I:%M %p')),
-                            "location": details.get_location()
-                        }
-                        try:
-                            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-                            response = sg.send(message)
-                            print(response.status_code)
-                            print(response.body)
-                            print(response.headers)
-                        except Exception as ex:
-                            print(ex, file=stderr)
-                
+                    message = Mail(
+                        from_email='tigerballprinceton@gmail.com',
+                        to_emails=undergrad['email'])
+                    message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
+                    message.dynamic_template_data = {
+                        "participant_first_name": undergrad['first_name'],    
+                        "organizer_first_name": organizer['first_name'],
+                        "sport": details.get_sport(),
+                        "date": str(details.get_date().strftime('%-m/%-d')),
+                        "start_time": str(details.get_starttime().strftime('%I:%M %p')),
+                        "end_time": str(details.get_endtime().strftime('%I:%M %p')),
+                        "location": details.get_location()
+                    }
+                    try:
+                        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+                        response = sg.send(message)
+                        print(response.status_code)
+                        print(response.body)
+                        print(response.headers)
+
+                    except Exception as ex:
+                        print(ex, file=stderr)
+            
             except Exception as ex:
+                html = "<div class='px-2'><p> A server error occurred. \
+                    Please contact the system administrator. </p></div>"
                 print(ex, file=stderr)
 
-        else: 
+
+
+        else:
             initializer_array = [event_id,
-                                    request.form.get('sport'), 
-                                    request.form.get('location'), 
-                                    request.form.get('skill_level'),
-                                    request.form.get('date'),
-                                    request.form.get('start_time'),
-                                    request.form.get('end_time'),
-                                    request.form.get('capacity'),
-                                    request.form.get('visibility')]
+                                request.form.get('sport_c'), 
+                                request.form.get('location_c'), 
+                                request.form.get('skill_level_c'),
+                                request.form.get('date_c'),
+                                request.form.get('start_time_c'),
+                                request.form.get('end_time_c'),
+                                request.form.get('capacity_c'),
+                                request.form.get('visibility_c')]
+        
+            print(initializer_array)
             
             update_event(initializer_array)
 
@@ -459,57 +529,8 @@ def participant():
         html='<table class="table table-striped">\
                         <tbody id="resultsRows">\
                         <tr><th>Netid must be at least three characters. </th></tr>'
+        
 
-#-----------------------------------------------------------------------
-@app.route('/checktiming', methods=['GET'])
-
-def checktiming():
-    start_str = request.args.get('start_time')
-    end_str = request.args.get('end_time')
-    event_str = request.args.get('event_date')
-
-    print("start time str", start_str)
-    print("end time str", end_str)
-    print("event date", event_str)
-
-    error_message=''
-
-    if start_str and end_str and event_str:
-        start_time = datetime.strptime(start_str, '%H:%M').time()
-        end_time = datetime.strptime(end_str, '%H:%M').time()
-        event_date = datetime.strptime(event_str, '%Y-%m-%d').date()
-
-        print("ENTERED EVENT DATE", event_date)
-        print("TODAY's DATE", date.today())
-
-        print("ENTERED ST", start_time)
-        print("RIGHT NOW TIME", datetime.now().time())
-
-        error_message = ''
-
-        # Event is today
-        if event_date == date.today():
-            print("line 481")
-            if start_time < datetime.now().time() or end_time < datetime.now().time():
-                print("time must be earlier than now")
-                error_message = 'error detected, the event cannot start/end in the past'
-            if end_time <= start_time:
-                error_message = 'error detected, the event\'s end time must be after its start time'
-        # Event is not today
-        elif end_time <= start_time:
-            error_message = 'error detected, the event\'s end time must be after its start time'
-        if start_time > time(22, 0, 0) and end_time > time(0, 0, 0) and end_time < time(2, 0, 0):
-            error_message = 'no error detected, the event starts before midnight and ends slightly after midnight'
-    
-    html = "<aside><div><p> "+ error_message + " </p></div></aside>"
-    # html = "<div><p>"+ start_time+ " " + end_time + " " + event_date + " </p></div>"
-    response = make_response(html)
-    return response
-
-
-
-
-    
 if __name__ == '__main__':
     app.run(debug=True)
 

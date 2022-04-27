@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>TigerBall Event Details</title>
+   </head>
+   {% if error_msg|length > 0 %}
+      <body>
+         <h1>Event Details</h1>
+         <h1>
+            id: {str(event_id)}
+         </h1>
+         <p>
+            {{error_msg}}
+         </p>
+         <hr>
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         <hr>
+      </body>
+   {% else %}
+      <body>
+         <h2> Wanna go to {{details[0].get_organizer()}}'s event?</h2>
+         <form action="?event_id={{event_id}}" method="post">
+            <table>
+                <tr>
+                    <td>
+                        <input type="submit" name="Accept" value="Accept">
+                    </td>
+                    <td>
+                        <input type="submit" name="Decline" value="Decline">
+                    </td>
+                    <td>
+                        <input type="submit" name="Undecided" value="Undecided">
+                    </td>
+                </tr>
+            </table>
+          </form>
+
+         <h1>Event Details</h1>
+         <hr>
+
+         <h2>Event ID {{eventid}}</h2>
+         <strong>Sport:</strong> {{details[0].get_sport()}}
+         <br>
+         <strong>Location:</strong> {{details[0].get_location()}}
+         <br>
+         <strong>Date:</strong> {{details[0].get_date()}}
+         <br>
+         <strong>Start Time:</strong> {{details[0].get_starttime()}}
+         <br>
+         <strong>End Time:</strong> {{details[0].get_endtime()}}
+         <br>
+         <strong>Visibility:</strong> {{details[0].get_visibility()}}
+         <br>
+         <strong>Organizer:</strong> {{details[0].get_organizer()}}
+         <br>
+         <strong>Capacity Filled:</strong> {{details[0].get_participant_count()}}/{{details[0].get_capacity()}}
+         <br>
+         <strong>Skill Level:</strong> {{details[0].get_skill_level()}}
+         
+         <hr>
+
+         <h2>Participants</h2>
+
+         <h3>Accepted:</h3>
+         {% for part in details[1]: %}
+            {{part}}
+            <br>
+         {% endfor %}
+         
+         <h3>Declined:</h3>
+         {% for part in details[2]: %}
+            {{part}}
+            <br>
+         {% endfor %}
+
+         <h3>Undecided:</h3>
+         {% for part in details[3]: %}
+            {{part}}
+            <br>
+         {% endfor %}
+
+         <h3>No Response:</h3>
+         {% for part in details[4]: %}
+            {{part}}
+            <br>
+         {% endfor %}
+
+
+   
+         <hr>
+
+         <p>
+            Click here to do <a href="/">another event search</a>.<br>
+         </p>
+
+         <hr>
+         
+         Created by Nikhil Ajjarapu, Rishi Dange, and Avi Gewirtz.
+         
+         <hr>
+      </body>
+   {% endif %}
+</html>

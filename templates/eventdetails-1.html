@@ -38,17 +38,17 @@
 
     
     <div class="box-header">
-        <h3>register for {{details[0].get_organizer()}}'s {{details[0].get_visibility()}} event</h3>
-        <i class="fa fa-times close" class="close" data-dismiss="modal" aria-hidden="true" id="close-button"></i>
+        <h3>Register for {{details[0].get_organizer()}}'s {{details[0].get_visibility()}} event</h3>
+        <i class="fa fa-times close" aria-hidden="true"></i>
     </div>
 
     <form class="box-inner" id="register" action="/eventdetails?event_id={{event_id}}" method="post">
         <div class="event-container">
-            <p>response</p>
+            <p>Select your response</p>
             <div class="events">
-                <input type="submit" name="Accept" value="Accept">
-                <input type="submit" name="Decline" value="Decline">
-                <input type="submit" name="Undecided" value="Undecided">
+                <input type="submit" class="accept" name="Accept" value="Accept">
+                <input type="submit" class="decline" name="Decline" value="Decline">
+                <input type="submit" class="undecide" name="Undecided" value="Undecided">
             </div>
         </div>
     
@@ -56,39 +56,41 @@
         <section>
             <div class="box-left" id="registerBox">
                 <aside>
-                    <label>sport</label>
+                    <label>Sport :</label>
                     <p>{{details[0].get_sport()}}</p>
                 </aside>
 
                 <aside>
-                    <label>location</label>
+                    <label>Location: </label>
                     <p>{{details[0].get_location()}}</p>
                 </aside>
 
                 <aside>
-                    <label>Skill Level</label>
+                    <label>Skill Level: </label>
                     <p>{{details[0].get_skill_level()}}</p>
                 </aside>
             </div>
 
             <div class="box-right" id="registerBox">
                 <aside>
-                    <label>date</label>
+                    <label>Date: </label>
                     <p>{{details[0].get_date().strftime('%-m/%-d')}}</p>
                 </aside>
 
                 <aside>
-                    <label>Start & end time</label>
+                    <label>Start & End time: </label>
                     <p>{{details[0].get_starttime().strftime('%I:%M %p')}} - {{details[0].get_endtime().strftime('%I:%M %p')}} </p>
                 </aside>
 
                 <aside>
-                    <label>sign ups</label>
+                    <label>Sign ups: </label>
                     <p>{{details[0].get_participant_count()}}/{{details[0].get_capacity()}}</p>
                 </aside>
             </div>
+         
         </section>
-            <p>attendees</p>
+        <hr/>
+            <p><strong>Attendees</strong></p>
         <section>
             <label>Attending</label>
             <p>
@@ -101,7 +103,42 @@
                 {% endfor %} 
             </p>
         </section>
+        <section>
+            <label>Undecided</label>
+            <p>
+                {% for part in details[3]: %}
+                    {% if part == details[3][details[3]|length -1]: %}
+                    {{part}}
+                    {% else %}
+                    {{part}},
+                    {% endif %}
+                {% endfor %} 
+            </p>
+        </section>
+        <section>
+            <label>Not Attending</label>
+            <p>
+                {% for part in details[2]: %}
+                    {% if part == details[2][details[2]|length -1]: %}
+                    {{part}}
+                    {% else %}
+                    {{part}},
+                    {% endif %}
+                {% endfor %} 
+            </p>
+        </section>
+        <section>
+            <label>No Response</label>
+            <p>
+                {% for part in details[4]: %}
+                    {% if part == details[4][details[4]|length -1]: %}
+                    {{part}}
+                    {% else %}
+                    {{part}},
+                    {% endif %}
+                {% endfor %} 
+            </p>
+        </section>
     </form>
 </body>
 </html>
-

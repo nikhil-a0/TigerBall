@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pend.css') }}" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <title>Document</title>
+</head>
+    <body>
+        <header>
+            <a href="index">
+                <aside>
+                    <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                    <p>TigerBall</p>
+                </aside>
+            </a>
+
+            <section>
+                <a href="/create">
+                    <aside>
+                        <p>create event</p>
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </aside>
+                </a>
+                <a href="/">
+                    <aside>
+                        <p>homepage</p>
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                    </aside>
+                </a>
+            </section>
+        </header>
+
+
+        <div class="box-container">
+            <div class="box-header">
+                <h3>Update Event</h3>
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+
+            <form class="box-inner" action="?event_id={{event_id}}" method="post">
+                <section>
+                    <div class="box-left">
+                        <aside>
+                            <label>Sport</label>
+                            <select id="sport_c" name="sport_c">
+                                <option value="basketball">Basketball</option>
+                                <option value="soccer">Soccer</option>
+                                <option value="spikeball">Spikeball</option>
+                            </select>
+                        </aside>
+
+                        <aside>
+                            <label>Location</label>
+                            <input type="text" name="location_c" value="{{details[0].get_location()}}">
+                        </aside>
+
+                        <aside>
+                            <label>Skill Level</label>
+                            <select id="skill_level_c" name="skill_level_c">
+                                <option value="no preference">No Preference</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </aside>
+                    </div>
+
+                    <div class="box-right">
+                        <aside>
+                            <label>Date</label>
+                            <input type="date" name="date_c" value="{{details[0].get_date()}}">
+                        </aside>
+
+                        <aside>
+                            <label>Start & end time</label>
+                            <input type="time" name="start_time_c" value="{{details[0].get_starttime()}}">
+                            <input type="time" name="end_time_c" value="{{details[0].get_endtime()}}">
+                        </aside>
+
+                        <aside>
+                            <label>Capacity</label>
+                            <input type="number" name="capacity_c" value="{{details[0].get_capacity()}}">
+                        </aside>
+                    </div>
+                </section>
+                <section id="sector">
+                    <p>
+                        <input type="radio" id="pub" name="visibility_c" value="public">
+                        <label for="pub">Public</label><br>
+                    </p>
+
+                    <p>
+                        <input type="radio" id="pri" name="visibility_c" value="private">
+                        <label for="pri">Private</label><br>
+                    </p>
+                </section>
+
+                <div class="box-button">
+                    <button type="submit">Update</button>
+                </div>
+                <p>attendees</p>
+                <section>
+                    <label>Attending</label>
+                    <p>
+                        {% for part in details[1]: %}
+                            {{part}},
+                        {% endfor %} 
+                    </p>
+                </section>
+                <section>
+                    <label>Undecided</label>
+                    <p>
+                        {% for part in details[3]: %}
+                            {{part}},
+                        {% endfor %} 
+                    </p>
+                </section>
+                <section>
+                    <label>Not Attending</label>
+                    <p>
+                        {% for part in details[2]: %}
+                            {{part}},
+                        {% endfor %} 
+                    </p>
+                </section>
+                <section>
+                    <label>No Response</label>
+                    <p>
+                        {% for part in details[4]: %}
+                            {{part}},
+                        {% endfor %} 
+                    </p>
+                </section>
+            </form>
+            <div class="box-button">
+                Add Participant
+                <form action="?event_id={{event_id}}" method="post" name="updateparticipant">
+                    <table>
+                        <tr>
+                            <td style = "text-align: right">
+                                NetID:
+                            </td>
+                            <td>
+                                <input type="text" name="participant_id" value="{{participant_id}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <input type="submit" value="Submit">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+    </body>
+</html>
