@@ -276,15 +276,12 @@ def event_update():
     details = get_details(event_id)
 
     if request.method == 'POST':
-        print("IN POST REQUEST EVENT UPDATE")
         netid = request.form.get('net_id')
 
-            # update 1 participant if added
-        # participant_id = request.form.get('participant_id')
+        # update 1 participant if added
         # validate netid
         if netid != None:
-            
-            print("NETID went through")
+
             try:
                 req = getOneUndergrad(netid=netid)
                 if req.ok:  
@@ -319,16 +316,11 @@ def event_update():
                             print(response.status_code)
                             print(response.body)
                             print(response.headers)
-
                         except Exception as ex:
                             print(ex, file=stderr)
                 
             except Exception as ex:
-                html = "<div class='px-2'><p> A server error occurred. \
-                        Please contact the system administrator. </p></div>"
                 print(ex, file=stderr)
-
-        
 
         else: 
             initializer_array = [event_id,
