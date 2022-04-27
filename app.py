@@ -457,6 +457,8 @@ def participant():
         html='<table class="table table-striped">\
                         <tbody id="resultsRows">\
                         <tr><th>Netid must be at least three characters. </th></tr>'
+        response = make_response(html)
+        return response
 
 #-----------------------------------------------------------------------
 @app.route('/checktiming', methods=['GET'])

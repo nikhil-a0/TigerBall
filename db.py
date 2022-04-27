@@ -482,12 +482,15 @@ def invite_participant(args_arr):
             newRow = EventsParticipants(event_id = args_arr[0], participant_id =
                 args_arr[1], participant_status = "no response")
             session.add(newRow)
-            return True
+            session.commit()
 
-        session.commit()
+            session.close()
+            engine.dispose()
+            return True
 
         session.close()
         engine.dispose()
+
         return False
 
 
