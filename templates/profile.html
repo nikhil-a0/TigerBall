@@ -73,7 +73,7 @@
         <div class="popal-content">
             <div class="box-header">
                 <h3>Create Group</h3>
-                <i class="fa fa-times close" aria-hidden="true"></i>
+                <i class="fa fa-times close" lass="close" data-dismiss="modal" aria-hidden="true"></i>
             </div>
 
             <form action="creategroup" method="post" class="box-inner">
@@ -187,6 +187,11 @@
             // CREATE
             $('#createbutton').on('click', function() {
                 $('#create').modal('show');
+            });
+            
+            // HOVER
+            $('#createbutton').hover(function(){
+                $(this).css('cursor', 'pointer');
             });
 
         }
