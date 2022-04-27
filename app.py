@@ -251,7 +251,7 @@ def my_events():
     #     print('NEXT')
 
     
-    html = render_template('event2.html', status=status, username=username, events=events)
+    html = render_template('event2.html', status=status, username=username, events=events, date = date.today(), time = datetime.now().time().strftime("%I:%M %p"))
     response = make_response(html)
     return response
 
