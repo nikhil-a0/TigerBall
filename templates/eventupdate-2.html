@@ -18,34 +18,8 @@
     <title>Document</title>
 </head>
     <body>
-        <!-- <header>
-            <meta name="event_id" content="{{event_id}}">
-            <a href="index">
-                <aside>
-                    <i class="fa fa-futbol-o" aria-hidden="true"></i>
-                    <p>tigerball</p>
-                </aside>
-            </a>
-
-            <section>
-                <a href="/create">
-                    <aside>
-                        <p>create event</p>
-                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                    </aside>
-                </a>
-                <a href="/">
-                    <aside>
-                        <p>homepage</p>
-                        <i class="fa fa-home" aria-hidden="true"></i>
-                    </aside>
-                </a>
-            </section>
-        </header> -->
 
 
-        
-        
         <div class="box-header">
             <h3>update event</h3>
             <i class="fa fa-times close" class="close" data-dismiss="modal" aria-hidden="true" id="close-button"></i>
@@ -55,7 +29,7 @@
                 <div class="box-left">
                     <aside>
                         <label>Sport</label>
-                        <select class="form-control" id="sport_c" name="sport_c">
+                        <select class="form-control" id="sport" name="sport">
                             <option value="basketball">Basketball</option>
                             <option value="soccer">Soccer</option>
                             <option value="spikeball">Spikeball</option>
@@ -64,12 +38,12 @@
 
                     <aside>
                         <label>Location</label>
-                        <input class="form-control" type="text" name="location_c" value="{{details[0].get_location()}}">
+                        <input class="form-control" type="text" name="location" value="{{details[0].get_location()}}" required>
                     </aside>
 
                     <aside>
                         <label>Skill Level</label>
-                        <select class="form-control" id="skill_level_c" name="skill_level_c">
+                        <select class="form-control" id="skill_level" name="skill_level">
                             <option value="no preference">No Preference</option>
                             <option value="beginner">Beginner</option>
                             <option value="intermediate">Intermediate</option>
@@ -81,40 +55,39 @@
                 <div class="box-right">
                     <aside>
                         <label>Date</label>
-                        <input class="form-control timing" type="date" name="date_c" value="{{details[0].get_date()}}">
+                        <input class="form-control timing" type="date" id="event_date" name="date" value="{{details[0].get_date()}}" required>
                     </aside>
 
                     <aside>
                         <label>Start & end time</label>
-                        <input class="form-control timing" type="time" name="start_time_c" value="{{details[0].get_starttime()}}">
-                        <input class="form-control timing" type="time" name="end_time_c" value="{{details[0].get_endtime()}}">
+                        <input class="form-control timing" type="time" id = "start_time" name="start_time" value="{{details[0].get_starttime().strftime('%H:%M')}}" required>
+                        <input class="form-control timing" type="time" id="end_time" name="end_time" value="{{details[0].get_endtime().strftime('%H:%M')}}" required>
                     </aside>
+
                     <div id="timingerror"></div>
 
                     <aside>
                         <label>Capacity</label>
-                        <input class="form-control" type="number" name="capacity_c" value="{{details[0].get_capacity()}}">
+                        <input class="form-control" type="number" name="capacity" value="{{details[0].get_capacity()}}">
                     </aside>
                 </div>
             </section>
 
             <section id="sector">
                 <p>
-                    <input type="radio" id="pub" name="visibility_c" value="public">
+                    <input type="radio" id="pub" name="visibility" value="public">
                     <label class="radiolabel" for="pub">Public</label><br>
                 </p>
 
                 <p>
-                    <input type="radio" id="pri" name="visibility_c" value="private">
+                    <input type="radio" id="pri" name="visibility" value="private">
                     <label class="radiolabel" for="pri">Private</label><br>
                 </p>
             </section>
-
-            <div class="box-button" id="submitbutton">
-                <button type="submit" class="createsubmit" value="Submit">Update</button>
-            </div>
-
             
+            <section id="sector">
+                <button type="submit" class="buttonclass" value="Submit">Submit</button>
+            </section>
             <p>Attendees</p>
             <section>
                 <aside>
@@ -224,13 +197,12 @@
                 let event_id = $('meta[name="event_id"]').attr("content"); 
            }
            function handleCheckTimesResponse(response)
-           {
+           {    
                $('#timingerror').html(response)
            }
 
            function checkTimes()
            {
-
                 let start_time = $('#start_time').val();
                 let end_time = $('#end_time').val();
                 let event_date = $('#event_date').val();
@@ -252,7 +224,8 @@
                     type: 'GET',
                     url: url,
                     success: handleCheckTimesResponse
-                    });
+                    }
+                );
 
             }
                 
@@ -265,8 +238,8 @@
                 var sport = $('meta[name="sport"]').attr("content");
                 var skill_level = $('meta[name="skill_level"]').attr("content")
                 var visibility = $('meta[name="visibility"]').attr("content")
-                $("#sport_c").val(sport);
-                $("#skill_level_c").val(skill_level);
+                $("#sport").val(sport);
+                $("#skill_level").val(skill_level);
                 if (visibility == 'public'){
                     $("#pub").prop("checked", true);
                 }
@@ -277,16 +250,9 @@
                 $('.timing').on('input', checkTimes);
                     
             }  
-            
 
             $('document').ready(setup);
             
-            console.log("hello world 2");
-
-  
-                      
-           // var event_id = $('meta[name="event_id"]').attr("content");
-            //    getResults();
         </script>
     </body>
 </html>

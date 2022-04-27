@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+
     <title>Pending Invites and Open Events - TigerBall</title>
 </head>
 <body>
@@ -22,7 +26,7 @@
           <a href="/">
             <aside>
                 <img src="{{url_for('static', filename='tigerball_logo.png')}}" id="headerLogo"/>
-                <p>TigerBall</p>
+                <p id="logotext">tigerball</p>
             </aside>
         </a>
 
@@ -165,8 +169,6 @@
 <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
 <!-- Update event -->
 
-
-        
     </main>
 
     <div class="box-container popal boxModal" id="boxModal">   
