@@ -161,10 +161,8 @@ def groupdetails():
 
     if request.method == 'POST':
         netid = request.form.get('net_id')
-        # space-separated netids
-        # newmems = request.form.get('newmems')
-        # netids = newmems.split(' ')
-        add_to_group(group_id, [netid])
+        if netid is not None:
+            add_to_group(group_id, [netid])
         return redirect(url_for('profile'))
         #return redirect('groupdetails?group_id='+group_id)
 
