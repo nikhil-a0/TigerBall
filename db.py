@@ -245,7 +245,7 @@ def leave_group(group_id, username):
 
         gms_to_delete = (session.query(GroupsMembers)
                         .filter(GroupsMembers.group_id == group_id)
-                        .filter(GroupsMembers.member_id == username))
+                        .filter(GroupsMembers.member_id == username).all())
         for gm in gms_to_delete:
             session.delete(gm)
 
@@ -475,9 +475,13 @@ def invite_participant(args_arr):
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        newRow = EventsParticipants(event_id = args_arr[0], participant_id = 
-        	args_arr[1], participant_status = "no response")
-        session.add(newRow)
+        exists = (session.query(EventsParticipants).
+            filter(EventsParticipants.event_id == args_arr[0]).
+            filter(EventsParticipants.participant_id == args_arr[1]).all())
+        if len(exists) == 0:
+            newRow = EventsParticipants(event_id = args_arr[0], participant_id =
+                args_arr[1], participant_status = "no response")
+            session.add(newRow)
 
         session.commit()
 
