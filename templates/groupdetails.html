@@ -58,11 +58,12 @@
                 <section>
                     <p>
                         {% for mem in groupdets[1:]: %}
-                            {% if mem == groupdets[groupdets|length -1]: %}
+                            {{mem}} 
+                            <!-- {% if mem == groupdets[groupdets|length -1]: %}
                             {{mem}}
                             {% else %}
                             {{mem}},
-                            {% endif %}
+                            {% endif %} -->
                         {% endfor %}
                     </p>
                 </section>
