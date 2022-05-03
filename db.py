@@ -26,11 +26,9 @@ database_ = os.environ.get('database_')
 
 # Change necessitated by SQLAlchemy / Heroku
 if ENVIRONMENT_ == 'deploy':
-    DATABASE_URL = os.getenv("DATABASE_URL")  # or other relevant config var
     if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-
-
+        print("IN DEPLOY POSTGRES ALTER DB NAME")
 
 # Create event and add organizer as accepted 
 def create_event(initializer_array):
