@@ -24,20 +24,20 @@
         <a href="/">
             <aside>
                 <img src="{{url_for('static', filename='tigerball_logo.png')}}" id="headerLogo"/>
-                <p id="logotext">tigerball</p>
+                <p id="logotext">TigerBall</p>
             </aside>
         </a>
 
         <section>
             <div id="createbutton">
                 <aside>
-                    <p>create group</p>
+                    <p>Create Group</p>
                     <i class="fa fa-users" aria-hidden="true"></i>
                 </aside>
             </div>
             <a href="myevents">
                 <aside>
-                    <p>my events</p>
+                    <p>My Events</p>
                     <i class="fa fa-calendar" aria-hidden="true"></i>
                 </aside>
             </a>
@@ -45,10 +45,10 @@
     </header>
 
     <main>
-        <h2>username: {{username}}</h2>
+        <h2>Username: {{username}}</h2>
 
         <h2>
-            my groups:
+            My Groups:
         </h2>
 <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
 
@@ -56,9 +56,9 @@
         {% for group in groups: %}
         <div class="main-content popbtn" data-id='{{group[0]}}'>
             <div class="groupdetails">
-                <p>group id: {{group[0]}}</p>
+                <p>Group ID: {{group[0]}}</p>
                 <div class="line"></div>
-                <p>group name: {{group[1]}}</p>
+                <p>Group name: {{group[1]}}</p>
             </div>
             <p class="org">Add members</p>
         </div>
@@ -81,7 +81,7 @@
                     <div class="box-left">
         
                         <aside>
-                            <label>group name</label>
+                            <label>Group name</label>
                             <input type="text" name="groupname" value="{{groupname}}">
                         </aside>
         
@@ -89,7 +89,7 @@
         
                     <div class="box-right">
                         <aside>
-                            <label>other members</label>
+                            <label>Other members</label>
                             <input type="text" name="members" value="{{members}}">
                         </aside>
                     </div>

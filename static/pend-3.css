@@ -133,9 +133,21 @@ a {
     width: inherit;
     background: inherit;
     }
-
+    .org {
+        right: -5px;
+    }
+    .divattending {
+        background-color: #f58025;
+        color:white; 
+    }
     .events button {
         width: 50%;
         margin-bottom: 5px;
     }
+  .search .label{
+      padding:0px;
+  }
+  .form-control {
+      max-width:110px !important;
+  }
 }

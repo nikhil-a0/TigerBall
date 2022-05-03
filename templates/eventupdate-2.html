@@ -21,7 +21,7 @@
 
 
         <div class="box-header">
-            <h3>update event</h3>
+            <h3>Update Event</h3>
             <i class="fa fa-times close" class="close" data-dismiss="modal" aria-hidden="true" id="close-button"></i>
         </div>
         <form class="box-inner" action="eventupdate?event_id={{event_id}}" method="post">
@@ -252,7 +252,18 @@
             }  
 
             $('document').ready(setup);
+            $(window).scroll(function () {
+    console.log($(window).scrollTop());
+
+    if ($(window).scrollTop() > 63) {
+      $('#myheader').addClass('navbar-fixed');
+    }
+    if ($(window).scrollTop() < 64) {
+      $('#myheader').removeClass('navbar-fixed');
+    }
+  });
+
             
         </script>
     </body>
-</html>
+</html> 

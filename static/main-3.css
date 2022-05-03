@@ -449,3 +449,24 @@ hr {
 #registerBox p  {
     font-weight:normal;
 }
+@media screen and (max-width: 610px) {
+header section aside, .events div i {
+    font-size:15px;
+}
+header section aside {
+    padding:2px;
+    margin : 0 3px;
+}
+header aside p:nth-of-type(1) {
+    margin:0px;
+}
+.popal-content {
+    width:100%;
+}
+}
+.navbar-fixed {
+    top: 0;
+    z-index: 100;
+    position: fixed;
+    width: 100%;
+  }
