@@ -59,7 +59,7 @@ def landing():
 
 #-----------------------------------------------------------------------
 # Main page
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/homepage', methods=['GET', 'POST'])
 def index():
     print("index")
     print("TIME NOW:" + str(datetime.now().time()))
