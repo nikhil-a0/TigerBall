@@ -1,16 +1,15 @@
 #-----------------------------------------------------------------------
 # app.py
 #-----------------------------------------------------------------------
-
+import auth
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from keys import APP_SECRET_KEY
+# from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
     get_status_events, create_group, view_groups, get_group_details, delete_todays_old_events,\
     add_to_group, leave_group, invite_group, find_group_id
-from config import ENVIRONMENT_, DATABASE_URL, USERNAME_
 from datetime import date, datetime, time
 import os
 from sendgrid import SendGridAPIClient
@@ -25,13 +24,16 @@ from req_lib import getOneUndergrad
 
 app = Flask(__name__, template_folder='templates')
 
+DATABASE_URL = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = APP_SECRET_KEY
+
+app.secret_key = os.environ.get('APP_SECRET_KEY')
+USERNAME_ = os.environ.get('USERNAME_')
 
 
-import auth
+
 
 toOpen = 0
 
