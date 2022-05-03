@@ -34,6 +34,7 @@ USERNAME_ = os.environ.get('USERNAME_')
 import auth
 
 toOpen = 0
+USERNAME_ADMIN = ''
 
 
 #-----------------------------------------------------------------------
@@ -62,10 +63,12 @@ def landing():
 # Main page
 @app.route('/homepage', methods=['GET', 'POST'])
 def homepage():
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    global USERNAME_ADMIN
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
+        
 
 
     # Pending Events
@@ -90,7 +93,11 @@ def homepage():
 #  
     # print("after get")
     # print(pending_events)
-    events = search_event(query_data)
+    try:
+        events = search_event(query_data)
+    except Exception as ex:
+        print(ex, file='stderr')
+        events = []
     
     global toOpen
     html = render_template('pend-3.html', events = events, username = username,
@@ -104,11 +111,13 @@ def homepage():
 # Create Event Form data (#create) is submitted to here
 @app.route('/create', methods=['GET','POST'])
 def create():
+
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
+
 
     if request.method == 'POST':
         initializer_array = [request.form.get('sport_c'), 
@@ -131,10 +140,10 @@ def create():
 
 def profile():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
     groups = view_groups(username)
 
@@ -147,10 +156,10 @@ def profile():
 @app.route('/creategroup', methods=['GET','POST'])
 def creategroup():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
     if request.method == 'POST':
         # members are space-separated netids
@@ -173,10 +182,10 @@ def creategroup():
 @app.route('/groupdetails', methods=['GET', 'POST'])
 def groupdetails():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
     group_id = request.args.get('group_id')
     
@@ -198,10 +207,10 @@ def groupdetails():
 @app.route('/leavegroup', methods=['GET', 'POST'])
 def leavegroup():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
     group_id = request.args.get('group_id')
     
@@ -215,10 +224,10 @@ def leavegroup():
 
 def event_details():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -255,10 +264,10 @@ def event_details():
 @app.route('/myevents', methods=['GET', 'POST'])
 def my_events():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
 
     status = 'not checked'
@@ -284,10 +293,10 @@ def my_events():
 @app.route('/get_my_events', methods=['GET'])
 def get_my_events():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
     status = 'not checked'
     if request.method == 'GET':
@@ -306,10 +315,10 @@ def get_my_events():
 
 def event_update():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -384,10 +393,10 @@ def event_update():
 
 def event_update_group():
     global USERNAME_ADMIN
-    if os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-    else:
+    if USERNAME_ADMIN != '':
         username = USERNAME_ADMIN
+    elif os.environ.get('USERNAME_') == 'normal':
+        username = auth.authenticate().strip()
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
