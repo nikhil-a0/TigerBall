@@ -1,7 +1,6 @@
 #-----------------------------------------------------------------------
 # app.py
 #-----------------------------------------------------------------------
-import auth
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
@@ -32,6 +31,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.environ.get('APP_SECRET_KEY')
 USERNAME_ = os.environ.get('USERNAME_')
 
+import auth
 
 
 
