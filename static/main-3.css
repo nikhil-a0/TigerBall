@@ -469,16 +469,8 @@ hr {
 
 }
 
-#landingpagediv {
-  margin: auto;
-}
-
-#landingpageimg {
-  width: 500px;
-  height: 500px;
-  object-fit: contain;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  
+.footer {
+    position: fixed;     
+    bottom: 0px; 
+    width: 100%;
 }
