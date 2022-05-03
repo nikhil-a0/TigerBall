@@ -4,7 +4,15 @@ import random
 from base64 import b64encode
 from datetime import datetime
 import uuid
-from configs import KEY, USERNAME, AGENT, BASE_URL, ALL_UNDERGRADS
+import os
+# from configs import KEY, USERNAME, AGENT, BASE_URL, ALL_UNDERGRADS
+
+
+KEY = os.environ.get('KEY')
+USERNAME = os.environ.get('USERNAME')
+AGENT = os.environ.get('AGENT')
+BASE_URL = os.environ.get('BASE_URL')
+ALL_UNDERGRADS = os.environ.get('ALL_UNDERGRADS')
 
 # This is mostly taken from the TigerBook API Readme Page
 def genheaders():

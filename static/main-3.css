@@ -469,4 +469,29 @@ header aside p:nth-of-type(1) {
     z-index: 100;
     position: fixed;
     width: 100%;
-  }
+}
+
+.headline {
+    border-radius: 25px;
+    background: #eeeeee;
+    padding: 20px; 
+    /* width: 500px;
+    height: 200px; */
+
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+    background: #eeeeee;
+    overflow: hidden;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    font-weight: bold;
+    font-size: 30px
+
+}
+
+.footer {
+    position: fixed;     
+    bottom: 0px; 
+    width: 100%;
+}

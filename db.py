@@ -15,12 +15,20 @@ from event import Event
 from datetime import datetime, date
 from os import environ
 import os
-from config import ENVIRONMENT_, DATABASE_URL, database_
 
 
 #-----------------------------------------------------------------------
 
+ENVIRONMENT_ = os.environ.get('ENVIRONMENT_')
+DATABASE_URL = os.environ.get('DATABASE_URL')
+database_ = os.environ.get('database_')
 
+
+# Change necessitated by SQLAlchemy / Heroku
+if ENVIRONMENT_ == 'deploy':
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+        print("IN DEPLOY POSTGRES ALTER DB NAME")
 
 # Create event and add organizer as accepted 
 def create_event(initializer_array):

@@ -1,16 +1,14 @@
 #-----------------------------------------------------------------------
 # app.py
 #-----------------------------------------------------------------------
-
 from time import localtime, asctime, strftime
 from flask import Flask, request, make_response, redirect, url_for
 from flask import render_template
-from keys import APP_SECRET_KEY
+# from keys import APP_SECRET_KEY
 from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
     get_status_events, create_group, view_groups, get_group_details, delete_todays_old_events,\
     add_to_group, leave_group, invite_group, find_group_id
-from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
 from datetime import date, datetime, time
 import os
 from sendgrid import SendGridAPIClient
@@ -25,27 +23,51 @@ from req_lib import getOneUndergrad
 
 app = Flask(__name__, template_folder='templates')
 
+DATABASE_URL = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = APP_SECRET_KEY
 
+app.secret_key = os.environ.get('APP_SECRET_KEY')
+USERNAME_ = os.environ.get('USERNAME_')
 
 import auth
 
 toOpen = 0
 
+
+#-----------------------------------------------------------------------
+# Landing page
+@app.route('/', methods=['GET', 'POST'])
+def landing():
+    error_message = ''
+
+    if request.method == 'POST':
+        test_username = request.form.get('username')
+        test_password = request.form.get('password')
+
+        
+        if test_password == 'cos333grader':
+            global USERNAME_ADMIN
+            USERNAME_ADMIN = str(test_username) 
+            return redirect(url_for('index'))
+        else:
+            error_message = 'Sorry, only graders have access to this function.'
+
+    html = render_template('landingpage.html', error_message = error_message)
+    response = make_response(html)
+    return response
+
 #-----------------------------------------------------------------------
 # Main page
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/homepage', methods=['GET', 'POST'])
 def index():
     print("index")
     print("TIME NOW:" + str(datetime.now().time()))
-    if USERNAME_ == 'normal':
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
 
     # Pending Events
@@ -84,10 +106,11 @@ def index():
 # Create Event Form data (#create) is submitted to here
 @app.route('/create', methods=['GET','POST'])
 def create():
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     if request.method == 'POST':
         initializer_array = [request.form.get('sport_c'), 
@@ -109,10 +132,11 @@ def create():
 @app.route('/profile', methods=['GET', 'POST'])
 
 def profile():
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     groups = view_groups(username)
 
@@ -124,10 +148,11 @@ def profile():
 
 @app.route('/creategroup', methods=['GET','POST'])
 def creategroup():
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     if request.method == 'POST':
         # members are space-separated netids
@@ -149,10 +174,11 @@ def creategroup():
 
 @app.route('/groupdetails', methods=['GET', 'POST'])
 def groupdetails():
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     group_id = request.args.get('group_id')
     
@@ -173,10 +199,11 @@ def groupdetails():
 
 @app.route('/leavegroup', methods=['GET', 'POST'])
 def leavegroup():
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     group_id = request.args.get('group_id')
     
@@ -189,11 +216,11 @@ def leavegroup():
 @app.route('/eventdetails', methods=['GET', 'POST'])
 
 def event_details():
-
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -229,10 +256,11 @@ def event_details():
 
 @app.route('/myevents', methods=['GET', 'POST'])
 def my_events():
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
 
     status = 'not checked'
@@ -257,10 +285,11 @@ def my_events():
 #-----------------------------------------------------------------------
 @app.route('/get_my_events', methods=['GET'])
 def get_my_events():
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     status = 'not checked'
     if request.method == 'GET':
@@ -278,11 +307,11 @@ def get_my_events():
 @app.route('/eventupdate', methods=['GET', 'POST'])
 
 def event_update():
-
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -356,11 +385,11 @@ def event_update():
 @app.route('/eventupdategroup', methods=['GET', 'POST'])
 
 def event_update_group():
-
-    if USERNAME_ == 'normal':
+    global USERNAME_ADMIN
+    if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
-        username = USERNAME_
+        username = USERNAME_ADMIN
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
