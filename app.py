@@ -35,13 +35,35 @@ import auth
 
 toOpen = 0
 
+
+#-----------------------------------------------------------------------
+# Landing page
+@app.route('/', methods=['GET', 'POST'])
+def landing():
+    error_message = ''
+
+    if request.method == 'POST':
+        test_username = request.form.get('username')
+        test_password = request.form.get('password')
+
+        global USERNAME_
+        if test_password == 'cos333grader':
+            USERNAME_ = str(test_username) 
+            return redirect(url_for('index'))
+        else:
+            error_message = 'Sorry, only graders have access to this function.'
+
+    html = render_template('landingpage.html', error_message = error_message)
+    response = make_response(html)
+    return response
+
 #-----------------------------------------------------------------------
 # Main page
-@app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     print("index")
     print("TIME NOW:" + str(datetime.now().time()))
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -84,6 +106,7 @@ def index():
 # Create Event Form data (#create) is submitted to here
 @app.route('/create', methods=['GET','POST'])
 def create():
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -109,6 +132,7 @@ def create():
 @app.route('/profile', methods=['GET', 'POST'])
 
 def profile():
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -124,6 +148,7 @@ def profile():
 
 @app.route('/creategroup', methods=['GET','POST'])
 def creategroup():
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -149,6 +174,7 @@ def creategroup():
 
 @app.route('/groupdetails', methods=['GET', 'POST'])
 def groupdetails():
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -173,6 +199,7 @@ def groupdetails():
 
 @app.route('/leavegroup', methods=['GET', 'POST'])
 def leavegroup():
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -189,7 +216,7 @@ def leavegroup():
 @app.route('/eventdetails', methods=['GET', 'POST'])
 
 def event_details():
-
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -229,6 +256,7 @@ def event_details():
 
 @app.route('/myevents', methods=['GET', 'POST'])
 def my_events():
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -257,6 +285,7 @@ def my_events():
 #-----------------------------------------------------------------------
 @app.route('/get_my_events', methods=['GET'])
 def get_my_events():
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -278,7 +307,7 @@ def get_my_events():
 @app.route('/eventupdate', methods=['GET', 'POST'])
 
 def event_update():
-
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -356,7 +385,7 @@ def event_update():
 @app.route('/eventupdategroup', methods=['GET', 'POST'])
 
 def event_update_group():
-
+    global USERNAME_
     if USERNAME_ == 'normal':
         username = auth.authenticate().strip()
     else:

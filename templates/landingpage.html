@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="updatedEventValue" content="{{updatedEventValue}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='pend-3.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main-3.css') }}" type="text/css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LandingPage - TigerBall</title>
+</head>
+<body>
+    <header id="myheader">     
+          <a href="/">
+            <aside>
+                <img src="{{url_for('static', filename='tigerball_logo.png')}}" id="headerLogo"/>
+                <p id="logotext">tigerball</p>
+            </aside>
+        </a>
+
+        <section>
+
+            <a href="/index">
+                <aside>
+                    <p>login</p>
+                </aside>
+            </a>
+            <div id="testlogin">
+                <aside>
+                    <p>test login</p>
+                </aside>
+            </div>                
+        </section>
+    </header>
+
+
+    <main>
+        <div class="headline">
+            <p>Create and join pick-up sports games at Princeton</p>
+            <p>Choose from public or private events and invite your friend groups</p>
+        </div>
+        <p>{{error_message}}</p>
+
+        <div id="landingpagediv">
+            <img src="{{url_for('static', filename='Wavy_Edu-06_Single-11.jpg')}}" id="landingpageimg">
+        </div>
+        
+        
+
+        
+    </main>
+
+    <div class="box-container popal boxModal" id="testmodal">
+        <div class="popal-content">
+            <div class="box-header">
+                <h3>Test Log In</h3>
+                <i class="fa fa-times close" class="close" data-dismiss="modal" aria-hidden="true" id="close-button"></i>
+            </div>
+
+            <form action="/" method="post" class="box-inner" id="admin-form">
+                <section>
+                    <div class="box-left">
+                        <aside>
+                            <label>username</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </aside>
+    
+                        <aside>
+                            <label>password</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </aside>
+                        
+                    </div>
+    
+                </section>
+
+                <section id="sector">
+                    <button type="submit" class="buttonclass" value="Submit">Submit</button>
+                </section>
+            </form>
+        </div> 
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"</script>
+
+<script>
+    'use strict';
+
+    function setup()
+    {
+
+        $('#testlogin').hover(function(){
+            $(this).css('cursor', 'pointer');
+        })
+
+
+        // CLOSE MODAL IF CLICK OFF
+        $(document).on('click', function(e){
+            if(!(($(e.target).closest("#boxModal").length > 0 )
+            || ($(e.target).closest(".close").length > 0)))
+            {
+                $("#boxModal").hide();
+            }
+        });
+            
+        
+        // CREATE
+        $('#testlogin').on('click', function() {
+            $('#testmodal').modal('show');
+        });
+        
+    }
+ 
+
+    $('document').ready(setup);
+    $('document').ready(function () {
+
+    
+
+    });
+
+    var updatedEventValue = $('meta[name="updatedEventValue"]').attr("content");
+ 
+</script>
+
+</body>
+
+</html>

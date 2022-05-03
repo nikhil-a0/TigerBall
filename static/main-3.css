@@ -449,3 +449,36 @@ hr {
 #registerBox p  {
     font-weight:normal;
 }
+
+.headline {
+    border-radius: 25px;
+    background: #eeeeee;
+    padding: 20px; 
+    /* width: 500px;
+    height: 200px; */
+
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+    background: #eeeeee;
+    overflow: hidden;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    font-weight: bold;
+    font-size: 30px
+
+}
+
+#landingpagediv {
+  margin: auto;
+}
+
+#landingpageimg {
+  width: 500px;
+  height: 500px;
+  object-fit: contain;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  
+}
