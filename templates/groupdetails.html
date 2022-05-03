@@ -22,22 +22,7 @@
     <form class="box-inner" action="/groupdetails?group_id={{group_id}}" method="post">
         <div class="event-container">
             <div class="events1">
-                <!-- <aside>
-                    <label>add members</label>
-                    <input type="text" class="form-control" name="newmems" value="{{newmems}}">
-                </aside>
-                <aside>
-                    <input type="submit" class="btn" name="Add Members" value="Add Members">
-                </aside> -->
             </div>
-
-
-            <!-- <p>response:</p>
-            <div class="events">
-                <input type="submit" name="Accept" value="Accept">
-                <input type="submit" name="Decline" value="Decline">
-                <input type="submit" name="Undecided" value="Undecided">
-            </div> -->
         </div>
 
         <section>
@@ -59,11 +44,6 @@
                     <p>
                         {% for mem in groupdets[1:]: %}
                             {{mem}} 
-                            <!-- {% if mem == groupdets[groupdets|length -1]: %}
-                            {{mem}}
-                            {% else %}
-                            {{mem}},
-                            {% endif %} -->
                         {% endfor %}
                     </p>
                 </section>
@@ -129,7 +109,6 @@
             participantID = encodeURIComponent(participantID)
             group_id = encodeURIComponent(group_id)
 
-            // NOT /participant
             let url = '/addtogroup?group_id=' + group_id + '&participant_id=' + participantID
 
             if (request != null)
