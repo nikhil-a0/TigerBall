@@ -1,3 +1,5 @@
+# Author: Vinay Ramesh '20 
+
 import requests
 import hashlib
 import random

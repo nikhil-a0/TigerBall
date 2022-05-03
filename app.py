@@ -50,7 +50,7 @@ def landing():
         if test_password == 'cos333grader':
             global USERNAME_ADMIN
             USERNAME_ADMIN = str(test_username) 
-            return redirect(url_for('index'))
+            return redirect(url_for('homepage'))
         else:
             error_message = 'Sorry, only graders have access to this function.'
 
@@ -61,9 +61,7 @@ def landing():
 #-----------------------------------------------------------------------
 # Main page
 @app.route('/homepage', methods=['GET', 'POST'])
-def index():
-    print("index")
-    print("TIME NOW:" + str(datetime.now().time()))
+def homepage():
     if os.environ.get('USERNAME_') == 'normal':
         username = auth.authenticate().strip()
     else:
@@ -240,7 +238,7 @@ def event_details():
 
             global toOpen
             toOpen = event_id
-            return redirect(url_for('index'))
+            return redirect(url_for('homepage'))
             
 
     if details[0].get_organizer() != username:
@@ -377,7 +375,7 @@ def event_update():
         global toOpen
         toOpen = event_id
 
-    return redirect(url_for('index'))
+    return redirect(url_for('homepage'))
         
     
     
@@ -429,7 +427,7 @@ def event_update_group():
         global toOpen
         toOpen = event_id
 
-    return redirect(url_for('index'))
+    return redirect(url_for('homepage'))
 
 
 
