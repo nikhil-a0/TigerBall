@@ -13,7 +13,7 @@
 <body>
 
     <div class="box-header">
-        <h3>group: {{groupdets[0]}}</h3>
+        <h3>Group: {{groupdets[0]}}</h3>
         <a href="/profile">
             <i class="fa fa-times" aria-hidden="true"></i>
         </a>
@@ -28,18 +28,18 @@
         <section>
             <div class="box-left" id="registerBox">
                 <aside>
-                    <label>group name</label>
+                    <label>Group Name</label>
                     <p>{{groupdets[0]}}</p>
                 </aside>
 
                 <aside>
-                    <label>group id</label>
+                    <label>Group ID</label>
                     <p id="group_id">{{group_id}}</p>
                 </aside>
             </div>
 
             <div class="box-right" id="registerBox">
-                <strong>members</strong>
+                <strong>Members</strong>
                 <section>
                     <p>
                         {% for mem in groupdets[1:]: %}
