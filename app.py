@@ -10,7 +10,7 @@ from db import search_event, create_event, get_details, invite_participant,\
     update_event, search_pending_event, update_participant, delete_old_events,\
     get_status_events, create_group, view_groups, get_group_details, delete_todays_old_events,\
     add_to_group, leave_group, invite_group, find_group_id
-from config import USERNAME_, ENVIRONMENT_, DATABASE_URL
+from config import ENVIRONMENT_, DATABASE_URL, USERNAME_
 from datetime import date, datetime, time
 import os
 from sendgrid import SendGridAPIClient
@@ -46,8 +46,9 @@ def landing():
         test_username = request.form.get('username')
         test_password = request.form.get('password')
 
-        global USERNAME_
+        
         if test_password == 'cos333grader':
+            global USERNAME_
             USERNAME_ = str(test_username) 
             return redirect(url_for('index'))
         else:
