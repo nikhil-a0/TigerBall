@@ -17,6 +17,7 @@ from python_http_client.exceptions import HTTPError
 import json
 from sys import stderr
 from req_lib import getOneUndergrad
+from CASClient import CASClient
 
 
 #-----------------------------------------------------------------------
@@ -31,10 +32,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.environ.get('APP_SECRET_KEY')
 USERNAME_ = os.environ.get('USERNAME_')
 
-import auth
-
 toOpen = 0
-USERNAME_ADMIN = ''
 
 
 #-----------------------------------------------------------------------
@@ -46,12 +44,10 @@ def landing():
     if request.method == 'POST':
         test_username = request.form.get('username')
         test_password = request.form.get('password')
-
-        
         if test_password == 'cos333grader':
-            global USERNAME_ADMIN
-            USERNAME_ADMIN = str(test_username) 
-            return redirect(url_for('homepage'))
+            response = make_response(redirect('/homepage'))
+            response.set_cookie('admin', str(test_username))
+            return response
         else:
             error_message = 'Sorry, only graders have access to this function.'
 
@@ -63,12 +59,13 @@ def landing():
 # Main page
 @app.route('/homepage', methods=['GET', 'POST'])
 def homepage():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-        
+
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
+
 
 
     # Pending Events
@@ -112,12 +109,11 @@ def homepage():
 @app.route('/create', methods=['GET','POST'])
 def create():
 
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
 
     if request.method == 'POST':
         initializer_array = [request.form.get('sport_c'), 
@@ -139,11 +135,11 @@ def create():
 @app.route('/profile', methods=['GET', 'POST'])
 
 def profile():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
 
     groups = view_groups(username)
 
@@ -155,11 +151,12 @@ def profile():
 
 @app.route('/creategroup', methods=['GET','POST'])
 def creategroup():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
+
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
 
     if request.method == 'POST':
         # members are space-separated netids
@@ -181,12 +178,13 @@ def creategroup():
 
 @app.route('/groupdetails', methods=['GET', 'POST'])
 def groupdetails():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
 
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
+        
     group_id = request.args.get('group_id')
     
     # [groupname, member, member, ...]
@@ -206,11 +204,11 @@ def groupdetails():
 
 @app.route('/leavegroup', methods=['GET', 'POST'])
 def leavegroup():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
 
     group_id = request.args.get('group_id')
     
@@ -223,11 +221,11 @@ def leavegroup():
 @app.route('/eventdetails', methods=['GET', 'POST'])
 
 def event_details():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -263,12 +261,12 @@ def event_details():
 
 @app.route('/myevents', methods=['GET', 'POST'])
 def my_events():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
 
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
 
     status = 'not checked'
     if request.method == 'GET':
@@ -292,11 +290,12 @@ def my_events():
 #-----------------------------------------------------------------------
 @app.route('/get_my_events', methods=['GET'])
 def get_my_events():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
+
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
 
     status = 'not checked'
     if request.method == 'GET':
@@ -314,11 +313,11 @@ def get_my_events():
 @app.route('/eventupdate', methods=['GET', 'POST'])
 
 def event_update():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
 
     event_id = request.args.get('event_id')
     details = get_details(event_id)
@@ -392,12 +391,12 @@ def event_update():
 @app.route('/eventupdategroup', methods=['GET', 'POST'])
 
 def event_update_group():
-    global USERNAME_ADMIN
-    if USERNAME_ADMIN != '':
-        username = USERNAME_ADMIN
-    elif os.environ.get('USERNAME_') == 'normal':
-        username = auth.authenticate().strip()
-
+    if 'admin' not in request.cookies:
+        username = CASClient().authenticate()
+        username = username.lower().strip()
+    else:
+        username = request.cookies.get('admin')
+        
     event_id = request.args.get('event_id')
     details = get_details(event_id)
 

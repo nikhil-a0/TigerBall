@@ -3,7 +3,10 @@ import re
 
 # dev or deploy
 
-ENVIRONMENT_ = 'dev'
+ENVIRONMENT_ = os.environ.get('ENVIRONMENT_')
+DATABASE_URL = os.environ.get('DATABASE_URL')
+database_ = os.environ.get('database_')
+USERNAME_ = 'normal'
 
 if ENVIRONMENT_ == 'dev':
     DATABASE_URL = 'postgresql+psycopg2://@5432/tigerballdb'
