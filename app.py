@@ -168,10 +168,6 @@ def creategroup():
         create_group(initializer_array, username)
         return redirect(url_for('profile'))
 
-    html = render_template('creategroup.html', username=username)
-    response = make_response(html)
-
-    return response
 
 #-----------------------------------------------------------------------
 
