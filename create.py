@@ -11,12 +11,16 @@ from sqlalchemy.orm import sessionmaker
 from schema import Base, Events, EventsParticipants
 import psycopg2
 from psycopg2 import connect
-from config import USERNAME_, ENVIRONMENT_, DATABASE_URL, database_
+import os
 
+ENVIRONMENT_ = os.environ.get('ENVIRONMENT_')
+DATABASE_URL = os.environ.get('DATABASE_URL')
+database_ = os.environ.get('database_')
 
 #-----------------------------------------------------------------------
 
 def main():
+    # Create db locally
 
     if len(argv) != 1:
         print('Usage: python create.py', file=stderr)
@@ -42,7 +46,7 @@ def main():
         Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
 
-
+        # Create db in Heroku
         # engine = create_engine(DATABASE_URL,
         #     creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
         
