@@ -557,6 +557,7 @@ def invite_group(event_id, gid):
                 filter(GroupsMembers.group_id == gid).all())
         print('GOT TO PART 2')
         print(len(memsToAdd))
+        memsToReturn = []
         for mem in memsToAdd:
             print('2.5')
             exists = (session.query(EventsParticipants).
@@ -567,12 +568,16 @@ def invite_group(event_id, gid):
                 newRow = EventsParticipants(event_id = event_id, participant_id =
                     mem.member_id, participant_status = "no response")
                 session.add(newRow)
+                memsToReturn.append(mem.member_id)
                 print('GOT TO PART 4')
+
 
         session.commit()
 
         session.close()
         engine.dispose()
+
+        return memsToReturn
 
     except Exception as ex:
         print(ex, file=stderr)

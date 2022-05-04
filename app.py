@@ -401,15 +401,51 @@ def event_update_group():
         print("IN POST REQUEST EVENT UPDATE")
         
         # here netid refers to the group id
-        netid = request.form.get('net_id')
+        groupid = request.form.get('net_id')
 
             # update 1 participant if added
         # participant_id = request.form.get('participant_id')
         # validate netid
-        if netid != None:
-            print("NETID DON't WORK !=  None")
+        if groupid != None:
             try:
-                invite_group(event_id, netid)
+                memsReturned = invite_group(event_id, groupid)
+                for netid in memsReturned:
+                    # Invite each member if they haven't been invited already
+                    req = getOneUndergrad(netid=netid)
+                    if req.ok:  
+                        undergrad = req.json()
+        
+                    # send email notification of invitation
+                        details = get_details(event_id)[0]
+
+                        organizer_req = getOneUndergrad(netid=details.get_organizer())
+                        if organizer_req.ok:
+                            organizer = organizer_req.json()
+
+                            message = Mail(
+                                from_email='tigerballprinceton@gmail.com',
+                                to_emails=[undergrad['email'], 'tigerballprinceton@gmail.com'])
+                            message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
+                            message.dynamic_template_data = {
+                                "participant_first_name": undergrad['first_name'],    
+                                "organizer_first_name": organizer['first_name'],
+                                "sport": details.get_sport(),
+                                "date": str(details.get_date().strftime('%-m/%-d')),
+                                "start_time": str(details.get_starttime().strftime('%I:%M %p')),
+                                "end_time": str(details.get_endtime().strftime('%I:%M %p')),
+                                "location": details.get_location()
+                            }
+                            try:
+                                sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+                                response = sg.send(message)
+                                print(response.status_code)
+                                print(response.body)
+                                print(response.headers)
+                            except Exception as ex:
+                                print(ex, file=stderr)
+
+
+
             except Exception as ex:
                 html = "<div class='px-2'><p> Could not invite group. \
                     Please contact the system administrator. </p></div>"

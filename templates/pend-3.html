@@ -56,8 +56,8 @@
     <main>
         {% if pending_events|length > 0: %}
         <div>
-            <h2 style="display:inline">pending invites</h2>
-            <span style="display:inline" >you've got invites — respond to them when you can!</span>
+            <h2 style="display:inline">Pending Invites</h2>
+            <span style="display:inline" >You've got invites — respond to them when you can!</span>
         </div>
         
         {% endif %}
@@ -94,7 +94,6 @@
                     <option value="basketball">Basketball</option>
                     <option value="spikeball">Spikeball</option>
                     <option value="soccer">Soccer</option>
-                    <option value="football">Football</option>
                 </select>
               </label>
               
@@ -103,7 +102,7 @@
               <label for="skill"> 
                 <div class="label">Skill Level</div>
                 <select name="skill_level" id="skill" class="form-control">
-                    <option value="no preference">Mixed</option>
+                    <option value="no preference"></option>
                     <option value="begin">Beginner</option>
                     <option value="advance">Advanced</option>
                     <option value="intermediate">Intermediate</option>
