@@ -159,12 +159,12 @@ def creategroup():
 
     if request.method == 'POST':
         # members are space-separated netids
-        members = request.form.get('members')
+        # members = request.form.get('members')
         groupname = request.form.get('groupname')
-        print(members)
+        # print(members)
         print(groupname)
-        memlist = members.split(' ')
-        initializer_array = [groupname] + memlist
+        # memlist = members.split(' ')
+        initializer_array = [groupname] #+ memlist
         create_group(initializer_array, username)
         return redirect(url_for('profile'))
 
