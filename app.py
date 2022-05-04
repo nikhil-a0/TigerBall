@@ -32,7 +32,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.environ.get('APP_SECRET_KEY')
 USERNAME_ = os.environ.get('USERNAME_')
 
-toOpen = 0
 
 
 #-----------------------------------------------------------------------
@@ -96,11 +95,11 @@ def homepage():
         print(ex, file='stderr')
         events = []
     
-    global toOpen
+    toOpen = request.cookies.get('toOpen')
     html = render_template('pend-3.html', events = events, username = username,
     pending_events = pending_events, updatedEventValue = toOpen, date = date.today(), time = datetime.now().time().strftime("%I:%M %p")) 
-    toOpen = 0
     response = make_response(html)
+    response.set_cookie('toOpen', '0')
     
     return response
 
@@ -242,10 +241,10 @@ def event_details():
                 status = 'undecided'
 
             update_participant(event_id, username, status)
-
-            global toOpen
-            toOpen = event_id
-            return redirect(url_for('homepage'))
+            
+            response = make_response(redirect('/homepage'))
+            response.set_cookie('toOpen', event_id)
+            return response
             
 
     if details[0].get_organizer() != username:
@@ -344,7 +343,7 @@ def event_update():
 
                             message = Mail(
                                 from_email='tigerballprinceton@gmail.com',
-                                to_emails=undergrad['email'])
+                                to_emails=[undergrad['email'], 'tigerballprinceton@gmail.com'])
                             message.template_id = 'd-6deb7d2a35654298acc547d6f44665ad'
                             message.dynamic_template_data = {
                                 "participant_first_name": undergrad['first_name'],    
@@ -380,11 +379,13 @@ def event_update():
             
             update_event(initializer_array)
 
-        global toOpen
-        toOpen = event_id
-
-    return redirect(url_for('homepage'))
-        
+        response = make_response(redirect('/homepage'))
+        response.set_cookie('toOpen', event_id)
+        return response
+    
+    response = make_response(redirect('/homepage'))
+    response.set_cookie('toOpen', '0')
+    return response        
     
     
 #-----------------------------------------------------------------------
@@ -396,7 +397,7 @@ def event_update_group():
         username = username.lower().strip()
     else:
         username = request.cookies.get('admin')
-        
+
     event_id = request.args.get('event_id')
     details = get_details(event_id)
 
@@ -432,10 +433,13 @@ def event_update_group():
             
             update_event(initializer_array)
 
-        global toOpen
-        toOpen = event_id
+        response = make_response(redirect('/homepage'))
+        response.set_cookie('toOpen', event_id)
+        return response     
 
-    return redirect(url_for('homepage'))
+    response = make_response(redirect('/homepage'))
+    response.set_cookie('toOpen', '0')
+    return response     
 
 
 
@@ -502,10 +506,6 @@ def checktiming():
     end_str = request.args.get('end_time')
     event_str = request.args.get('event_date')
 
-    print("start time str", start_str)
-    print("end time str", end_str)
-    print("event date", event_str)
-
     error_message=''
 
     if start_str and end_str and event_str:
@@ -533,7 +533,7 @@ def checktiming():
         elif end_time <= start_time:
             error_message = 'error detected, the event\'s end time must be after its start time'
         if start_time > time(22, 0, 0) and end_time > time(0, 0, 0) and end_time < time(2, 0, 0):
-            error_message = 'no error detected, the event starts before midnight and ends slightly after midnight'
+            error_message = 'be careful, the event starts before midnight and ends slightly after midnight'
     
     html = "<aside><div><p> "+ error_message + " </p></div></aside>"
     # html = "<div><p>"+ start_time+ " " + end_time + " " + event_date + " </p></div>"
