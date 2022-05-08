@@ -27,35 +27,35 @@ def main():
         exit(1)
 
     try:
-        conn = psycopg2.connect(database='postgres',
-            port=5432)
-        conn.autocommit = True
-        cursor = conn.cursor()
-        cursor.execute("DROP DATABASE IF EXISTS tigerballdb")
-        cursor.execute("CREATE DATABASE tigerballdb")
-        print('DATABASE CREATED')
+        # conn = psycopg2.connect(database='postgres',
+        #     port=5432)
+        # conn.autocommit = True
+        # cursor = conn.cursor()
+        # cursor.execute("DROP DATABASE IF EXISTS tigerballdb")
+        # cursor.execute("CREATE DATABASE tigerballdb")
+        # print('DATABASE CREATED')
 
-        engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
-            creator=lambda: psycopg2.connect(database='tigerballdb',
-                port=5432))
-        print('ENGINE CREATED')
+        # engine = create_engine('postgresql+psycopg2://@5432/tigerballdb',
+        #     creator=lambda: psycopg2.connect(database='tigerballdb',
+        #         port=5432))
+        # print('ENGINE CREATED')
 
-        Session = sessionmaker(bind=engine)
-        session = Session()
-
-        Base.metadata.drop_all(engine)
-        Base.metadata.create_all(engine)
-
-        # Create db in Heroku
-        # engine = create_engine(DATABASE_URL,
-        #     creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
-        
         # Session = sessionmaker(bind=engine)
         # session = Session()
-        # print('ENGINE CREATED')
 
         # Base.metadata.drop_all(engine)
         # Base.metadata.create_all(engine)
+
+        # Create db in Heroku
+        engine = create_engine(DATABASE_URL,
+            creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        print('ENGINE CREATED')
+
+        Base.metadata.drop_all(engine)
+        Base.metadata.create_all(engine)
 
         
 
