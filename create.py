@@ -47,6 +47,8 @@ def main():
         # Base.metadata.create_all(engine)
 
         # Create db in Heroku
+        if DATABASE_URL.startswith("postgres://"):
+            DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
         engine = create_engine(DATABASE_URL,
             creator=lambda: psycopg2.connect(DATABASE_URL, sslmode='require'))
         
