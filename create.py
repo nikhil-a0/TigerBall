@@ -13,9 +13,7 @@ import psycopg2
 from psycopg2 import connect
 import os
 
-ENVIRONMENT_ = os.environ.get('ENVIRONMENT_')
-DATABASE_URL = os.environ.get('DATABASE_URL')
-database_ = os.environ.get('database_')
+
 
 #-----------------------------------------------------------------------
 
@@ -27,6 +25,9 @@ def main():
         exit(1)
 
     try:
+        ENVIRONMENT_ = os.environ.get('ENVIRONMENT_')
+        DATABASE_URL = os.environ.get('DATABASE_URL')
+        database_ = os.environ.get('database_')         
         # conn = psycopg2.connect(database='postgres',
         #     port=5432)
         # conn.autocommit = True
